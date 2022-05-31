@@ -12,6 +12,10 @@
             android:name=".activity.map.MapActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".activity.search.LocationSearchActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

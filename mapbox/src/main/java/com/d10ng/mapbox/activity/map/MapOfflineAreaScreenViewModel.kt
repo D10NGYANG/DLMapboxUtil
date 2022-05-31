@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import com.d10ng.applib.app.goTo
 import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.BaseComposeScreenObject
+import com.d10ng.mapbox.activity.search.LocationSearchActivity
 import com.d10ng.mapbox.constant.MapLayerType
 import com.d10ng.mapbox.model.MapModel
 import com.d10ng.mapbox.view.MapLayerDialogBuilder
@@ -68,7 +70,8 @@ class MapOfflineAreaScreenViewModel(
 
     /** 点击搜索 */
     fun onClickSearch() {
-        MapAreaSearchScreenObj.go(controller)
+        //MapAreaSearchScreenObj.go(controller)
+        weakAct.get()?.goTo(LocationSearchActivity::class.java)
     }
 
     /** 点击放大 */

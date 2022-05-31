@@ -54,6 +54,8 @@ dependencies {
     implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.1.5-RC12")
     // 定位工具
     implementation("com.github.D10NGYANG:DLGpsUtil:2.1-RC01")
+    // 天地图API
+    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.1")
     // 网络请求框架
     implementation("com.github.D10NGYANG:DLHttpUtil:0.3")
 }
