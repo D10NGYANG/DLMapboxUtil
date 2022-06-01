@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">DLMapboxUtil</string>
+
+    <string name="mapbox_token">pk.eyJ1IjoiaXJpbTEwMCIsImEiOiJjazEzOGNrZnIwM3VnM3BsOGlqNmxxaTg2In0.3UJxGXm1bELP37dgMH0VSA1</string>
+    <string name="tianditu_token">5bb740ffd3a80fb3963e022454eca6e21</string>
+</resources>
