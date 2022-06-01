@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.d10ng.applib.app.goTo
+import com.d10ng.applib.resource.makeStr
 import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.compose.AppColor
 import com.d10ng.basicjetpackcomposeapp.compose.AppTheme
@@ -33,9 +34,9 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         initColor()
-        MapboxModel.instant.init("pk.eyJ1IjoiaXJpbTEwMCIsImEiOiJjazEzOGNrZnIwM3VnM3BsOGlqNmxxaTg2In0.3UJxGXm1bELP37dgMH0VSA")
+        MapboxModel.instant.init(makeStr(R.string.mapbox_token))
         Http.init("", true)
-        TianDiTuApiManager.init("5bb740ffd3a80fb3963e022454eca6e2")
+        TianDiTuApiManager.init(makeStr(R.string.tianditu_token))
 
         setContent {
             var selectPoint by remember {

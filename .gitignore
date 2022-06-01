@@ -9,3 +9,4 @@
 .cxx
 /*/.gradle/
 /*/build/
+/app/src/main/res/values/strings.xml
