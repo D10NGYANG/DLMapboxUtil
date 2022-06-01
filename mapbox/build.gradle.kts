@@ -7,6 +7,9 @@ plugins {
     id("maven-publish")
 }
 
+group = "com.github.D10NGYANG"
+version = "0.2"
+
 android {
     compileSdk = Project.compile_sdk
 
