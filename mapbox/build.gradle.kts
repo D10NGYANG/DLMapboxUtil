@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.kapt")
     id("org.jetbrains.kotlin.plugin.parcelize")
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("maven-publish")
 }
 
 android {
@@ -58,4 +59,14 @@ dependencies {
     implementation("com.github.D10NGYANG:DLTianDiTuApi:0.1")
     // 网络请求框架
     implementation("com.github.D10NGYANG:DLHttpUtil:0.3")
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create("release", MavenPublication::class) {
+                from(components.getByName("release"))
+            }
+        }
+    }
 }
