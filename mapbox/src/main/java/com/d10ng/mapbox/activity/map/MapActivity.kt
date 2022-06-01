@@ -56,7 +56,6 @@ class MapActivity: BaseActivity() {
             MapMainScreenObj.composable(this, controller, this@MapActivity)
             MapOfflineListScreenObj.composable(this, controller, this@MapActivity)
             MapOfflineAreaScreenObj.composable(this, controller, this@MapActivity)
-            MapAreaSearchScreenObj.composable(this, controller, this@MapActivity)
             MapOfflineAddScreenObj.composable(this, controller, this@MapActivity)
             MapOfflineEditScreenObj.composable(this, controller, this@MapActivity)
         }

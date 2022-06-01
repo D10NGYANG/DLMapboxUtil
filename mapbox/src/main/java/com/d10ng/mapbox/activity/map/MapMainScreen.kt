@@ -91,6 +91,7 @@ private fun MapMainScreenView(
                 .weight(1f)
         ) {
             MapboxView(
+                modifier = Modifier.fillMaxSize(),
                 layer = layer,
                 cameraZoom = zoom,
                 cameraTarget = target,

@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.compose.AppTheme
 import com.d10ng.basicjetpackcomposeapp.view.AnimatedNavHostDefault
+import com.d10ng.tianditu.TianDiTuApiManager
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 class LocationSearchActivity: BaseActivity() {
@@ -30,6 +31,10 @@ class LocationSearchActivity: BaseActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        LocationSearchManager.instant.finish(this, null)
+    }
+
     @OptIn(ExperimentalAnimationApi::class)
     @Composable
     private fun Navigation(
@@ -43,6 +48,7 @@ class LocationSearchActivity: BaseActivity() {
         ) {
             LocationSearchMainScreenObj.composable(this, controller, this@LocationSearchActivity)
             LocationSearchInfoScreenObj.composable(this, controller, this@LocationSearchActivity)
+            LocationByLatLngScreenObj.composable(this, controller, this@LocationSearchActivity)
         }
     }
 }

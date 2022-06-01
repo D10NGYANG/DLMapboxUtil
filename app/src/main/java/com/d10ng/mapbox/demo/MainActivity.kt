@@ -14,8 +14,10 @@ import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.compose.AppColor
 import com.d10ng.basicjetpackcomposeapp.compose.AppTheme
 import com.d10ng.basicjetpackcomposeapp.view.SolidButtonWithText
+import com.d10ng.http.Http
 import com.d10ng.mapbox.activity.map.MapActivity
 import com.d10ng.mapbox.model.MapboxModel
+import com.d10ng.tianditu.TianDiTuApiManager
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 
@@ -24,6 +26,8 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         initColor()
         MapboxModel.instant.init("pk.eyJ1IjoiaXJpbTEwMCIsImEiOiJjazEzOGNrZnIwM3VnM3BsOGlqNmxxaTg2In0.3UJxGXm1bELP37dgMH0VSA")
+        Http.init("", true)
+        TianDiTuApiManager.init("5bb740ffd3a80fb3963e022454eca6e2")
         setContent {
             AppTheme(app = app) {
                 Column(

@@ -20,6 +20,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        ndk {
+            // 选择要添加的对应cpu类型的.so库
+            abiFilters.addAll(mutableSetOf(/*"arm64-v8a", */"armeabi-v7a"))
+        }
     }
 
     buildTypes {
@@ -64,6 +68,15 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 
     implementation(project(":mapbox"))
+    // 网络请求框架
+    implementation("com.github.D10NGYANG:DLHttpUtil:0.3")
+    // 天地图API
+    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.1")
+
+    // 调试工具
+    debugImplementation("com.github.simplepeng.SpiderMan:spiderman:1.1.9") {
+        exclude(group = "androidx.appcompat")
+    }
 
     // 内存泄漏检查
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
