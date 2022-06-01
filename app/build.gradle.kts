@@ -73,11 +73,6 @@ dependencies {
     // 天地图API
     implementation("com.github.D10NGYANG:DLTianDiTuApi:0.1")
 
-    // 调试工具
-    debugImplementation("com.github.simplepeng.SpiderMan:spiderman:1.1.9") {
-        exclude(group = "androidx.appcompat")
-    }
-
     // 内存泄漏检查
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
 }
