@@ -43,11 +43,11 @@ data class LocationSureDialogBuilder(
     @Composable
     override fun Build() {
         val context = LocalContext.current
-        val pointOption = remember(target) {
-            PointAnnotationOptions()
+        val pointOptions = remember(target) {
+            mapOf(1 to PointAnnotationOptions()
                 .withGeometry(target)
                 .withIconImage(TARGET)
-                .withIconSize(1.0)
+                .withIconSize(1.0))
         }
         BaseDialogBuilder(
             title = title,
@@ -86,7 +86,7 @@ data class LocationSureDialogBuilder(
                         style.addImage(TARGET, this)
                     }
                 },
-                pointOptions = mapOf(1 to pointOption)
+                pointOptions = pointOptions
             )
         }.Build()
     }

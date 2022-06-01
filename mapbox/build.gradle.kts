@@ -51,7 +51,7 @@ dependencies {
     api("com.mapbox.maps:android:10.5.0")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.1.5-RC12")
+    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.1.5-RC13")
     // 定位工具
     implementation("com.github.D10NGYANG:DLGpsUtil:2.1-RC01")
     // 天地图API

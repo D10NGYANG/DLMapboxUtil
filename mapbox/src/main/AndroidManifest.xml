@@ -16,6 +16,10 @@
             android:name=".activity.search.LocationSearchActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".activity.show.LocationShowActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

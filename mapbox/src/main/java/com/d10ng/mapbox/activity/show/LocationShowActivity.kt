@@ -1,94 +1,135 @@
-package com.d10ng.mapbox.activity.map
+package com.d10ng.mapbox.activity.show
 
-import androidx.compose.foundation.Image
+import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
+import com.d10ng.applib.app.getClearTopIntent
+import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.compose.AppColor
-import com.d10ng.basicjetpackcomposeapp.compose.AppShape
+import com.d10ng.basicjetpackcomposeapp.compose.AppTheme
 import com.d10ng.basicjetpackcomposeapp.view.TitleBar
-import com.d10ng.mapbox.R
+import com.d10ng.mapbox.activity.map.Compass
 import com.d10ng.mapbox.constant.MapLayerType
+import com.d10ng.mapbox.model.LocationModel
+import com.d10ng.mapbox.model.MapModel
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
 import com.d10ng.mapbox.view.SureButton
 import com.google.accompanist.insets.navigationBarsPadding
 import com.mapbox.geojson.Point
+import com.mapbox.maps.Style
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
+
+class LocationShowActivity: BaseActivity() {
+
+    companion object{
+        const val PARAM_LAT = "lat"
+        const val PARAM_LNG = "lng"
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val lat = intent.getDoubleExtra(PARAM_LAT, 0.0)
+        val lng = intent.getDoubleExtra(PARAM_LNG, 0.0)
+
+        setContent {
+            AppTheme(app = app) {
+                LocationShowScreen(this, point = Point.fromLngLat(lng, lat))
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        LocationModel.instant.startRequestLocation(this)
+        MapModel.instant.initLayer(this)
+    }
+
+    override fun onDestroy() {
+        LocationModel.instant.stopRequestLocation(this)
+        super.onDestroy()
+    }
+}
+
+/**
+ * 跳转位置信息页面
+ * @receiver BaseActivity
+ * @param lat Double
+ * @param lng Double
+ */
+fun BaseActivity.goToLocationShowActivity(lat: Double, lng: Double) {
+    val intent = getClearTopIntent(LocationShowActivity::class.java).apply {
+        putExtra(LocationShowActivity.PARAM_LAT, lat)
+        putExtra(LocationShowActivity.PARAM_LNG, lng)
+    }
+    startActivity(intent)
+}
 
 @Composable
-fun MapOfflineAreaScreen(
-    controller: NavHostController,
-    act: MapActivity
+fun LocationShowScreen(
+    act: LocationShowActivity,
+    point: Point,
 ) {
-    val model: MapOfflineAreaScreenViewModel = viewModel(factory = MapOfflineAreaScreenViewModel.Factory(controller, act))
+    val model: LocationShowScreenViewModel = viewModel(factory = LocationShowScreenViewModel.Factory(act, point))
     val layer by model.layerFlow.collectAsState()
     val zoom by model.zoomFlow.collectAsState()
     val target by model.targetFlow.collectAsState()
+    val pointOption by model.pointOptionFlow.collectAsState()
 
-    MapOfflineAreaScreenView(
+    LocationShowScreenView(
         layer = layer,
         zoom = zoom,
         target = target,
+        pointOption = pointOption,
         onClickBack = { model.onClickBack() },
-        onClickSearch = { model.onClickSearch() },
+        onMapStyleLoad = { model.onMapStyleLoad(it) },
         onClickZoomIn = { model.onClickZoomIn() },
         onClickZoomOut = { model.onClickZoomOut() },
         onClickLayer = { model.onClickLayer() },
         onClickLocation = { model.onClickLocation() },
         onUpdateZoom = { model.updateZoom(it) },
         onUpdateTarget = { model.updateTarget(it) },
-        onClickDownload = { model.onClickDownload() }
+        onClickGo = { model.onClickGo() }
     )
 }
 
 @Composable
-private fun MapOfflineAreaScreenView(
+fun LocationShowScreenView(
     layer: MapLayerType,
     zoom: Double,
     target: Point,
+    pointOption: PointAnnotationOptions,
     onClickBack: () -> Unit = {},
-    onClickSearch: () -> Unit = {},
+    onMapStyleLoad: (Style) -> Unit = {},
     onClickZoomIn: () -> Unit = {},
     onClickZoomOut: () -> Unit = {},
     onClickLayer: () -> Unit = {},
     onClickLocation: () -> Unit = {},
     onUpdateZoom: (Double) -> Unit = {},
     onUpdateTarget: (Point) -> Unit = {},
-    onClickDownload: () -> Unit = {},
+    onClickGo: () -> Unit = {},
 ) {
+    val points = remember(pointOption) {
+        mapOf(1 to pointOption)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColor.System.background)
             .navigationBarsPadding()
     ) {
-        TitleBar(value = "地图", onClickBack = onClickBack) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_search_24),
-                contentDescription = "搜索",
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(end = 4.dp)
-                    .size(46.dp)
-                    .clip(AppShape.RC.Cycle)
-                    .clickable { onClickSearch() },
-                contentScale = ContentScale.Inside
-            )
-        }
+        TitleBar(value = "位置", onClickBack = onClickBack)
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -100,50 +141,12 @@ private fun MapOfflineAreaScreenView(
                 cameraZoom = zoom,
                 cameraTarget = target,
                 onCameraZoomChange = onUpdateZoom,
-                onCameraCenterChange = onUpdateTarget
+                onCameraCenterChange = onUpdateTarget,
+                onStyleLoad = onMapStyleLoad,
+                pointOptions = points
             )
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(30.dp)
-                    .align(Alignment.TopCenter)
-                    .background(Color.Black.copy(alpha = 0.5f))
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-                    .align(Alignment.BottomCenter)
-                    .background(Color.Black.copy(alpha = 0.5f))
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(30.dp)
-                    .padding(top = 30.dp, bottom = 150.dp)
-                    .align(Alignment.CenterStart)
-                    .background(Color.Black.copy(alpha = 0.5f))
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(30.dp)
-                    .padding(top = 30.dp, bottom = 150.dp)
-                    .align(Alignment.CenterEnd)
-                    .background(Color.Black.copy(alpha = 0.5f))
-            )
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 30.dp, bottom = 150.dp, start = 30.dp, end = 30.dp)
-                    .align(Alignment.Center)
-                    .border(1.dp, AppColor.System.secondary)
-            )
+            Compass()
 
             MapZoomControllerBar(
                 modifier = Modifier
@@ -166,8 +169,8 @@ private fun MapOfflineAreaScreenView(
                     .width(160.dp)
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 50.dp),
-                text = "立即下载",
-                onClick = onClickDownload
+                text = "到这去",
+                onClick = onClickGo
             )
         }
     }
