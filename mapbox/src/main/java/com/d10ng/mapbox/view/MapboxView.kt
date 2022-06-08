@@ -38,6 +38,7 @@ fun MapboxView(
     cameraTarget: Point = Point.fromLngLat(113.3946198, 23.0374143),
     pointOptions: Map<Int, PointAnnotationOptions> = mapOf(),
     lineOptions: Map<Int, PolylineAnnotationOptions> = mapOf(),
+    isShowUserLocation: Boolean = true,
     onCameraZoomChange: (Double) -> Unit = {},
     onCameraCenterChange: (Point) -> Unit = {},
     onCameraChange: (CoordinateBounds) -> Unit = {},
@@ -100,7 +101,7 @@ fun MapboxView(
                 // 将比例尺移动到左下角
                 scalebar.updateSettings { position = Gravity.BOTTOM or Gravity.START }
                 // 开启用户当前位置显示
-                location.updateSettings { enabled = true }
+                location.updateSettings { enabled = isShowUserLocation }
                 // 监听缩放
                 camera.addCameraZoomChangeListener {
                     onCameraZoomChange.invoke(it)

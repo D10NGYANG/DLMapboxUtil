@@ -135,7 +135,7 @@ fun BoxScope.Compass() {
 }
 
 @Composable
-private fun BoxScope.UserLocationBar(
+fun BoxScope.UserLocationBar(
     text: String
 ) {
     Box(
