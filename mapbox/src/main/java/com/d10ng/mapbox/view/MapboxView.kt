@@ -7,6 +7,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.constant.MapLayerType
+import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.geojson.Point
 import com.mapbox.maps.*
 import com.mapbox.maps.plugin.animation.camera
@@ -15,6 +16,7 @@ import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.*
 import com.mapbox.maps.plugin.attribution.attribution
 import com.mapbox.maps.plugin.compass.compass
+import com.mapbox.maps.plugin.gestures.OnMoveListener
 import com.mapbox.maps.plugin.gestures.addOnMapClickListener
 import com.mapbox.maps.plugin.gestures.gestures
 import com.mapbox.maps.plugin.locationcomponent.location
@@ -40,6 +42,7 @@ fun MapboxView(
     onCameraCenterChange: (Point) -> Unit = {},
     onCameraChange: (CoordinateBounds) -> Unit = {},
     onMapClickListener: (MapView, Point) -> Boolean = { _, _ -> false },
+    onGesturesMoveListener: (MapView, MoveGestureDetector, Boolean) -> Unit = { _, _, _ -> },
     onStyleLoad: (Style) -> Unit = {},
     update: (MapView) -> Unit = {}
 ) {
@@ -106,6 +109,18 @@ fun MapboxView(
                 camera.addCameraCenterChangeListener {
                     onCameraCenterChange.invoke(it)
                 }
+                // 监听是否被手指触摸
+                gestures.addOnMoveListener(object : OnMoveListener{
+                    override fun onMove(detector: MoveGestureDetector): Boolean { return false }
+
+                    override fun onMoveBegin(detector: MoveGestureDetector) {
+                        onGesturesMoveListener(this@apply, detector, true)
+                    }
+
+                    override fun onMoveEnd(detector: MoveGestureDetector) {
+                        onGesturesMoveListener(this@apply, detector, false)
+                    }
+                })
                 // 镜头改变
                 getMapboxMap().addOnCameraChangeListener {
                     val bounds = getMapboxMap().coordinateBoundsForCamera(getMapboxMap().cameraState.toCameraOptions())
