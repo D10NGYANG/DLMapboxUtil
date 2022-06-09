@@ -71,7 +71,7 @@ dependencies {
     // 网络请求框架
     implementation("com.github.D10NGYANG:DLHttpUtil:0.3")
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.1")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.2")
 
     // 内存泄漏检查
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
