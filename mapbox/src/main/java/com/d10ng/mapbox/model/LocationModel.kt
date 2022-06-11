@@ -1,7 +1,6 @@
 package com.d10ng.mapbox.model
 
 import android.Manifest
-import android.os.Build
 import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.hasPermissions
 import com.d10ng.coroutines.launchMain
@@ -16,19 +15,10 @@ internal class LocationModel {
 
     companion object {
         val instant by lazy { LocationModel() }
-
-        /** 前台权限 */
-        private val permissionFront = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-        /** 后台权限 */
-        private val permissionBack = arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
     }
 
-    /** 全部权限 */
-    val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        permissionFront.plus(permissionBack)
-    } else {
-        permissionFront
-    }
+    /** 定位权限标记 */
+    private val locationPermission = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
 
     /** 是否有定位权限 */
     val isHasLocationPermissionFlow = MutableStateFlow<Boolean?>(null)
@@ -47,26 +37,13 @@ internal class LocationModel {
                 result(true)
                 return@launchMain
             }
-            if (act.hasPermissions(permissions)) {
+            if (act.hasPermissions(locationPermission)) {
                 isHasLocationPermissionFlow.update { true }
                 result(true)
-            } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-                act.reqPermissions(permissions, {
+            } else {
+                act.reqPermissions(locationPermission, {
                     isHasLocationPermissionFlow.update { true }
                     result(true)
-                }, {
-                    isHasLocationPermissionFlow.update { false }
-                    result(false)
-                })
-            } else {
-                act.reqPermissions(permissionFront, {
-                    act.reqPermissions(permissionBack, {
-                        isHasLocationPermissionFlow.update { true }
-                        result(true)
-                    }, {
-                        isHasLocationPermissionFlow.update { false }
-                        result(false)
-                    })
                 }, {
                     isHasLocationPermissionFlow.update { false }
                     result(false)
