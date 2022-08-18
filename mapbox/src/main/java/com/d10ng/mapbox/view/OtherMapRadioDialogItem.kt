@@ -32,6 +32,7 @@ fun OtherMapRadioDialogItem(
     info: Pair<String, Any>,
     onClick: () -> Unit
 ) {
+    @Suppress("UNCHECKED_CAST")
     info as Pair<String, OtherMapType>
     if (info.second == OtherMapType.CANCEL) {
         DialogCancelButton(

@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "0.6"
+version = "0.7"
 
 android {
     compileSdk = Project.compile_sdk
@@ -27,17 +27,23 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     composeOptions {
         kotlinCompilerExtensionVersion = compose_ver
     }
     buildFeatures {
         compose = true
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
     }
 }
 
@@ -55,13 +61,13 @@ dependencies {
     api("com.mapbox.maps:android:10.5.0")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.1.5-RC13")
+    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.0-RC03")
     // 定位工具
     implementation("com.github.D10NGYANG:DLGpsUtil:2.1-RC01")
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.2")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.3")
     // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil:0.3")
+    implementation("com.github.D10NGYANG:DLHttpUtil:0.6")
 }
 
 afterEvaluate {

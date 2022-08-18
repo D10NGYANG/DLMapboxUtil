@@ -26,7 +26,6 @@ import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
 import com.d10ng.mapbox.view.SureButton
-import com.google.accompanist.insets.navigationBarsPadding
 import com.mapbox.geojson.Point
 
 @Composable

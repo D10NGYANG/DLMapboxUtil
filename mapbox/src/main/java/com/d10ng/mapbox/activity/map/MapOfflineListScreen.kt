@@ -28,7 +28,6 @@ import com.d10ng.mapbox.R
 import com.d10ng.mapbox.bean.OfflineMapInfo
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
-import com.google.accompanist.insets.navigationBarsPadding
 
 @Composable
 fun MapOfflineListScreen(

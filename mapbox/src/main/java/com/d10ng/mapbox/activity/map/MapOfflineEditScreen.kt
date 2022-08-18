@@ -22,7 +22,6 @@ import com.d10ng.basicjetpackcomposeapp.view.TitleBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.view.InputItem
 import com.d10ng.mapbox.view.SureButton
-import com.google.accompanist.insets.navigationBarsPadding
 
 @Composable
 fun MapOfflineEditScreen(

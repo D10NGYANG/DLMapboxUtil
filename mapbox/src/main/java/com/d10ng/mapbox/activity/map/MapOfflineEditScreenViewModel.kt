@@ -45,7 +45,8 @@ class MapOfflineEditScreenViewModel(
         private val act: MapActivity,
         private val id: String
     ): ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return MapOfflineEditScreenViewModel(controller, act, id) as T
         }
     }

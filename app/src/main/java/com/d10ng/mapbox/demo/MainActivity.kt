@@ -3,9 +3,7 @@ package com.d10ng.mapbox.demo
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,8 +23,6 @@ import com.d10ng.mapbox.activity.search.LocationSearchManager
 import com.d10ng.mapbox.activity.show.goToLocationShowActivity
 import com.d10ng.mapbox.model.MapboxModel
 import com.d10ng.tianditu.TianDiTuApiManager
-import com.google.accompanist.insets.navigationBarsPadding
-import com.google.accompanist.insets.statusBarsPadding
 import com.mapbox.geojson.Point
 
 class MainActivity : BaseActivity() {

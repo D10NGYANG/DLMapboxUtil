@@ -16,16 +16,16 @@ allprojects {
 Step 2. Add the dependency
 ```build.gradle
 dependencies {
-  // 地图封装
-  implementation("com.github.D10NGYANG:DLMapboxUtil:$release")
-  // jetpack compose 框架
-  implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.1.5-RC13")
-  // 定位工具
-  implementation("com.github.D10NGYANG:DLGpsUtil:2.1-RC01")
-  // 天地图API
-  implementation("com.github.D10NGYANG:DLTianDiTuApi:0.1")
-  // 网络请求框架
-  implementation("com.github.D10NGYANG:DLHttpUtil:0.3")
+    // 地图封装
+    implementation("com.github.D10NGYANG:DLMapboxUtil:$release")
+    // jetpack compose 框架
+    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.0-RC03")
+    // 日期工具兼容Android8.0以下设备
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+    // 天地图API
+    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.3")
+    // 网络请求框架
+    implementation("com.github.D10NGYANG:DLHttpUtil:0.6")
 }
 ```
 

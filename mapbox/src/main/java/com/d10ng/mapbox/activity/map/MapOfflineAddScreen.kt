@@ -18,7 +18,6 @@ import com.d10ng.basicjetpackcomposeapp.compose.AppText
 import com.d10ng.basicjetpackcomposeapp.view.TitleBar
 import com.d10ng.mapbox.view.InputItem
 import com.d10ng.mapbox.view.SureButton
-import com.google.accompanist.insets.navigationBarsPadding
 import kotlin.math.roundToInt
 
 @Composable

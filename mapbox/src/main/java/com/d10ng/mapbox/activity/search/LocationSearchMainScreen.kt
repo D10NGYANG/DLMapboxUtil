@@ -27,7 +27,6 @@ import com.d10ng.basicjetpackcomposeapp.view.MiniButton
 import com.d10ng.basicjetpackcomposeapp.view.TitleBar
 import com.d10ng.mapbox.R
 import com.d10ng.tianditu.bean.LocationSearch
-import com.google.accompanist.insets.navigationBarsPadding
 
 @Composable
 fun LocationSearchMainScreen(

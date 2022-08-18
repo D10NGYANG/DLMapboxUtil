@@ -28,7 +28,8 @@ class LocationShowScreenViewModel(
         private val act: LocationShowActivity,
         private val point: Point,
     ): ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return LocationShowScreenViewModel(act, point) as T
         }
     }

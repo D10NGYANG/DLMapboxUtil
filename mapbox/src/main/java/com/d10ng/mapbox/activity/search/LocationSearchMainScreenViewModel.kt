@@ -12,7 +12,10 @@ import com.d10ng.mapbox.view.LocationSureDialogBuilder
 import com.d10ng.tianditu.bean.LocationSearch
 import com.google.accompanist.navigation.animation.composable
 import com.mapbox.geojson.Point
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 
@@ -29,6 +32,7 @@ object LocationSearchMainScreenObj: BaseComposeScreenObject("LocationSearchMainS
     }
 }
 
+@OptIn(FlowPreview::class)
 class LocationSearchMainScreenViewModel(
     private val controller: NavHostController,
     act: BaseActivity
@@ -37,7 +41,8 @@ class LocationSearchMainScreenViewModel(
         private val controller: NavHostController,
         private val act: BaseActivity
     ): ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return LocationSearchMainScreenViewModel(controller, act) as T
         }
     }
@@ -49,6 +54,14 @@ class LocationSearchMainScreenViewModel(
     /** 结果 */
     val resultFlow = MutableStateFlow<LocationSearch?>(null)
 
+    init {
+        viewModelScope.launch {
+            inputFlow.debounce(1000).collect {
+                search(it)
+            }
+        }
+    }
+
     /** 点击返回 */
     fun onClickBack() {
         weakAct.get()?.apply {
@@ -59,7 +72,6 @@ class LocationSearchMainScreenViewModel(
     /** 更新搜索内容 */
     fun updateInput(value: String) {
         inputFlow.value = value
-        search(value)
     }
 
     /** 点击搜索 */

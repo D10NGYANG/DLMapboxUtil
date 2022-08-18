@@ -36,7 +36,8 @@ class LocationByLatLngScreenViewModel(
         private val controller: NavHostController,
         private val act: BaseActivity
     ): ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return LocationByLatLngScreenViewModel(controller, act) as T
         }
     }

@@ -35,7 +35,8 @@ class MapOfflineListScreenViewModel(
         private val controller: NavHostController,
         private val act: MapActivity
     ): ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return MapOfflineListScreenViewModel(controller, act) as T
         }
     }

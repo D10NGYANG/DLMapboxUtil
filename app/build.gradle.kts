@@ -34,11 +34,11 @@ android {
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     composeOptions {
         kotlinCompilerExtensionVersion = compose_ver
@@ -63,15 +63,15 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.1.5-RC13")
+    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.0-RC03")
     // 日期工具兼容Android8.0以下设备
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 
     implementation(project(":mapbox"))
-    // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil:0.3")
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.2")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.3")
+    // 网络请求框架
+    implementation("com.github.D10NGYANG:DLHttpUtil:0.6")
 
     // 内存泄漏检查
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")

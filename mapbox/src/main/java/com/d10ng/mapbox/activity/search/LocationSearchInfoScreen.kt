@@ -3,6 +3,7 @@ package com.d10ng.mapbox.activity.search
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -13,7 +14,6 @@ import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.compose.AppColor
 import com.d10ng.basicjetpackcomposeapp.view.TitleBar
 import com.d10ng.tianditu.bean.LocationSearch
-import com.google.accompanist.insets.navigationBarsPadding
 
 @Composable
 fun LocationSearchInfoScreen(

@@ -50,7 +50,8 @@ class LocationSearchInfoScreenViewModel(
         private val area: String,
         private val areaCode: Int
     ): ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return LocationSearchInfoScreenViewModel(controller, act, search, area, areaCode) as T
         }
     }
