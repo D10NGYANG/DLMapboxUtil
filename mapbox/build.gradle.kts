@@ -8,9 +8,10 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "0.8"
+version = "0.9.1"
 
 android {
+    namespace = "com.d10ng.mapbox"
     compileSdk = Project.compile_sdk
 
     defaultConfig {
@@ -34,7 +35,7 @@ android {
         jvmTarget = "11"
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = compose_ver
+        kotlinCompilerExtensionVersion = compose_compiler_ver
     }
     buildFeatures {
         compose = true
@@ -61,7 +62,7 @@ dependencies {
     api("com.mapbox.maps:android:10.5.0")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.0-RC03")
+    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.1")
     // 定位工具
     implementation("com.github.D10NGYANG:DLGpsUtil:2.1-RC01")
     // 天地图API
@@ -74,7 +75,13 @@ afterEvaluate {
     publishing {
         publications {
             create("release", MavenPublication::class) {
+                artifactId = "DLMapboxUtil"
                 from(components.getByName("release"))
+            }
+        }
+        repositories {
+            maven {
+                url = uri("/Users/d10ng/project/kotlin/maven-repo/repository")
             }
         }
     }

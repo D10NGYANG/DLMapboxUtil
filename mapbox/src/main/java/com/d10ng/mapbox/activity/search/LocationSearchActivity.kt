@@ -1,6 +1,7 @@
 package com.d10ng.mapbox.activity.search
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +11,6 @@ import androidx.navigation.NavHostController
 import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.compose.AppTheme
 import com.d10ng.basicjetpackcomposeapp.view.AnimatedNavHostDefault
-import com.d10ng.tianditu.TianDiTuApiManager
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 class LocationSearchActivity: BaseActivity() {
@@ -29,10 +29,12 @@ class LocationSearchActivity: BaseActivity() {
                 )
             }
         }
-    }
 
-    override fun onBackPressed() {
-        LocationSearchManager.instant.finish(this, null)
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                LocationSearchManager.instant.finish(this@LocationSearchActivity, null)
+            }
+        })
     }
 
     @OptIn(ExperimentalAnimationApi::class)

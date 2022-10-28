@@ -107,7 +107,7 @@ private fun ZoomRangePicker(
         Text(text = "地图层级：${zoomRange.start.roundToInt()} ~ ${zoomRange.endInclusive.roundToInt()} 级", style = AppText.Normal.Title.v14)
 
         RangeSlider(
-            values = zoomRange,
+            value = zoomRange,
             onValueChange = {
                 tempRange = it
                 onUpdateZoomRange(it)

@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+    namespace = "com.d10ng.mapbox.demo"
     compileSdk = Project.compile_sdk
 
     defaultConfig {
@@ -16,7 +17,6 @@ android {
         versionName = "0.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        multiDexEnabled = true
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -41,7 +41,7 @@ android {
         jvmTarget = "11"
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = compose_ver
+        kotlinCompilerExtensionVersion = compose_compiler_ver
     }
     buildFeatures {
         compose = true
@@ -63,7 +63,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.0-RC03")
+    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.1")
     // 日期工具兼容Android8.0以下设备
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 
