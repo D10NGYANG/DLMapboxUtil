@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.d10ng.applib.app.goTo
-import com.d10ng.applib.resource.makeStr
 import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.compose.AppColor
 import com.d10ng.basicjetpackcomposeapp.compose.AppTheme
@@ -24,15 +23,16 @@ import com.d10ng.mapbox.activity.show.goToLocationShowActivity
 import com.d10ng.mapbox.model.MapboxModel
 import com.d10ng.tianditu.TianDiTuApiManager
 import com.mapbox.geojson.Point
+import com.d10ng.mapbox.demo.BuildConfig
 
 class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initColor()
-        MapboxModel.instant.init(makeStr(R.string.mapbox_token))
+        MapboxModel.instant.init(BuildConfig.myMapboxToken)
         Http.init("", true)
-        TianDiTuApiManager.init(makeStr(R.string.tianditu_token))
+        TianDiTuApiManager.init(BuildConfig.myTiandituToken)
 
         setContent {
             var selectPoint by remember {

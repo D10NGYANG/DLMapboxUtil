@@ -2,18 +2,16 @@ package com.d10ng.mapbox.activity.search
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.BaseComposeScreenObject
+import com.d10ng.basicjetpackcomposeapp.BaseViewModel
 import com.d10ng.basicjetpackcomposeapp.dialog.builder.InputDialogBuilder
 import com.d10ng.mapbox.model.MapModel
 import com.d10ng.mapbox.view.MapLayerDialogBuilder
 import com.google.accompanist.navigation.animation.composable
 import com.mapbox.geojson.Point
-import java.lang.ref.WeakReference
 
 object LocationByLatLngScreenObj: BaseComposeScreenObject("LocationByLatLngScreen") {
     @OptIn(ExperimentalAnimationApi::class)
@@ -28,21 +26,7 @@ object LocationByLatLngScreenObj: BaseComposeScreenObject("LocationByLatLngScree
     }
 }
 
-class LocationByLatLngScreenViewModel(
-    private val controller: NavHostController,
-    act: BaseActivity
-): ViewModel() {
-    class Factory(
-        private val controller: NavHostController,
-        private val act: BaseActivity
-    ): ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return LocationByLatLngScreenViewModel(controller, act) as T
-        }
-    }
-
-    private val weakAct = WeakReference(act)
+class LocationByLatLngScreenViewModel: BaseViewModel() {
 
     /** 地图样式 */
     val layerFlow = MapModel.instant.layerTypeFlow
@@ -53,7 +37,7 @@ class LocationByLatLngScreenViewModel(
 
     /** 点击返回 */
     fun onClickBack() {
-        controller.navigateUp()
+        controller?.navigateUp()
     }
 
     /** 点击纬度进行编辑 */

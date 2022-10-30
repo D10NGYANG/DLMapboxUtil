@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -17,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.compose.AppColor
 import com.d10ng.basicjetpackcomposeapp.compose.AppShape
 import com.d10ng.basicjetpackcomposeapp.view.TitleBar
@@ -31,9 +33,11 @@ import com.mapbox.geojson.Point
 @Composable
 fun MapOfflineAreaScreen(
     controller: NavHostController,
-    act: MapActivity
+    act: BaseActivity,
+    model: MapOfflineAreaScreenViewModel = viewModel()
 ) {
-    val model: MapOfflineAreaScreenViewModel = viewModel(factory = MapOfflineAreaScreenViewModel.Factory(controller, act))
+    LaunchedEffect(controller, act) { model.init(act, controller) }
+
     val layer by model.layerFlow.collectAsState()
     val zoom by model.zoomFlow.collectAsState()
     val target by model.targetFlow.collectAsState()

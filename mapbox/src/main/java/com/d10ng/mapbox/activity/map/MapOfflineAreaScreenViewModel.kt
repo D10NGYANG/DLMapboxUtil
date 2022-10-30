@@ -1,13 +1,12 @@
 package com.d10ng.mapbox.activity.map
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.BaseComposeScreenObject
+import com.d10ng.basicjetpackcomposeapp.BaseViewModel
 import com.d10ng.mapbox.activity.search.LocationSearchManager
 import com.d10ng.mapbox.constant.MapLayerType
 import com.d10ng.mapbox.model.MapModel
@@ -15,7 +14,6 @@ import com.d10ng.mapbox.view.MapLayerDialogBuilder
 import com.google.accompanist.navigation.animation.composable
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.launch
-import java.lang.ref.WeakReference
 
 object MapOfflineAreaScreenObj: BaseComposeScreenObject("MapOfflineAreaScreen") {
     @OptIn(ExperimentalAnimationApi::class)
@@ -25,26 +23,12 @@ object MapOfflineAreaScreenObj: BaseComposeScreenObject("MapOfflineAreaScreen") 
         act: BaseActivity
     ) {
         builder.composable(name) {
-            MapOfflineAreaScreen(controller, act as MapActivity)
+            MapOfflineAreaScreen(controller, act)
         }
     }
 }
 
-class MapOfflineAreaScreenViewModel(
-    private val controller: NavHostController,
-    act: MapActivity
-): ViewModel() {
-    class Factory(
-        private val controller: NavHostController,
-        private val act: MapActivity
-    ): ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MapOfflineAreaScreenViewModel(controller, act) as T
-        }
-    }
-
-    private val weakAct = WeakReference(act)
+class MapOfflineAreaScreenViewModel: BaseViewModel() {
 
     /** 地图样式 */
     val layerFlow = MapModel.instant.layerTypeFlow
@@ -53,10 +37,11 @@ class MapOfflineAreaScreenViewModel(
     /** 地图中心 */
     val targetFlow = MapModel.instant.targetFlow
 
-    init {
+    override fun init(act: BaseActivity, controller: NavHostController) {
+        super.init(act, controller)
         viewModelScope.launch {
-            layerFlow.collect {
-                if (!it.isCanDown) {
+            layerFlow.collect { type ->
+                if (!type.isCanDown) {
                     MapModel.instant.updateLayer(act.applicationContext, MapLayerType.MAPBOX_STREETS)
                 }
             }
@@ -65,7 +50,7 @@ class MapOfflineAreaScreenViewModel(
 
     /** 点击返回 */
     fun onClickBack() {
-        controller.navigateUp()
+        controller?.navigateUp()
     }
 
     /** 点击搜索 */
@@ -120,6 +105,6 @@ class MapOfflineAreaScreenViewModel(
 
     /** 点击下载 */
     fun onClickDownload() {
-        MapOfflineAddScreenObj.go(controller)
+        controller?.let { MapOfflineAddScreenObj.go(it) }
     }
 }

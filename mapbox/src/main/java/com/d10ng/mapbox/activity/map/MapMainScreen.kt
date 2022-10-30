@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -15,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.compose.AppColor
 import com.d10ng.basicjetpackcomposeapp.compose.AppShape
 import com.d10ng.basicjetpackcomposeapp.compose.AppText
@@ -30,9 +32,11 @@ import com.mapbox.geojson.Point
 @Composable
 fun MapMainScreen(
     controller: NavHostController,
-    act: MapActivity
+    act: BaseActivity,
+    model: MapMainScreenViewModel = viewModel()
 ) {
-    val model: MapMainScreenViewModel = viewModel(factory = MapMainScreenViewModel.Factory(controller, act))
+    LaunchedEffect(controller, act) { model.init(act, controller) }
+
     val locationText by model.locationTextFlow.collectAsState()
     val layer by model.layerFlow.collectAsState()
     val zoom by model.zoomFlow.collectAsState()

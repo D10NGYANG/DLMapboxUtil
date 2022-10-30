@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -16,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.compose.AppColor
 import com.d10ng.basicjetpackcomposeapp.compose.AppShape
 import com.d10ng.basicjetpackcomposeapp.view.TitleBar
@@ -26,10 +28,11 @@ import com.d10ng.mapbox.view.SureButton
 @Composable
 fun MapOfflineEditScreen(
     controller: NavHostController,
-    act: MapActivity,
-    id: String
+    act: BaseActivity,
+    model: MapOfflineEditScreenViewModel = viewModel()
 ) {
-    val model: MapOfflineEditScreenViewModel = viewModel(factory = MapOfflineEditScreenViewModel.Factory(controller, act, id))
+    LaunchedEffect(controller, act) { model.init(act, controller) }
+
     val inputName by model.inputNameFlow.collectAsState()
 
     MapOfflineEditScreenView(
@@ -74,12 +77,14 @@ fun MapOfflineEditScreenView(
                 .weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item { InputItem(
-                value = inputName,
-                onValueChange = onUpdateInputName,
-                title = "地图名称：",
-                placeholder = "请输入备注地图名称"
-            ) }
+            item {
+                InputItem(
+                    value = inputName,
+                    onValueChange = onUpdateInputName,
+                    title = "地图名称：",
+                    placeholder = "请输入备注地图名称"
+                )
+            }
             item {
                 SureButton(
                     modifier = Modifier

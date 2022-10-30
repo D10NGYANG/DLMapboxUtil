@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "0.9.1"
+version = "0.9.2"
 
 android {
     namespace = "com.d10ng.mapbox"
@@ -28,11 +28,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
     }
     composeOptions {
         kotlinCompilerExtensionVersion = compose_compiler_ver
@@ -62,7 +62,7 @@ dependencies {
     api("com.mapbox.maps:android:10.5.0")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.1")
+    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.2")
     // 定位工具
     implementation("com.github.D10NGYANG:DLGpsUtil:2.1-RC01")
     // 天地图API

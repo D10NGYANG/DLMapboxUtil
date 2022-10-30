@@ -1,13 +1,15 @@
 package com.d10ng.mapbox.activity.map
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.BaseComposeScreenObject
+import com.d10ng.basicjetpackcomposeapp.BaseViewModel
 import com.d10ng.basicjetpackcomposeapp.dialog.builder.BaseDialogBuilder
 import com.d10ng.mapbox.model.MapboxModel
 import com.google.accompanist.navigation.animation.composable
@@ -15,18 +17,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.lang.ref.WeakReference
 
-object MapOfflineEditScreenObj: BaseComposeScreenObject("MapOfflineEditScreen") {
+object MapOfflineEditScreenObj : BaseComposeScreenObject("MapOfflineEditScreen") {
+
+    const val ID = "id"
+
     @OptIn(ExperimentalAnimationApi::class)
     override fun composable(
         builder: NavGraphBuilder,
         controller: NavHostController,
         act: BaseActivity
     ) {
-        builder.composable("$name/{id}") { scope ->
-            val id = scope.arguments?.getString("id")?: ""
-            MapOfflineEditScreen(controller, act as MapActivity, id)
+        builder.composable(
+            route = "$name/{$ID}",
+            arguments = listOf(navArgument(ID) { NavType.StringType })
+        ) {
+            MapOfflineEditScreen(controller, act)
         }
     }
 
@@ -36,37 +42,27 @@ object MapOfflineEditScreenObj: BaseComposeScreenObject("MapOfflineEditScreen") 
 }
 
 class MapOfflineEditScreenViewModel(
-    private val controller: NavHostController,
-    act: MapActivity,
-    private val id: String
-): ViewModel() {
-    class Factory(
-        private val controller: NavHostController,
-        private val act: MapActivity,
-        private val id: String
-    ): ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MapOfflineEditScreenViewModel(controller, act, id) as T
-        }
-    }
+    savedStateHandle: SavedStateHandle
+) : BaseViewModel() {
 
-    private val weakAct = WeakReference(act)
+    private val _id = savedStateHandle.get<String>(MapOfflineEditScreenObj.ID) ?: ""
 
     /** 离线地图信息 */
-    private val infoFlow = MapboxModel.instant.offlineMapInfoListFlow.map { it.find { item -> item.region.id == id } }
+    private val infoFlow =
+        MapboxModel.instant.offlineMapInfoListFlow.map { it.find { item -> item.region.id == _id } }
+
     /** 输入名字 */
     val inputNameFlow = MutableStateFlow("")
 
     init {
         viewModelScope.launch {
-            inputNameFlow.emit(infoFlow.first()?.title?: "")
+            inputNameFlow.emit(infoFlow.first()?.title ?: "")
         }
     }
 
     /** 点击返回 */
     fun onClickBack() {
-        controller.navigateUp()
+        controller?.navigateUp()
     }
 
     /** 更新输入名字 */
@@ -84,8 +80,8 @@ class MapOfflineEditScreenViewModel(
                 cancelButton = "取消",
                 onClickSure = {
                     app.hideDialog()
-                    MapboxModel.instant.deleteOffline(id)
-                    controller.navigateUp()
+                    MapboxModel.instant.deleteOffline(_id)
+                    controller?.navigateUp()
                 },
                 onClickCancel = {
                     app.hideDialog()
@@ -102,8 +98,8 @@ class MapOfflineEditScreenViewModel(
                 app.showError("地图名称不能为空！")
                 return
             }
-            MapboxModel.instant.renameOffline(this, id, name)
-            controller.navigateUp()
+            MapboxModel.instant.renameOffline(this, _id, name)
+            controller?.navigateUp()
         }
     }
 }

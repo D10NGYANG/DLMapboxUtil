@@ -1,13 +1,12 @@
 package com.d10ng.mapbox.activity.map
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.BaseComposeScreenObject
+import com.d10ng.basicjetpackcomposeapp.BaseViewModel
 import com.d10ng.latlnglib.toLatitudeString
 import com.d10ng.latlnglib.toLongitudeString
 import com.d10ng.mapbox.model.LocationModel
@@ -17,7 +16,6 @@ import com.google.accompanist.navigation.animation.composable
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import java.lang.ref.WeakReference
 
 object MapMainScreenObj: BaseComposeScreenObject("MapMainScreen") {
     @OptIn(ExperimentalAnimationApi::class)
@@ -27,26 +25,12 @@ object MapMainScreenObj: BaseComposeScreenObject("MapMainScreen") {
         act: BaseActivity
     ) {
         builder.composable(name) {
-            MapMainScreen(controller, act as MapActivity)
+            MapMainScreen(controller, act)
         }
     }
 }
 
-class MapMainScreenViewModel(
-    private val controller: NavHostController,
-    act: MapActivity
-): ViewModel() {
-    class Factory(
-        private val controller: NavHostController,
-        private val act: MapActivity
-    ): ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MapMainScreenViewModel(controller, act) as T
-        }
-    }
-
-    private val weakAct = WeakReference(act)
+class MapMainScreenViewModel: BaseViewModel() {
 
     /** 位置文本 */
     val locationTextFlow = MutableStateFlow("正在获取当前位置...")
@@ -79,7 +63,7 @@ class MapMainScreenViewModel(
 
     /** 点击离线地图 */
     fun onClickOffline() {
-        MapOfflineListScreenObj.go(controller)
+        controller?.let { MapOfflineListScreenObj.go(it) }
     }
 
     /** 点击放大 */

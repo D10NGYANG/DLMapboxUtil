@@ -19,7 +19,7 @@ dependencies {
     // 地图封装
     implementation("com.github.D10NGYANG:DLMapboxUtil:$release")
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.1")
+    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.2")
     // 日期工具兼容Android8.0以下设备
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
     // 天地图API

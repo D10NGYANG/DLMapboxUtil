@@ -1,3 +1,6 @@
+val myMapboxToken: String by project
+val myTiandituToken: String by project
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -27,18 +30,26 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "myMapboxToken", "\"$myMapboxToken\"")
+            buildConfigField("String", "myTiandituToken", "\"$myTiandituToken\"")
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
         release {
+            buildConfigField("String", "myMapboxToken", "\"$myMapboxToken\"")
+            buildConfigField("String", "myTiandituToken", "\"$myTiandituToken\"")
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
     }
     composeOptions {
         kotlinCompilerExtensionVersion = compose_compiler_ver
@@ -63,7 +74,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.1")
+    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.2")
     // 日期工具兼容Android8.0以下设备
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 

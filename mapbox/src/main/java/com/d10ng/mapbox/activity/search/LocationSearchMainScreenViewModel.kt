@@ -1,23 +1,20 @@
 package com.d10ng.mapbox.activity.search
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.BaseComposeScreenObject
+import com.d10ng.basicjetpackcomposeapp.BaseViewModel
 import com.d10ng.mapbox.view.LocationSureDialogBuilder
 import com.d10ng.tianditu.bean.LocationSearch
 import com.google.accompanist.navigation.animation.composable
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
-import java.lang.ref.WeakReference
 
 object LocationSearchMainScreenObj: BaseComposeScreenObject("LocationSearchMainScreen") {
     @OptIn(ExperimentalAnimationApi::class)
@@ -33,21 +30,7 @@ object LocationSearchMainScreenObj: BaseComposeScreenObject("LocationSearchMainS
 }
 
 @OptIn(FlowPreview::class)
-class LocationSearchMainScreenViewModel(
-    private val controller: NavHostController,
-    act: BaseActivity
-): ViewModel() {
-    class Factory(
-        private val controller: NavHostController,
-        private val act: BaseActivity
-    ): ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return LocationSearchMainScreenViewModel(controller, act) as T
-        }
-    }
-
-    private val weakAct = WeakReference(act)
+class LocationSearchMainScreenViewModel: BaseViewModel() {
 
     /** 输入搜索内容 */
     val inputFlow = MutableStateFlow("")
@@ -56,7 +39,7 @@ class LocationSearchMainScreenViewModel(
 
     init {
         viewModelScope.launch {
-            inputFlow.debounce(1000).collect {
+            inputFlow.debounce(500).collect {
                 search(it)
             }
         }
@@ -91,17 +74,17 @@ class LocationSearchMainScreenViewModel(
 
     /** 点击通过经纬度查询 */
     fun onClickByLatLng() {
-        LocationByLatLngScreenObj.go(controller)
+        controller?.let { LocationByLatLngScreenObj.go(it) }
     }
 
     /** 点击区域 */
     fun onClickItem(value: LocationSearch.Area) {
-        LocationSearchInfoScreenObj.go(controller, inputFlow.value, value.name, value.adminCode)
+        controller?.let { LocationSearchInfoScreenObj.go(it, inputFlow.value, value.name, value.adminCode) }
     }
 
     /** 点击区域 */
     fun onClickItem(value: LocationSearch.Statistics.AllAdmin) {
-        LocationSearchInfoScreenObj.go(controller, inputFlow.value, value.adminName, value.adminCode)
+        controller?.let { LocationSearchInfoScreenObj.go(it, inputFlow.value, value.adminName, value.adminCode) }
     }
 
     /** 点击搜索结果 */

@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.compose.AppColor
 import com.d10ng.basicjetpackcomposeapp.compose.AppShape
 import com.d10ng.basicjetpackcomposeapp.compose.AppText
@@ -32,9 +34,11 @@ import com.google.accompanist.flowlayout.FlowRow
 @Composable
 fun MapOfflineListScreen(
     controller: NavHostController,
-    act: MapActivity
+    act: BaseActivity,
+    model: MapOfflineListScreenViewModel = viewModel()
 ) {
-    val model: MapOfflineListScreenViewModel = viewModel(factory = MapOfflineListScreenViewModel.Factory(controller, act))
+    LaunchedEffect(controller, act) { model.init(act, controller) }
+
     val infoList by model.offlineMapInfoListFlow.collectAsState()
     val snapshotMap by model.offlineMapSnapshotFlow.collectAsState()
 

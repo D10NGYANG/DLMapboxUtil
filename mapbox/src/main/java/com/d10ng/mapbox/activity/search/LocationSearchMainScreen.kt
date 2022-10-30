@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -31,9 +32,11 @@ import com.d10ng.tianditu.bean.LocationSearch
 @Composable
 fun LocationSearchMainScreen(
     controller: NavHostController,
-    act: BaseActivity
+    act: BaseActivity,
+    model: LocationSearchMainScreenViewModel = viewModel()
 ) {
-    val model: LocationSearchMainScreenViewModel = viewModel(factory = LocationSearchMainScreenViewModel.Factory(controller, act))
+    LaunchedEffect(controller, act) { model.init(act, controller) }
+
     val input by model.inputFlow.collectAsState()
     val result by model.resultFlow.collectAsState()
 

@@ -1,19 +1,17 @@
 package com.d10ng.mapbox.activity.map
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.BaseComposeScreenObject
+import com.d10ng.basicjetpackcomposeapp.BaseViewModel
 import com.d10ng.mapbox.model.MapboxModel
 import com.google.accompanist.navigation.animation.composable
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.lang.ref.WeakReference
 import kotlin.math.roundToInt
 
-object MapOfflineAddScreenObj: BaseComposeScreenObject("MapOfflineAddScreen") {
+object MapOfflineAddScreenObj : BaseComposeScreenObject("MapOfflineAddScreen") {
     @OptIn(ExperimentalAnimationApi::class)
     override fun composable(
         builder: NavGraphBuilder,
@@ -21,35 +19,22 @@ object MapOfflineAddScreenObj: BaseComposeScreenObject("MapOfflineAddScreen") {
         act: BaseActivity
     ) {
         builder.composable(name) {
-            MapOfflineAddScreen(controller, act as MapActivity)
+            MapOfflineAddScreen(controller, act)
         }
     }
 }
 
-class MapOfflineAddScreenViewModel(
-    private val controller: NavHostController,
-    act: MapActivity
-): ViewModel() {
-    class Factory(
-        private val controller: NavHostController,
-        private val act: MapActivity
-    ): ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MapOfflineAddScreenViewModel(controller, act) as T
-        }
-    }
-
-    private val weakAct = WeakReference(act)
+class MapOfflineAddScreenViewModel : BaseViewModel() {
 
     /** 输入地图名称 */
     val inputNameFlow = MutableStateFlow("")
+
     /** 地图层级 */
-    val zoomRangeFlow = MutableStateFlow(1f .. 3f)
+    val zoomRangeFlow = MutableStateFlow(1f..3f)
 
     /** 点击返回 */
     fun onClickBack() {
-        controller.navigateUp()
+        controller?.navigateUp()
     }
 
     /** 更新输入地图名称 */
@@ -75,7 +60,7 @@ class MapOfflineAddScreenViewModel(
                 maxZoom = zoomRangeFlow.value.endInclusive.roundToInt(),
                 title = inputNameFlow.value
             )
-            controller.popBackStack(MapOfflineListScreenObj.name, false)
+            controller?.popBackStack(MapOfflineListScreenObj.name, false)
         }
     }
 }

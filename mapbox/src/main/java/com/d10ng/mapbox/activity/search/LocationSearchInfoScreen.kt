@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -19,15 +20,14 @@ import com.d10ng.tianditu.bean.LocationSearch
 fun LocationSearchInfoScreen(
     controller: NavHostController,
     act: BaseActivity,
-    search: String,
-    area: String,
-    areaCode: Int
+    model: LocationSearchInfoScreenViewModel = viewModel()
 ) {
-    val model: LocationSearchInfoScreenViewModel = viewModel(factory = LocationSearchInfoScreenViewModel.Factory(controller, act, search, area, areaCode))
+    LaunchedEffect(controller, act) { model.init(act, controller) }
+
     val result by model.resultFlow.collectAsState()
 
     LocationSearchInfoScreenView(
-        area = area,
+        area = model.getArea(),
         result = result,
         onClickBack = { model.onClickBack() },
         onClickAreaItem = { model.onClickItem(it) },

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.compose.AppColor
 import com.d10ng.basicjetpackcomposeapp.compose.AppText
 import com.d10ng.basicjetpackcomposeapp.view.TitleBar
@@ -23,9 +24,11 @@ import kotlin.math.roundToInt
 @Composable
 fun MapOfflineAddScreen(
     controller: NavHostController,
-    act: MapActivity
+    act: BaseActivity,
+    model: MapOfflineAddScreenViewModel = viewModel()
 ) {
-    val model: MapOfflineAddScreenViewModel = viewModel(factory = MapOfflineAddScreenViewModel.Factory(controller, act))
+    LaunchedEffect(controller, act) { model.init(act, controller) }
+
     val inputName by model.inputNameFlow.collectAsState()
     val zoomRange by model.zoomRangeFlow.collectAsState()
 
@@ -62,12 +65,14 @@ private fun MapOfflineAddScreenView(
                 .weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item { InputItem(
-                value = inputName,
-                onValueChange = onUpdateInputName,
-                title = "地图名称：",
-                placeholder = "请输入备注地图名称"
-            ) }
+            item {
+                InputItem(
+                    value = inputName,
+                    onValueChange = onUpdateInputName,
+                    title = "地图名称：",
+                    placeholder = "请输入备注地图名称"
+                )
+            }
             item {
                 ZoomRangePicker(
                     zoomRange = zoomRange,
@@ -104,7 +109,10 @@ private fun ZoomRangePicker(
             .background(AppColor.System.background)
             .padding(16.dp)
     ) {
-        Text(text = "地图层级：${zoomRange.start.roundToInt()} ~ ${zoomRange.endInclusive.roundToInt()} 级", style = AppText.Normal.Title.v14)
+        Text(
+            text = "地图层级：${zoomRange.start.roundToInt()} ~ ${zoomRange.endInclusive.roundToInt()} 级",
+            style = AppText.Normal.Title.v14
+        )
 
         RangeSlider(
             value = zoomRange,
@@ -112,7 +120,7 @@ private fun ZoomRangePicker(
                 tempRange = it
                 onUpdateZoomRange(it)
             },
-            valueRange = 1f .. 25f,
+            valueRange = 1f..25f,
             steps = 25,
             onValueChangeFinished = {
                 onUpdateZoomRange(tempRange)

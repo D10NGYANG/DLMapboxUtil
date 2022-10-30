@@ -1,8 +1,11 @@
 package com.d10ng.mapbox.activity.show
 
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.savedstate.SavedStateRegistryOwner
 import com.d10ng.applib.resource.makeBitmapFromDrawable
+import com.d10ng.basicjetpackcomposeapp.BaseViewModel
 import com.d10ng.basicjetpackcomposeapp.dialog.builder.RadioDialogBuilder
 import com.d10ng.gpslib.startBaiDuMapMaker
 import com.d10ng.gpslib.startGaoDeMapMaker
@@ -18,38 +21,50 @@ import com.mapbox.geojson.Point
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.lang.ref.WeakReference
 
 class LocationShowScreenViewModel(
-    act: LocationShowActivity,
-    private val point: Point,
-): ViewModel() {
-    class Factory(
-        private val act: LocationShowActivity,
-        private val point: Point,
-    ): ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return LocationShowScreenViewModel(act, point) as T
-        }
-    }
+    savedStateHandle: SavedStateHandle
+) : BaseViewModel() {
 
     companion object {
         private const val POINT = "POINT"
+        private const val LATITUDE = "LATITUDE"
+        private const val LONGITUDE = "LONGITUDE"
     }
 
-    private val weakAct = WeakReference(act)
+    @Suppress("UNCHECKED_CAST")
+    class Factory(
+        owner: SavedStateRegistryOwner,
+        private val point: Point
+    ) : AbstractSavedStateViewModelFactory(owner, null) {
+        override fun <T : ViewModel> create(
+            key: String,
+            modelClass: Class<T>,
+            handle: SavedStateHandle
+        ): T {
+            handle[LATITUDE] = point.latitude()
+            handle[LONGITUDE] = point.longitude()
+            return LocationShowScreenViewModel(handle) as T
+        }
+    }
+
+    private val _latitude = savedStateHandle.get<Double>(LATITUDE) ?: 0.0
+    private val _longitude = savedStateHandle.get<Double>(LONGITUDE) ?: 0.0
+    private val _initPoint = Point.fromLngLat(_longitude, _latitude)
 
     /** 地图样式 */
     val layerFlow = MapModel.instant.layerTypeFlow
+
     /** 缩放比例 */
     val zoomFlow = MapModel.instant.zoomFlow
+
     /** 地图中心 */
-    val targetFlow = MutableStateFlow(point)
+    val targetFlow = MutableStateFlow(_initPoint)
+
     /** 图标 */
     val pointOptionFlow = MutableStateFlow(
         PointAnnotationOptions()
-            .withGeometry(point)
+            .withGeometry(_initPoint)
             .withIconImage(POINT)
             .withIconSize(1.0)
     )
@@ -103,7 +118,7 @@ class LocationShowScreenViewModel(
 
     /** 点击移动到位置 */
     fun onClickLocation() {
-        targetFlow.value = point
+        targetFlow.value = _initPoint
     }
 
     /** 点击到这去 */
@@ -121,11 +136,18 @@ class LocationShowScreenViewModel(
                 onSelect = { select ->
                     app.hideDialog()
                     val type = select.second as OtherMapType
-                    val dLatLng = DLatLng(point.latitude(), point.longitude())
-                    val latlng = dLatLng.convert(CoordinateSystemType.WGS84, CoordinateSystemType.GCJ02)
-                    when(type) {
-                        OtherMapType.GAODE -> startGaoDeMapMaker(latlng.latitude, latlng.longitude)
-                        OtherMapType.BAIDU -> startBaiDuMapMaker(latlng.latitude, latlng.longitude)
+                    val dLatLng = DLatLng(_initPoint.latitude(), _initPoint.longitude())
+                    val latlng =
+                        dLatLng.convert(CoordinateSystemType.WGS84, CoordinateSystemType.GCJ02)
+                    when (type) {
+                        OtherMapType.GAODE -> startGaoDeMapMaker(
+                            latlng.latitude,
+                            latlng.longitude
+                        )
+                        OtherMapType.BAIDU -> startBaiDuMapMaker(
+                            latlng.latitude,
+                            latlng.longitude
+                        )
                         else -> {}
                     }
                 }
