@@ -9,7 +9,10 @@ Step 1. Add the JitPack repository to your build file
 allprojects {
   repositories {
     ...
+    // 0.8版本(含)之前使用jitpack
     maven { url 'https://jitpack.io' }
+    // 0.9.2版本以后不再使用jitpack
+    maven { url "https://raw.githubusercontent.com/D10NGYANG/maven-repo/main/repository" }
   }
 }
 ```
