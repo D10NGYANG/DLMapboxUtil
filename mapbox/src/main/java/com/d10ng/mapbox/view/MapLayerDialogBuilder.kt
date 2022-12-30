@@ -26,7 +26,7 @@ data class MapLayerDialogBuilder(
     val value: MapLayerType,
     val isOnlyShowCanDown: Boolean = false,
     val onChange: (MapLayerType) -> Unit,
-): DialogBuilder() {
+) : DialogBuilder() {
 
     companion object {
         @Composable

@@ -70,20 +70,20 @@ dependencies {
 
     // 单元测试（可选）
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.4")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.2")
+    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.3")
     // 日期工具兼容Android8.0以下设备
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.0")
 
     implementation(project(":mapbox"))
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.3")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.4")
     // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil:0.6")
+    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.7")
 
     // 内存泄漏检查
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
 }

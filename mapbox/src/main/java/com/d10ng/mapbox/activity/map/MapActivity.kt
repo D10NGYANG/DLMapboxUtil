@@ -14,7 +14,7 @@ import com.d10ng.mapbox.model.LocationModel
 import com.d10ng.mapbox.model.MapModel
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
-class MapActivity: BaseActivity() {
+class MapActivity : BaseActivity() {
 
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {

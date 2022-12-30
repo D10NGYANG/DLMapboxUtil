@@ -13,7 +13,7 @@ import com.d10ng.basicjetpackcomposeapp.compose.AppTheme
 import com.d10ng.basicjetpackcomposeapp.view.AnimatedNavHostDefault
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
-class LocationSearchActivity: BaseActivity() {
+class LocationSearchActivity : BaseActivity() {
 
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -34,7 +34,7 @@ data class LocationSureDialogBuilder(
     var onClickSure: (() -> Unit)? = null,
     var onClickCancel: (() -> Unit)? = null,
     val target: Point
-): DialogBuilder() {
+) : DialogBuilder() {
 
     companion object {
         private const val TARGET = "TARGET"
@@ -44,10 +44,12 @@ data class LocationSureDialogBuilder(
     override fun Build() {
         val context = LocalContext.current
         val pointOptions = remember(target) {
-            mapOf(1 to PointAnnotationOptions()
-                .withGeometry(target)
-                .withIconImage(TARGET)
-                .withIconSize(1.0))
+            mapOf(
+                1 to PointAnnotationOptions()
+                    .withGeometry(target)
+                    .withIconImage(TARGET)
+                    .withIconSize(1.0)
+            )
         }
         BaseDialogBuilder(
             title = title,

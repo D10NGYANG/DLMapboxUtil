@@ -85,9 +85,9 @@ enum class MapLayerType(
     companion object {
 
         @JvmStatic
-        fun parseByInt(value: Int) = values().find { it.intValue == value }?: TIAN_VECTOR
+        fun parseByInt(value: Int) = values().find { it.intValue == value } ?: TIAN_VECTOR
 
         @JvmStatic
-        fun parseBySource(value: String) = values().find { it.source == value }?: TIAN_VECTOR
+        fun parseBySource(value: String) = values().find { it.source == value } ?: TIAN_VECTOR
     }
 }

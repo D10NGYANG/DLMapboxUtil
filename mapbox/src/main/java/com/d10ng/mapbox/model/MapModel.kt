@@ -21,8 +21,10 @@ class MapModel {
 
     /** 图层样式 */
     val layerTypeFlow = MutableStateFlow(MapLayerType.TIAN_VECTOR)
+
     /** 缩放比例 */
     val zoomFlow = MutableStateFlow(MAP_BOX_ZOOM_DEFAULT)
+
     /** 地图中心 */
     val targetFlow = MutableStateFlow(defaultLngLat)
 

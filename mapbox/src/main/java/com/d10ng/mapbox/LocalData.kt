@@ -19,6 +19,7 @@ fun Context.getSpf(spName: String = SP_CONFIG) = SpfUtils.instant(this, spName).
 private const val SPF_MAP_LAYER_TYPE = "map_layer_type"
 fun Context.getSpfMapLayerType() =
     MapLayerType.parseByInt(getSpf().getInt(SPF_MAP_LAYER_TYPE, MapLayerType.TIAN_VECTOR.intValue))
+
 fun Context.setSpfMapLayerType(type: MapLayerType) {
     getSpf().edit().putInt(SPF_MAP_LAYER_TYPE, type.intValue).apply()
 }

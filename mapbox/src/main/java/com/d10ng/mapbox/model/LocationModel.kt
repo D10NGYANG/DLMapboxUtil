@@ -4,10 +4,10 @@ import android.Manifest
 import com.d10ng.basicjetpackcomposeapp.BaseActivity
 import com.d10ng.basicjetpackcomposeapp.hasPermissions
 import com.d10ng.coroutines.launchMain
-import com.d10ng.gpslib.ALocationListener
-import com.d10ng.gpslib.isLocationEnabled
-import com.d10ng.gpslib.startRequestLocation
-import com.d10ng.gpslib.stopRequestLocation
+import com.d10ng.gps.ALocationListener
+import com.d10ng.gps.isLocationEnabled
+import com.d10ng.gps.startRequestLocation
+import com.d10ng.gps.stopRequestLocation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
@@ -18,7 +18,10 @@ internal class LocationModel {
     }
 
     /** 定位权限标记 */
-    private val locationPermission = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    private val locationPermission = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
 
     /** 是否有定位权限 */
     val isHasLocationPermissionFlow = MutableStateFlow<Boolean?>(null)

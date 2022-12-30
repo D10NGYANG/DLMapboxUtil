@@ -17,7 +17,7 @@ import com.mapbox.geojson.Point
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-object MapMainScreenObj: BaseComposeScreenObject("MapMainScreen") {
+object MapMainScreenObj : BaseComposeScreenObject("MapMainScreen") {
     @OptIn(ExperimentalAnimationApi::class)
     override fun composable(
         builder: NavGraphBuilder,
@@ -30,14 +30,17 @@ object MapMainScreenObj: BaseComposeScreenObject("MapMainScreen") {
     }
 }
 
-class MapMainScreenViewModel: BaseViewModel() {
+class MapMainScreenViewModel : BaseViewModel() {
 
     /** 位置文本 */
     val locationTextFlow = MutableStateFlow("正在获取当前位置...")
+
     /** 地图样式 */
     val layerFlow = MapModel.instant.layerTypeFlow
+
     /** 缩放比例 */
     val zoomFlow = MapModel.instant.zoomFlow
+
     /** 地图中心 */
     val targetFlow = MapModel.instant.targetFlow
 
@@ -45,7 +48,7 @@ class MapMainScreenViewModel: BaseViewModel() {
         viewModelScope.launch {
             val pattern = "Fd°m′S.ss″"
             LocationModel.instant.locationFlow.collect {
-                it?: return@collect
+                it ?: return@collect
                 val builder = StringBuilder("位置:")
                 builder.append(it.latitude.toLatitudeString(pattern))
                     .append(",")

@@ -170,7 +170,7 @@ fun LocationSearchView(
         LazyColumn(
             modifier = modifier
         ) {
-            when(result.resultType) {
+            when (result.resultType) {
                 3 -> {
                     item {
                         ListItem(

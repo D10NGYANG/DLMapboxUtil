@@ -1,3 +1,6 @@
+val bds100MavenUsername: String by project
+val bds100MavenPassword: String by project
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -8,7 +11,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "0.9.2"
+version = "0.9.3"
 
 android {
     namespace = "com.d10ng.mapbox"
@@ -52,8 +55,8 @@ dependencies {
 
     // 单元测试（可选）
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.4")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
 
     // kotlinx.serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlin_serialization_json")
@@ -62,13 +65,15 @@ dependencies {
     api("com.mapbox.maps:android:10.5.0")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.2")
+    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.3")
     // 定位工具
-    implementation("com.github.D10NGYANG:DLGpsUtil:2.1-RC01")
+    implementation("com.github.D10NGYANG:DLGpsUtil:2.2.0")
+    // 经纬度工具
+    implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.3")
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.3")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.4")
     // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil:0.6")
+    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.7")
 }
 
 afterEvaluate {
@@ -82,6 +87,13 @@ afterEvaluate {
         repositories {
             maven {
                 url = uri("/Users/d10ng/project/kotlin/maven-repo/repository")
+            }
+            maven {
+                credentials {
+                    username = bds100MavenUsername
+                    password = bds100MavenPassword
+                }
+                setUrl("https://nexus.bds100.com/repository/maven-releases/")
             }
         }
     }

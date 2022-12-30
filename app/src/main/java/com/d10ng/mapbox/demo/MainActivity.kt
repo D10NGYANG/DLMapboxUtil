@@ -23,7 +23,6 @@ import com.d10ng.mapbox.activity.show.goToLocationShowActivity
 import com.d10ng.mapbox.model.MapboxModel
 import com.d10ng.tianditu.TianDiTuApiManager
 import com.mapbox.geojson.Point
-import com.d10ng.mapbox.demo.BuildConfig
 
 class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -25,8 +25,10 @@ import com.mapbox.maps.plugin.scalebar.scalebar
 
 /** 地图最大缩放倍数 mapbox默认为25.5 */
 const val MAP_BOX_ZOOM_MAX = 20.0
+
 /** 地图最小缩放倍数 mapbox默认为0.0 */
 const val MAP_BOX_ZOOM_MIN = 1.0
+
 /** 地图默认缩放倍数 */
 const val MAP_BOX_ZOOM_DEFAULT = 10.0
 
@@ -111,8 +113,10 @@ fun MapboxView(
                     onCameraCenterChange.invoke(it)
                 }
                 // 监听是否被手指触摸
-                gestures.addOnMoveListener(object : OnMoveListener{
-                    override fun onMove(detector: MoveGestureDetector): Boolean { return false }
+                gestures.addOnMoveListener(object : OnMoveListener {
+                    override fun onMove(detector: MoveGestureDetector): Boolean {
+                        return false
+                    }
 
                     override fun onMoveBegin(detector: MoveGestureDetector) {
                         onGesturesMoveListener(this@apply, detector, true)
@@ -124,7 +128,8 @@ fun MapboxView(
                 })
                 // 镜头改变
                 getMapboxMap().addOnCameraChangeListener {
-                    val bounds = getMapboxMap().coordinateBoundsForCamera(getMapboxMap().cameraState.toCameraOptions())
+                    val bounds =
+                        getMapboxMap().coordinateBoundsForCamera(getMapboxMap().cameraState.toCameraOptions())
                     onCameraChange.invoke(bounds)
                 }
                 // 监听地图点击
@@ -229,7 +234,7 @@ private fun PointAnnotation.updateByOptions(options: PointAnnotationOptions) {
     if (options.iconSize != null) iconSize = options.iconSize
     if (options.iconImage != null) iconImage = options.iconImage
     if (options.iconRotate != null) iconRotate = options.iconRotate
-    if (!options.iconOffset.isNullOrEmpty() ) iconOffset = options.iconOffset
+    if (!options.iconOffset.isNullOrEmpty()) iconOffset = options.iconOffset
     if (options.iconAnchor != null) iconAnchor = options.iconAnchor
     if (options.textField != null) textField = options.textField
     if (options.textSize != null) textSize = options.textSize
@@ -242,7 +247,7 @@ private fun PointAnnotation.updateByOptions(options: PointAnnotationOptions) {
     if (options.textTransform != null) textTransform = options.textTransform
     if (!options.textOffset.isNullOrEmpty()) textOffset = options.textOffset
     if (options.iconOpacity != null) iconOpacity = options.iconOpacity
-    if (options.iconColor != null) iconColorString= options.iconColor
+    if (options.iconColor != null) iconColorString = options.iconColor
     if (options.iconHaloColor != null) iconHaloColorString = options.iconHaloColor
     if (options.iconHaloWidth != null) iconHaloWidth = options.iconHaloWidth
     if (options.iconHaloBlur != null) iconHaloBlur = options.iconHaloBlur

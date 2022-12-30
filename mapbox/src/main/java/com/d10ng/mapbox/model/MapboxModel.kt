@@ -27,11 +27,13 @@ class MapboxModel {
     private val scope = CoroutineScope(Dispatchers.IO)
 
     private var token = ""
+
     /** 离线地图瓦片管理器 */
     private var tileStore: TileStore? = null
 
     /** 离线地图信息 */
     val offlineMapInfoListFlow = MutableStateFlow(listOf<OfflineMapInfo>())
+
     /** 离线地图快照 */
     val offlineMapSnapshotFlow = MutableStateFlow(mapOf<String, Bitmap>())
 
@@ -48,7 +50,7 @@ class MapboxModel {
     }
 
     /** 离线地图瓦片监听器 */
-    private val tileStoreObserver = object: TileStoreObserver {
+    private val tileStoreObserver = object : TileStoreObserver {
         override fun onRegionLoadProgress(id: String, progress: TileRegionLoadProgress) {
             refreshMapOfflineList()
         }
@@ -102,18 +104,23 @@ class MapboxModel {
             put("maxZoom", maxZoom)
             put("title", title)
         }
-        val offlineManager = OfflineManager(MapInitOptions.getDefaultResourceOptions(context.applicationContext))
+        val offlineManager =
+            OfflineManager(MapInitOptions.getDefaultResourceOptions(context.applicationContext))
         tileStore?.loadTileRegion(
             System.currentTimeMillis().toString(),
             TileRegionLoadOptions.Builder()
                 .geometry(MapModel.instant.targetFlow.value)
-                .descriptors(listOf(offlineManager.createTilesetDescriptor(
-                    TilesetDescriptorOptions.Builder()
-                        .styleURI(style)
-                        .minZoom(minZoom.toByte())
-                        .maxZoom(maxZoom.toByte())
-                        .build()
-                )))
+                .descriptors(
+                    listOf(
+                        offlineManager.createTilesetDescriptor(
+                            TilesetDescriptorOptions.Builder()
+                                .styleURI(style)
+                                .minZoom(minZoom.toByte())
+                                .maxZoom(maxZoom.toByte())
+                                .build()
+                        )
+                    )
+                )
                 .metadata(Value(json.toString()))
                 .build()
         )
@@ -125,26 +132,31 @@ class MapboxModel {
      * @param id String
      * @param name String
      */
-    fun renameOffline(context: Context ,id: String, name: String) {
-        val info = offlineMapInfoListFlow.value.find { it.region.id == id }?: return
+    fun renameOffline(context: Context, id: String, name: String) {
+        val info = offlineMapInfoListFlow.value.find { it.region.id == id } ?: return
         val json = JSONObject().apply {
             put("style", info.style.source)
             put("minZoom", info.minZoom)
             put("maxZoom", info.maxZoom)
             put("title", name)
         }
-        val offlineManager = OfflineManager(MapInitOptions.getDefaultResourceOptions(context.applicationContext))
+        val offlineManager =
+            OfflineManager(MapInitOptions.getDefaultResourceOptions(context.applicationContext))
         tileStore?.loadTileRegion(
             info.region.id,
             TileRegionLoadOptions.Builder()
                 .geometry(info.geometry)
-                .descriptors(listOf(offlineManager.createTilesetDescriptor(
-                    TilesetDescriptorOptions.Builder()
-                        .styleURI(info.style.source)
-                        .minZoom(info.minZoom.toByte())
-                        .maxZoom(info.maxZoom.toByte())
-                        .build()
-                )))
+                .descriptors(
+                    listOf(
+                        offlineManager.createTilesetDescriptor(
+                            TilesetDescriptorOptions.Builder()
+                                .styleURI(info.style.source)
+                                .minZoom(info.minZoom.toByte())
+                                .maxZoom(info.maxZoom.toByte())
+                                .build()
+                        )
+                    )
+                )
                 .metadata(Value(json.toString()))
                 .build()
         )
@@ -168,7 +180,7 @@ class MapboxModel {
         val map = offlineMapSnapshotFlow.value.toMutableMap()
         for (item in offlines) {
             if (map.containsKey(item.region.id)) continue
-            val bitmap = item.getSnapshotBitmap(context)?: continue
+            val bitmap = item.getSnapshotBitmap(context) ?: continue
             map[item.region.id] = bitmap
         }
         offlineMapSnapshotFlow.emit(map)

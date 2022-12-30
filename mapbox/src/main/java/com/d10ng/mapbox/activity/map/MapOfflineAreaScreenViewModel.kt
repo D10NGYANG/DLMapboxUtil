@@ -15,7 +15,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.launch
 
-object MapOfflineAreaScreenObj: BaseComposeScreenObject("MapOfflineAreaScreen") {
+object MapOfflineAreaScreenObj : BaseComposeScreenObject("MapOfflineAreaScreen") {
     @OptIn(ExperimentalAnimationApi::class)
     override fun composable(
         builder: NavGraphBuilder,
@@ -28,12 +28,14 @@ object MapOfflineAreaScreenObj: BaseComposeScreenObject("MapOfflineAreaScreen") 
     }
 }
 
-class MapOfflineAreaScreenViewModel: BaseViewModel() {
+class MapOfflineAreaScreenViewModel : BaseViewModel() {
 
     /** 地图样式 */
     val layerFlow = MapModel.instant.layerTypeFlow
+
     /** 缩放比例 */
     val zoomFlow = MapModel.instant.zoomFlow
+
     /** 地图中心 */
     val targetFlow = MapModel.instant.targetFlow
 
@@ -42,7 +44,10 @@ class MapOfflineAreaScreenViewModel: BaseViewModel() {
         viewModelScope.launch {
             layerFlow.collect { type ->
                 if (!type.isCanDown) {
-                    MapModel.instant.updateLayer(act.applicationContext, MapLayerType.MAPBOX_STREETS)
+                    MapModel.instant.updateLayer(
+                        act.applicationContext,
+                        MapLayerType.MAPBOX_STREETS
+                    )
                 }
             }
         }

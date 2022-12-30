@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 
-object LocationSearchMainScreenObj: BaseComposeScreenObject("LocationSearchMainScreen") {
+object LocationSearchMainScreenObj : BaseComposeScreenObject("LocationSearchMainScreen") {
     @OptIn(ExperimentalAnimationApi::class)
     override fun composable(
         builder: NavGraphBuilder,
@@ -30,10 +30,11 @@ object LocationSearchMainScreenObj: BaseComposeScreenObject("LocationSearchMainS
 }
 
 @OptIn(FlowPreview::class)
-class LocationSearchMainScreenViewModel: BaseViewModel() {
+class LocationSearchMainScreenViewModel : BaseViewModel() {
 
     /** 输入搜索内容 */
     val inputFlow = MutableStateFlow("")
+
     /** 结果 */
     val resultFlow = MutableStateFlow<LocationSearch?>(null)
 
@@ -79,12 +80,26 @@ class LocationSearchMainScreenViewModel: BaseViewModel() {
 
     /** 点击区域 */
     fun onClickItem(value: LocationSearch.Area) {
-        controller?.let { LocationSearchInfoScreenObj.go(it, inputFlow.value, value.name, value.adminCode) }
+        controller?.let {
+            LocationSearchInfoScreenObj.go(
+                it,
+                inputFlow.value,
+                value.name,
+                value.adminCode
+            )
+        }
     }
 
     /** 点击区域 */
     fun onClickItem(value: LocationSearch.Statistics.AllAdmin) {
-        controller?.let { LocationSearchInfoScreenObj.go(it, inputFlow.value, value.adminName, value.adminCode) }
+        controller?.let {
+            LocationSearchInfoScreenObj.go(
+                it,
+                inputFlow.value,
+                value.adminName,
+                value.adminCode
+            )
+        }
     }
 
     /** 点击搜索结果 */

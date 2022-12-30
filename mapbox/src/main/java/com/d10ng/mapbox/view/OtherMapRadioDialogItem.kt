@@ -16,8 +16,9 @@ enum class OtherMapType(val iconId: Int, val text: String) {
     CANCEL(0, "取消")
 
     ;
+
     companion object {
-        fun toDialogMap() : Map<String, OtherMapType> {
+        fun toDialogMap(): Map<String, OtherMapType> {
             val map = mutableMapOf<String, OtherMapType>()
             values().forEach {
                 map[it.text] = it

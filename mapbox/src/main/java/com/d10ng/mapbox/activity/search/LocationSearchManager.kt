@@ -23,8 +23,10 @@ class LocationSearchManager {
 
     /** 经纬度 */
     private val resultFlow = MutableSharedFlow<Point?>()
+
     /** 等待结果协程 */
     private var scope: CoroutineScope? = null
+
     /** 当前活动 */
     private var curAct: WeakReference<Activity>? = null
 
@@ -63,7 +65,11 @@ class LocationSearchManager {
     fun getResultFlow() = resultFlow.asSharedFlow()
 
     /** 搜索 */
-    suspend fun search(act: BaseActivity, value: String, specify: String? = null,): LocationSearch? {
+    suspend fun search(
+        act: BaseActivity,
+        value: String,
+        specify: String? = null,
+    ): LocationSearch? {
         if (value.isEmpty()) return null
         val result = TianDiTuApi.getLocationSearchV2(value, specify)
         return if (result != null && result.status.infocode != 1000) {

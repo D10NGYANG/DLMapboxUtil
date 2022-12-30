@@ -13,7 +13,7 @@ import com.d10ng.mapbox.view.MapLayerDialogBuilder
 import com.google.accompanist.navigation.animation.composable
 import com.mapbox.geojson.Point
 
-object LocationByLatLngScreenObj: BaseComposeScreenObject("LocationByLatLngScreen") {
+object LocationByLatLngScreenObj : BaseComposeScreenObject("LocationByLatLngScreen") {
     @OptIn(ExperimentalAnimationApi::class)
     override fun composable(
         builder: NavGraphBuilder,
@@ -26,12 +26,14 @@ object LocationByLatLngScreenObj: BaseComposeScreenObject("LocationByLatLngScree
     }
 }
 
-class LocationByLatLngScreenViewModel: BaseViewModel() {
+class LocationByLatLngScreenViewModel : BaseViewModel() {
 
     /** 地图样式 */
     val layerFlow = MapModel.instant.layerTypeFlow
+
     /** 缩放比例 */
     val zoomFlow = MapModel.instant.zoomFlow
+
     /** 地图中心 */
     val targetFlow = MapModel.instant.targetFlow
 
@@ -53,7 +55,7 @@ class LocationByLatLngScreenViewModel: BaseViewModel() {
                     singleLine = true,
                     verify = {
                         val lat = it.toDoubleOrNull()
-                        if (lat == null || lat !in -90.0 .. 90.0)
+                        if (lat == null || lat !in -90.0..90.0)
                             InputDialogBuilder.Verify(false, "纬度数值不正确！")
                         else InputDialogBuilder.Verify(true)
                     }
@@ -62,7 +64,12 @@ class LocationByLatLngScreenViewModel: BaseViewModel() {
                 cancelButton = "取消",
                 onClickSure = {
                     app.hideDialog()
-                    updateTarget(Point.fromLngLat(targetFlow.value.longitude(), it[0].toDoubleOrNull()?: 0.0))
+                    updateTarget(
+                        Point.fromLngLat(
+                            targetFlow.value.longitude(),
+                            it[0].toDoubleOrNull() ?: 0.0
+                        )
+                    )
                 },
                 onClickCancel = {
                     app.hideDialog()
@@ -84,7 +91,7 @@ class LocationByLatLngScreenViewModel: BaseViewModel() {
                     singleLine = true,
                     verify = {
                         val lng = it.toDoubleOrNull()
-                        if (lng == null || lng !in -180.0 .. 180.0)
+                        if (lng == null || lng !in -180.0..180.0)
                             InputDialogBuilder.Verify(false, "经度数值不正确！")
                         else InputDialogBuilder.Verify(true)
                     }
@@ -93,7 +100,12 @@ class LocationByLatLngScreenViewModel: BaseViewModel() {
                 cancelButton = "取消",
                 onClickSure = {
                     app.hideDialog()
-                    updateTarget(Point.fromLngLat(it[0].toDoubleOrNull()?: 0.0, targetFlow.value.latitude()))
+                    updateTarget(
+                        Point.fromLngLat(
+                            it[0].toDoubleOrNull() ?: 0.0,
+                            targetFlow.value.latitude()
+                        )
+                    )
                 },
                 onClickCancel = {
                     app.hideDialog()

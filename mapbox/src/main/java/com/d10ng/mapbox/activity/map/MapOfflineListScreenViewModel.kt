@@ -12,7 +12,7 @@ import com.d10ng.mapbox.model.MapboxModel
 import com.google.accompanist.navigation.animation.composable
 import kotlinx.coroutines.launch
 
-object MapOfflineListScreenObj: BaseComposeScreenObject("MapOfflineListScreen") {
+object MapOfflineListScreenObj : BaseComposeScreenObject("MapOfflineListScreen") {
     @OptIn(ExperimentalAnimationApi::class)
     override fun composable(
         builder: NavGraphBuilder,
@@ -25,10 +25,11 @@ object MapOfflineListScreenObj: BaseComposeScreenObject("MapOfflineListScreen") 
     }
 }
 
-class MapOfflineListScreenViewModel: BaseViewModel() {
+class MapOfflineListScreenViewModel : BaseViewModel() {
 
     /** 离线地图信息 */
     val offlineMapInfoListFlow = MapboxModel.instant.offlineMapInfoListFlow
+
     /** 离线地图快照 */
     val offlineMapSnapshotFlow = MapboxModel.instant.offlineMapSnapshotFlow
 

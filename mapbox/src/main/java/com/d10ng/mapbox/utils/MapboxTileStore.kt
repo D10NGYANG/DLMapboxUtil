@@ -16,13 +16,13 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 suspend fun TileStore.getAllOfflineInfo(): List<OfflineMapInfo> {
-    val regions = getAllTileRegions()?: return emptyList()
+    val regions = getAllTileRegions() ?: return emptyList()
     val result = mutableListOf<OfflineMapInfo>()
     for (region in regions) {
         val item = OfflineMapInfo(region)
-        val geometry = getTileRegionGeometry(region.id)?: continue
+        val geometry = getTileRegionGeometry(region.id) ?: continue
         item.geometry = geometry
-        val json = getTileRegionMetadata(region.id)?.contents?: continue
+        val json = getTileRegionMetadata(region.id)?.contents ?: continue
         if (json !is String) continue
         val obj = JSONObject(json)
         item.style = MapLayerType.parseBySource(obj.getString("style"))

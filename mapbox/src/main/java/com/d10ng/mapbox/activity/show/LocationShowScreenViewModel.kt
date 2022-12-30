@@ -7,8 +7,8 @@ import androidx.savedstate.SavedStateRegistryOwner
 import com.d10ng.applib.resource.makeBitmapFromDrawable
 import com.d10ng.basicjetpackcomposeapp.BaseViewModel
 import com.d10ng.basicjetpackcomposeapp.dialog.builder.RadioDialogBuilder
-import com.d10ng.gpslib.startBaiDuMapMaker
-import com.d10ng.gpslib.startGaoDeMapMaker
+import com.d10ng.gps.startBaiDuMapMaker
+import com.d10ng.gps.startGaoDeMapMaker
 import com.d10ng.latlnglib.bean.DLatLng
 import com.d10ng.latlnglib.constant.CoordinateSystemType
 import com.d10ng.latlnglib.convert

@@ -17,7 +17,7 @@ import com.mapbox.geojson.Point
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-object LocationSearchInfoScreenObj: BaseComposeScreenObject("LocationSearchInfoScreen") {
+object LocationSearchInfoScreenObj : BaseComposeScreenObject("LocationSearchInfoScreen") {
 
     const val SEARCH = "search"
     const val AREA = "area"
@@ -48,11 +48,11 @@ object LocationSearchInfoScreenObj: BaseComposeScreenObject("LocationSearchInfoS
 
 class LocationSearchInfoScreenViewModel(
     savedStateHandle: SavedStateHandle
-): BaseViewModel() {
+) : BaseViewModel() {
 
-    private val _search = savedStateHandle.get<String>(LocationSearchInfoScreenObj.SEARCH)?: ""
-    private val _area = savedStateHandle.get<String>(LocationSearchInfoScreenObj.AREA)?: ""
-    private val _areaCode = savedStateHandle.get<Int>(LocationSearchInfoScreenObj.AREA_CODE)?: 0
+    private val _search = savedStateHandle.get<String>(LocationSearchInfoScreenObj.SEARCH) ?: ""
+    private val _area = savedStateHandle.get<String>(LocationSearchInfoScreenObj.AREA) ?: ""
+    private val _areaCode = savedStateHandle.get<Int>(LocationSearchInfoScreenObj.AREA_CODE) ?: 0
 
     /** 结果 */
     val resultFlow = MutableStateFlow<LocationSearch?>(null)
@@ -79,7 +79,14 @@ class LocationSearchInfoScreenViewModel(
 
     /** 点击区域 */
     fun onClickItem(value: LocationSearch.Statistics.AllAdmin) {
-        controller?.let { LocationSearchInfoScreenObj.go(it, _search, value.adminName, value.adminCode) }
+        controller?.let {
+            LocationSearchInfoScreenObj.go(
+                it,
+                _search,
+                value.adminName,
+                value.adminCode
+            )
+        }
     }
 
     /** 点击搜索结果 */

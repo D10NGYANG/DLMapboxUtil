@@ -1,8 +1,6 @@
 # DLMapboxUtil
 Mapbox for jetpack compose 地图封装（含离线地图）
 
-[![](https://jitpack.io/v/D10NGYANG/DLMapboxUtil.svg)](https://jitpack.io/#D10NGYANG/DLMapboxUtil)
-
 # 使用说明
 Step 1. Add the JitPack repository to your build file
 ```build.gradle
@@ -20,15 +18,15 @@ Step 2. Add the dependency
 ```build.gradle
 dependencies {
     // 地图封装
-    implementation("com.github.D10NGYANG:DLMapboxUtil:$release")
+    implementation("com.github.D10NGYANG:DLMapboxUtil:0.9.3")
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.2")
+    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.3")
     // 日期工具兼容Android8.0以下设备
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.0")
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.3")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.4")
     // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil:0.6")
+    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.7")
 }
 ```
 
