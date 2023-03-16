@@ -21,11 +21,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.d10ng.basicjetpackcomposeapp.BaseActivity
-import com.d10ng.basicjetpackcomposeapp.compose.AppColor
-import com.d10ng.basicjetpackcomposeapp.compose.AppShape
-import com.d10ng.basicjetpackcomposeapp.compose.AppText
-import com.d10ng.basicjetpackcomposeapp.view.TitleBar
+import com.d10ng.compose.BaseActivity
+import com.d10ng.compose.ui.AppColor
+import com.d10ng.compose.ui.AppShape
+import com.d10ng.compose.ui.AppText
+import com.d10ng.compose.view.TitleBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.bean.OfflineMapInfo
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment

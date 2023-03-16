@@ -12,10 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.d10ng.applib.app.goTo
-import com.d10ng.basicjetpackcomposeapp.BaseActivity
-import com.d10ng.basicjetpackcomposeapp.compose.AppColor
-import com.d10ng.basicjetpackcomposeapp.compose.AppTheme
-import com.d10ng.basicjetpackcomposeapp.view.SolidButtonWithText
+import com.d10ng.compose.BaseActivity
+import com.d10ng.compose.ui.AppColor
+import com.d10ng.compose.ui.AppTheme
+import com.d10ng.compose.view.SolidButtonWithText
 import com.d10ng.http.Http
 import com.d10ng.mapbox.activity.map.MapActivity
 import com.d10ng.mapbox.activity.search.LocationSearchManager

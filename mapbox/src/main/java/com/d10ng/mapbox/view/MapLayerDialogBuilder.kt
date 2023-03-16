@@ -13,11 +13,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.d10ng.basicjetpackcomposeapp.compose.AppColor
-import com.d10ng.basicjetpackcomposeapp.compose.AppShape
-import com.d10ng.basicjetpackcomposeapp.compose.AppText
-import com.d10ng.basicjetpackcomposeapp.dialog.builder.BaseDialogBuilder
-import com.d10ng.basicjetpackcomposeapp.dialog.builder.DialogBuilder
+import com.d10ng.compose.dialog.builder.BaseDialogBuilder
+import com.d10ng.compose.dialog.builder.DialogBuilder
+import com.d10ng.compose.ui.AppColor
+import com.d10ng.compose.ui.AppShape
+import com.d10ng.compose.ui.AppText
 import com.d10ng.mapbox.constant.MapLayerType
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow

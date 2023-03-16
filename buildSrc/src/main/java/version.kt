@@ -4,7 +4,9 @@ object Project {
     const val target_sdk = 30
 }
 
-const val android_build_ver = "7.3.1"
-const val compose_compiler_ver = "1.3.2"
-const val kotlin_ver = "1.7.20"
-const val kotlin_serialization_json = "1.4.1"
+const val android_build_ver = "7.4.2"
+const val kotlin_ver = "1.8.10"
+const val kotlin_coroutines_ver = "1.6.4"
+const val compose_compiler_ver = "1.4.3"
+const val kotlin_serialization_json = "1.5.0"
+const val jetpack_lifecycle_ver = "2.5.1"

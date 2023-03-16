@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.d10ng.basicjetpackcomposeapp.compose.AppColor
-import com.d10ng.basicjetpackcomposeapp.view.DialogCancelButton
-import com.d10ng.basicjetpackcomposeapp.view.ListItem
+import com.d10ng.compose.ui.AppColor
+import com.d10ng.compose.view.DialogCancelButton
+import com.d10ng.compose.view.ListItem
 import com.d10ng.mapbox.R
 
 enum class OtherMapType(val iconId: Int, val text: String) {

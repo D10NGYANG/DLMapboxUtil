@@ -7,10 +7,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.d10ng.basicjetpackcomposeapp.BaseActivity
-import com.d10ng.basicjetpackcomposeapp.BaseComposeScreenObject
-import com.d10ng.basicjetpackcomposeapp.BaseViewModel
-import com.d10ng.basicjetpackcomposeapp.dialog.builder.BaseDialogBuilder
+import com.d10ng.compose.BaseActivity
+import com.d10ng.compose.BaseComposeScreenObject
+import com.d10ng.compose.BaseViewModel
+import com.d10ng.compose.dialog.builder.BaseDialogBuilder
 import com.d10ng.mapbox.model.MapboxModel
 import com.google.accompanist.navigation.animation.composable
 import kotlinx.coroutines.flow.MutableStateFlow

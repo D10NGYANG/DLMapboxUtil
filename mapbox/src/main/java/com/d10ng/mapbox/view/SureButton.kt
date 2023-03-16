@@ -9,9 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.d10ng.basicjetpackcomposeapp.compose.AppColor
-import com.d10ng.basicjetpackcomposeapp.compose.AppShape
-import com.d10ng.basicjetpackcomposeapp.compose.AppText
+import com.d10ng.compose.ui.AppColor
+import com.d10ng.compose.ui.AppShape
+import com.d10ng.compose.ui.AppText
 
 @Composable
 fun SureButton(

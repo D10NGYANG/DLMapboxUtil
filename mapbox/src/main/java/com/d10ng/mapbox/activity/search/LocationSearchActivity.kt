@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.d10ng.basicjetpackcomposeapp.BaseActivity
-import com.d10ng.basicjetpackcomposeapp.compose.AppTheme
-import com.d10ng.basicjetpackcomposeapp.view.AnimatedNavHostDefault
+import com.d10ng.compose.BaseActivity
+import com.d10ng.compose.ui.AppTheme
+import com.d10ng.compose.view.AnimatedNavHostDefault
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 class LocationSearchActivity : BaseActivity() {

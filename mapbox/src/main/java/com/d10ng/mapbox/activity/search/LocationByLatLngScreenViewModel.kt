@@ -4,10 +4,10 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import com.d10ng.basicjetpackcomposeapp.BaseActivity
-import com.d10ng.basicjetpackcomposeapp.BaseComposeScreenObject
-import com.d10ng.basicjetpackcomposeapp.BaseViewModel
-import com.d10ng.basicjetpackcomposeapp.dialog.builder.InputDialogBuilder
+import com.d10ng.compose.BaseActivity
+import com.d10ng.compose.BaseComposeScreenObject
+import com.d10ng.compose.BaseViewModel
+import com.d10ng.compose.dialog.builder.InputDialogBuilder
 import com.d10ng.mapbox.model.MapModel
 import com.d10ng.mapbox.view.MapLayerDialogBuilder
 import com.google.accompanist.navigation.animation.composable

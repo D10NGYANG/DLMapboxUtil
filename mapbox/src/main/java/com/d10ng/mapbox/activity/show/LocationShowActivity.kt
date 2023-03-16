@@ -3,8 +3,8 @@ package com.d10ng.mapbox.activity.show
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import com.d10ng.applib.app.getClearTopIntent
-import com.d10ng.basicjetpackcomposeapp.BaseActivity
-import com.d10ng.basicjetpackcomposeapp.compose.AppTheme
+import com.d10ng.compose.BaseActivity
+import com.d10ng.compose.ui.AppTheme
 import com.d10ng.mapbox.model.LocationModel
 import com.d10ng.mapbox.model.MapModel
 import com.mapbox.geojson.Point

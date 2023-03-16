@@ -7,9 +7,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.d10ng.basicjetpackcomposeapp.BaseActivity
-import com.d10ng.basicjetpackcomposeapp.compose.AppColor
-import com.d10ng.basicjetpackcomposeapp.view.TitleBar
+import com.d10ng.compose.BaseActivity
+import com.d10ng.compose.ui.AppColor
+import com.d10ng.compose.view.TitleBar
 import com.d10ng.mapbox.activity.map.Compass
 import com.d10ng.mapbox.constant.MapLayerType
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar

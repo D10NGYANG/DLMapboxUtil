@@ -45,11 +45,11 @@ android {
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     composeOptions {
         kotlinCompilerExtensionVersion = compose_compiler_ver
@@ -65,24 +65,26 @@ android {
 }
 
 dependencies {
-
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
+
+    // Android
+    implementation("androidx.core:core-ktx:1.9.0")
 
     // 单元测试（可选）
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.4")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.3")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.0")
     // 日期工具兼容Android8.0以下设备
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.0")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.2")
 
     implementation(project(":mapbox"))
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.4")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.5.0")
     // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.7")
+    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.8.0")
 
     // 内存泄漏检查
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")

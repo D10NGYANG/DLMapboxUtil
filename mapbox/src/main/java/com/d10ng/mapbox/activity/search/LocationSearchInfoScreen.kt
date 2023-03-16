@@ -11,9 +11,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.d10ng.basicjetpackcomposeapp.BaseActivity
-import com.d10ng.basicjetpackcomposeapp.compose.AppColor
-import com.d10ng.basicjetpackcomposeapp.view.TitleBar
+import com.d10ng.compose.BaseActivity
+import com.d10ng.compose.ui.AppColor
+import com.d10ng.compose.view.TitleBar
 import com.d10ng.tianditu.bean.LocationSearch
 
 @Composable

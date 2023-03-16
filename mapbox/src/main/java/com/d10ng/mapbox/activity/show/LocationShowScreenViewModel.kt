@@ -5,8 +5,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.d10ng.applib.resource.makeBitmapFromDrawable
-import com.d10ng.basicjetpackcomposeapp.BaseViewModel
-import com.d10ng.basicjetpackcomposeapp.dialog.builder.RadioDialogBuilder
+import com.d10ng.compose.BaseViewModel
+import com.d10ng.compose.dialog.builder.RadioDialogBuilder
 import com.d10ng.gps.startBaiDuMapMaker
 import com.d10ng.gps.startGaoDeMapMaker
 import com.d10ng.latlnglib.bean.DLatLng

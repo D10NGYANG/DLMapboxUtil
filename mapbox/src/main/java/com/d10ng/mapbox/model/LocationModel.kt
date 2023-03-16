@@ -1,15 +1,16 @@
 package com.d10ng.mapbox.model
 
 import android.Manifest
-import com.d10ng.basicjetpackcomposeapp.BaseActivity
-import com.d10ng.basicjetpackcomposeapp.hasPermissions
-import com.d10ng.coroutines.launchMain
+import com.d10ng.compose.BaseActivity
 import com.d10ng.gps.ALocationListener
 import com.d10ng.gps.isLocationEnabled
 import com.d10ng.gps.startRequestLocation
 import com.d10ng.gps.stopRequestLocation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 internal class LocationModel {
 
@@ -30,15 +31,15 @@ internal class LocationModel {
     private val locationGpsListener = ALocationListener()
 
     /** 定位数据 */
-    val locationFlow = locationGpsListener.locationLive
+    val locationFlow = locationGpsListener.locationFlow
 
     /** 检查定位权限 */
     @Synchronized
     fun checkLocationPermission(act: BaseActivity, result: (Boolean) -> Unit = {}) {
-        launchMain {
+        CoroutineScope(Dispatchers.Main).launch {
             if (isHasLocationPermissionFlow.value == true) {
                 result(true)
-                return@launchMain
+                return@launch
             }
             if (act.hasPermissions(locationPermission)) {
                 isHasLocationPermissionFlow.update { true }

@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "0.9.3"
+version = "0.9.4"
 
 android {
     namespace = "com.d10ng.mapbox"
@@ -31,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     composeOptions {
         kotlinCompilerExtensionVersion = compose_compiler_ver
@@ -52,11 +52,21 @@ android {
 }
 
 dependencies {
+    // Android
+    implementation("androidx.core:core-ktx:1.9.0")
 
     // 单元测试（可选）
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.4")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    // Lifecycle
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$jetpack_lifecycle_ver")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$jetpack_lifecycle_ver")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_ver")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_ver")
 
     // kotlinx.serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlin_serialization_json")
@@ -65,15 +75,17 @@ dependencies {
     api("com.mapbox.maps:android:10.5.0")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLBasicJetpackComposeApp:1.2.3")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.0")
+    // APP通用工具
+    implementation("com.github.D10NGYANG:DLAppUtil:2.1")
     // 定位工具
-    implementation("com.github.D10NGYANG:DLGpsUtil:2.2.0")
+    implementation("com.github.D10NGYANG:DLGpsUtil:2.2.1")
     // 经纬度工具
-    implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.3")
+    implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.5.1")
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.4")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.5.0")
     // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.7")
+    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.8.0")
 }
 
 afterEvaluate {

@@ -11,9 +11,9 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.d10ng.applib.resource.makeBitmapFromDrawable
-import com.d10ng.basicjetpackcomposeapp.compose.AppColor
-import com.d10ng.basicjetpackcomposeapp.dialog.builder.BaseDialogBuilder
-import com.d10ng.basicjetpackcomposeapp.dialog.builder.DialogBuilder
+import com.d10ng.compose.dialog.builder.BaseDialogBuilder
+import com.d10ng.compose.dialog.builder.DialogBuilder
+import com.d10ng.compose.ui.AppColor
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.model.MapModel
 import com.mapbox.geojson.Point

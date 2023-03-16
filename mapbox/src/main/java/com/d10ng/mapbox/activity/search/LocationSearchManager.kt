@@ -2,7 +2,7 @@ package com.d10ng.mapbox.activity.search
 
 import android.app.Activity
 import com.d10ng.applib.app.goTo
-import com.d10ng.basicjetpackcomposeapp.BaseActivity
+import com.d10ng.compose.BaseActivity
 import com.d10ng.coroutines.launchIO
 import com.d10ng.tianditu.api.TianDiTuApi
 import com.d10ng.tianditu.bean.LocationSearch
