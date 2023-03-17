@@ -1,15 +1,14 @@
 package com.d10ng.mapbox.model
 
 import android.Manifest
-import androidx.activity.result.contract.ActivityResultContracts
 import com.d10ng.app.app.hasPermissions
+import com.d10ng.app.app.reqPermissions
 import com.d10ng.compose.BaseActivity
 import com.d10ng.gps.ALocationListener
 import com.d10ng.gps.isLocationEnabled
 import com.d10ng.gps.startRequestLocation
 import com.d10ng.gps.stopRequestLocation
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class LocationModel {
@@ -41,14 +40,7 @@ internal class LocationModel {
             result(true)
             return
         }
-        val permissionResultFlow = MutableSharedFlow<Boolean>()
-        val launcher = act.registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissionResult ->
-            CoroutineScope(Dispatchers.IO).launch {
-                permissionResultFlow.emit(!permissionResult.containsValue(false))
-            }
-        }
+        val permissionResultFlow = act.reqPermissions(*locationPermission)
         CoroutineScope(Dispatchers.IO).launch {
             permissionResultFlow.collect {
                 withContext(Dispatchers.Main) {
@@ -58,7 +50,6 @@ internal class LocationModel {
                 cancel()
             }
         }
-        launcher.launch(locationPermission)
     }
 
     /**
