@@ -2,15 +2,7 @@
 Mapbox for jetpack compose 地图封装（含离线地图）
 
 # 效果预览
-<img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/map.png" width="240"/>
-<img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/map_type.png" width="240"/>
-<img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/map_offline.png" width="240"/>
-<img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/map_offline_add.png" width="240"/>
-<img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/map_offline_add_config.png" width="240"/>
-<img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/search.png" width="240"/>
-<img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/search_sure.png" width="240"/>
-<img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/show.png" width="240"/>
-<img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/show_other.png" width="240"/>
+<img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/map.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/map_type.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/map_offline.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/map_offline_add.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/map_offline_add_config.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/search.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/search_sure.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/show.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/show_other.png" width="240"/>
 
 # 使用说明
 Step 1. Add the JitPack repository to your build file
