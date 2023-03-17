@@ -25,6 +25,7 @@ class MapActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         instant = WeakReference(this)
+        LocationModel.instant.startRequestLocation(this)
         setContent {
             AppTheme(app = app) {
                 val engine = rememberAnimatedNavHostEngine()
@@ -42,7 +43,6 @@ class MapActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        LocationModel.instant.startRequestLocation(this)
         MapModel.instant.initLayer(this)
     }
 

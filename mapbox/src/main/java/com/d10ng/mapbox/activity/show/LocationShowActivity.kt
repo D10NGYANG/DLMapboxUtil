@@ -16,15 +16,20 @@ class LocationShowActivity : BaseActivity() {
         const val PARAM_LAT = "lat"
         const val PARAM_LNG = "lng"
         var instant = WeakReference<LocationShowActivity?>(null)
-        var initPoint = Point.fromLngLat(0.0, 0.0)
+        var initPoint: Point = Point.fromLngLat(0.0, 0.0)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         instant = WeakReference(this)
+
         val lat = intent.getDoubleExtra(PARAM_LAT, 0.0)
         val lng = intent.getDoubleExtra(PARAM_LNG, 0.0)
         initPoint = Point.fromLngLat(lng, lat)
+
+        LocationModel.instant.startRequestLocation(this)
+
         setContent {
             AppTheme(app = app) {
                 LocationShowScreen()
@@ -34,7 +39,6 @@ class LocationShowActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        LocationModel.instant.startRequestLocation(this)
         MapModel.instant.initLayer(this)
     }
 

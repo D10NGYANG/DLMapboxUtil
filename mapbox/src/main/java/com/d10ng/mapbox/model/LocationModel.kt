@@ -1,17 +1,16 @@
 package com.d10ng.mapbox.model
 
 import android.Manifest
+import androidx.activity.result.contract.ActivityResultContracts
 import com.d10ng.app.app.hasPermissions
-import com.d10ng.app.app.requestPermissions
 import com.d10ng.compose.BaseActivity
 import com.d10ng.gps.ALocationListener
 import com.d10ng.gps.isLocationEnabled
 import com.d10ng.gps.startRequestLocation
 import com.d10ng.gps.stopRequestLocation
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 
 internal class LocationModel {
 
@@ -26,7 +25,7 @@ internal class LocationModel {
     )
 
     /** 是否有定位权限 */
-    val isHasLocationPermissionFlow = MutableStateFlow<Boolean?>(null)
+    private val isHasLocationPermissionFlow = MutableStateFlow<Boolean?>(null)
 
     /** 定位监听器 */
     private val locationGpsListener = ALocationListener()
@@ -36,26 +35,37 @@ internal class LocationModel {
 
     /** 检查定位权限 */
     @Synchronized
-    fun checkLocationPermission(act: BaseActivity, result: (Boolean) -> Unit = {}) {
-        CoroutineScope(Dispatchers.Main).launch {
-            if (isHasLocationPermissionFlow.value == true) {
-                result(true)
-                return@launch
-            }
-            if (act.hasPermissions(locationPermission)) {
-                isHasLocationPermissionFlow.value = true
-                result(true)
-            } else if (act.requestPermissions(*locationPermission.toList().toTypedArray())){
-                isHasLocationPermissionFlow.value = true
-                result(true)
-            } else {
-                isHasLocationPermissionFlow.value = false
-                result(false)
+    private fun checkLocationPermission(act: BaseActivity, result: (Boolean) -> Unit = {}) {
+        if (isHasLocationPermissionFlow.value == true || act.hasPermissions(locationPermission)) {
+            if (isHasLocationPermissionFlow.value != true) isHasLocationPermissionFlow.value = true
+            result(true)
+            return
+        }
+        val permissionResultFlow = MutableSharedFlow<Boolean>()
+        val launcher = act.registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissionResult ->
+            CoroutineScope(Dispatchers.IO).launch {
+                permissionResultFlow.emit(!permissionResult.containsValue(false))
             }
         }
+        CoroutineScope(Dispatchers.IO).launch {
+            permissionResultFlow.collect {
+                withContext(Dispatchers.Main) {
+                    isHasLocationPermissionFlow.value = it
+                    result(it)
+                }
+                cancel()
+            }
+        }
+        launcher.launch(locationPermission)
     }
 
-    /** 开启获取手机定位 */
+    /**
+     * 开启获取手机定位
+     * - ⚠️仅能在Activity的onCreate函数中使用
+     * @param act BaseActivity
+     */
     @Synchronized
     fun startRequestLocation(act: BaseActivity) {
         if (!act.isLocationEnabled()) return
