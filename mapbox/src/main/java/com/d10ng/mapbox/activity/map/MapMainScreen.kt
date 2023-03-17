@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -15,8 +14,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import com.d10ng.compose.BaseActivity
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
 import com.d10ng.compose.ui.AppText
@@ -27,16 +24,18 @@ import com.d10ng.mapbox.constant.MapLayerType
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
+import com.d10ng.mapbox.view.PageTransitions
 import com.mapbox.geojson.Point
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@MapNavGraph(start = true)
+@Destination(style = PageTransitions::class)
 @Composable
 fun MapMainScreen(
-    controller: NavHostController,
-    act: BaseActivity,
+    nav: DestinationsNavigator,
     model: MapMainScreenViewModel = viewModel()
 ) {
-    LaunchedEffect(controller, act) { model.init(act, controller) }
-
     val locationText by model.locationTextFlow.collectAsState()
     val layer by model.layerFlow.collectAsState()
     val zoom by model.zoomFlow.collectAsState()
@@ -48,7 +47,7 @@ fun MapMainScreen(
         zoom = zoom,
         target = target,
         onClickBack = { model.onClickBack() },
-        onClickOffline = { model.onClickOffline() },
+        onClickOffline = { model.onClickOffline(nav) },
         onClickZoomIn = { model.onClickZoomIn() },
         onClickZoomOut = { model.onClickZoomOut() },
         onClickLayer = { model.onClickLayer() },

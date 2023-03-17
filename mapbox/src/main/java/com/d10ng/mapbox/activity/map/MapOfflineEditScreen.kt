@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -16,31 +15,34 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import com.d10ng.compose.BaseActivity
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
 import com.d10ng.compose.view.TitleBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.view.InputItem
+import com.d10ng.mapbox.view.PageTransitions
 import com.d10ng.mapbox.view.SureButton
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@MapNavGraph
+@Destination(
+    style = PageTransitions::class,
+    navArgsDelegate = MapOfflineEditScreenNavArg::class
+)
 @Composable
 fun MapOfflineEditScreen(
-    controller: NavHostController,
-    act: BaseActivity,
+    nav: DestinationsNavigator,
     model: MapOfflineEditScreenViewModel = viewModel()
 ) {
-    LaunchedEffect(controller, act) { model.init(act, controller) }
-
     val inputName by model.inputNameFlow.collectAsState()
 
     MapOfflineEditScreenView(
         inputName = inputName,
-        onClickBack = { model.onClickBack() },
-        onClickDelete = { model.onClickDelete() },
+        onClickBack = nav::navigateUp,
+        onClickDelete = { model.onClickDelete(nav) },
         onUpdateInputName = { model.updateInputName(it) },
-        onClickSure = { model.onClickSure() }
+        onClickSure = { model.onClickSure(nav) }
     )
 }
 

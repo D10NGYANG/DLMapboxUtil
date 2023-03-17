@@ -1,11 +1,7 @@
 package com.d10ng.mapbox.activity.show
 
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.savedstate.SavedStateRegistryOwner
-import com.d10ng.applib.resource.makeBitmapFromDrawable
-import com.d10ng.compose.BaseViewModel
+import com.d10ng.app.resource.makeBitmapFromDrawable
 import com.d10ng.compose.dialog.builder.RadioDialogBuilder
 import com.d10ng.gps.startBaiDuMapMaker
 import com.d10ng.gps.startGaoDeMapMaker
@@ -22,35 +18,13 @@ import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class LocationShowScreenViewModel(
-    savedStateHandle: SavedStateHandle
-) : BaseViewModel() {
+class LocationShowScreenViewModel: ViewModel() {
 
     companion object {
         private const val POINT = "POINT"
-        private const val LATITUDE = "LATITUDE"
-        private const val LONGITUDE = "LONGITUDE"
     }
 
-    @Suppress("UNCHECKED_CAST")
-    class Factory(
-        owner: SavedStateRegistryOwner,
-        private val point: Point
-    ) : AbstractSavedStateViewModelFactory(owner, null) {
-        override fun <T : ViewModel> create(
-            key: String,
-            modelClass: Class<T>,
-            handle: SavedStateHandle
-        ): T {
-            handle[LATITUDE] = point.latitude()
-            handle[LONGITUDE] = point.longitude()
-            return LocationShowScreenViewModel(handle) as T
-        }
-    }
-
-    private val _latitude = savedStateHandle.get<Double>(LATITUDE) ?: 0.0
-    private val _longitude = savedStateHandle.get<Double>(LONGITUDE) ?: 0.0
-    private val _initPoint = Point.fromLngLat(_longitude, _latitude)
+    private val _initPoint = LocationShowActivity.initPoint
 
     /** 地图样式 */
     val layerFlow = MapModel.instant.layerTypeFlow
@@ -71,12 +45,12 @@ class LocationShowScreenViewModel(
 
     /** 点击返回 */
     fun onClickBack() {
-        weakAct.get()?.finish()
+        LocationShowActivity.instant.get()?.finish()
     }
 
     /** 地图加载完成 */
     fun onMapStyleLoad(style: Style) {
-        weakAct.get()?.apply {
+        LocationShowActivity.instant.get()?.apply {
             makeBitmapFromDrawable(R.drawable.ic_map_location_target_25)?.apply {
                 style.addImage(POINT, this)
             }
@@ -105,7 +79,7 @@ class LocationShowScreenViewModel(
 
     /** 点击图层切换 */
     fun onClickLayer() {
-        weakAct.get()?.apply {
+        LocationShowActivity.instant.get()?.apply {
             app.showDialog(MapLayerDialogBuilder(
                 value = layerFlow.value,
                 onChange = {
@@ -123,7 +97,7 @@ class LocationShowScreenViewModel(
 
     /** 点击到这去 */
     fun onClickGo() {
-        weakAct.get()?.apply {
+        LocationShowActivity.instant.get()?.apply {
             app.showDialog(RadioDialogBuilder(
                 title = "提示",
                 message = "使用第三方地图进行导航规划",

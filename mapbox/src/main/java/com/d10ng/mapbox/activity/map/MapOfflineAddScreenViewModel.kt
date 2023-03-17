@@ -1,41 +1,19 @@
 package com.d10ng.mapbox.activity.map
 
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import com.d10ng.compose.BaseActivity
-import com.d10ng.compose.BaseComposeScreenObject
-import com.d10ng.compose.BaseViewModel
+import androidx.lifecycle.ViewModel
+import com.d10ng.mapbox.activity.destinations.MapOfflineListScreenDestination
 import com.d10ng.mapbox.model.MapboxModel
-import com.google.accompanist.navigation.animation.composable
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.math.roundToInt
 
-object MapOfflineAddScreenObj : BaseComposeScreenObject("MapOfflineAddScreen") {
-    @OptIn(ExperimentalAnimationApi::class)
-    override fun composable(
-        builder: NavGraphBuilder,
-        controller: NavHostController,
-        act: BaseActivity
-    ) {
-        builder.composable(name) {
-            MapOfflineAddScreen(controller, act)
-        }
-    }
-}
-
-class MapOfflineAddScreenViewModel : BaseViewModel() {
+class MapOfflineAddScreenViewModel : ViewModel() {
 
     /** 输入地图名称 */
     val inputNameFlow = MutableStateFlow("")
 
     /** 地图层级 */
     val zoomRangeFlow = MutableStateFlow(1f..3f)
-
-    /** 点击返回 */
-    fun onClickBack() {
-        controller?.navigateUp()
-    }
 
     /** 更新输入地图名称 */
     fun updateInputName(value: String) {
@@ -48,8 +26,8 @@ class MapOfflineAddScreenViewModel : BaseViewModel() {
     }
 
     /** 点击确定 */
-    fun onClickSure() {
-        weakAct.get()?.apply {
+    fun onClickSure(nav: DestinationsNavigator) {
+        MapActivity.instant.get()?.apply {
             if (inputNameFlow.value.isEmpty()) {
                 app.showError("地图名称不能为空！")
                 return
@@ -60,7 +38,7 @@ class MapOfflineAddScreenViewModel : BaseViewModel() {
                 maxZoom = zoomRangeFlow.value.endInclusive.roundToInt(),
                 title = inputNameFlow.value
             )
-            controller?.popBackStack(MapOfflineListScreenObj.name, false)
+            nav.popBackStack(MapOfflineListScreenDestination, false)
         }
     }
 }

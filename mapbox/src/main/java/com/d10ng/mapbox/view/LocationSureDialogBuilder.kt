@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.d10ng.applib.resource.makeBitmapFromDrawable
+import com.d10ng.app.resource.makeBitmapFromDrawable
 import com.d10ng.compose.dialog.builder.BaseDialogBuilder
 import com.d10ng.compose.dialog.builder.DialogBuilder
 import com.d10ng.compose.ui.AppColor

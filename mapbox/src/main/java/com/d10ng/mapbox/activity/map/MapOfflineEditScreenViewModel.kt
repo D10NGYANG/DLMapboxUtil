@@ -1,51 +1,27 @@
 package com.d10ng.mapbox.activity.map
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
-import com.d10ng.compose.BaseActivity
-import com.d10ng.compose.BaseComposeScreenObject
-import com.d10ng.compose.BaseViewModel
 import com.d10ng.compose.dialog.builder.BaseDialogBuilder
+import com.d10ng.mapbox.activity.navArgs
 import com.d10ng.mapbox.model.MapboxModel
-import com.google.accompanist.navigation.animation.composable
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-object MapOfflineEditScreenObj : BaseComposeScreenObject("MapOfflineEditScreen") {
+data class MapOfflineEditScreenNavArg(
+    val id: String
+)
 
-    const val ID = "id"
-
-    @OptIn(ExperimentalAnimationApi::class)
-    override fun composable(
-        builder: NavGraphBuilder,
-        controller: NavHostController,
-        act: BaseActivity
-    ) {
-        builder.composable(
-            route = "$name/{$ID}",
-            arguments = listOf(navArgument(ID) { NavType.StringType })
-        ) {
-            MapOfflineEditScreen(controller, act)
-        }
-    }
-
-    fun go(controller: NavHostController, id: String) {
-        controller.navigate("$name/$id")
-    }
-}
-
-class MapOfflineEditScreenViewModel(
+class MapOfflineEditScreenViewModel constructor(
     savedStateHandle: SavedStateHandle
-) : BaseViewModel() {
+) : ViewModel() {
 
-    private val _id = savedStateHandle.get<String>(MapOfflineEditScreenObj.ID) ?: ""
+    private val navArgs = savedStateHandle.navArgs<MapOfflineEditScreenNavArg>()
+    private val _id = navArgs.id
 
     /** 离线地图信息 */
     private val infoFlow =
@@ -60,19 +36,14 @@ class MapOfflineEditScreenViewModel(
         }
     }
 
-    /** 点击返回 */
-    fun onClickBack() {
-        controller?.navigateUp()
-    }
-
     /** 更新输入名字 */
     fun updateInputName(value: String) {
         inputNameFlow.value = value
     }
 
     /** 点击删除 */
-    fun onClickDelete() {
-        weakAct.get()?.apply {
+    fun onClickDelete(nav: DestinationsNavigator) {
+        MapActivity.instant.get()?.apply {
             app.showDialog(BaseDialogBuilder(
                 title = "注意",
                 message = "确定删除当前离线地图吗？",
@@ -81,7 +52,7 @@ class MapOfflineEditScreenViewModel(
                 onClickSure = {
                     app.hideDialog()
                     MapboxModel.instant.deleteOffline(_id)
-                    controller?.navigateUp()
+                    nav.navigateUp()
                 },
                 onClickCancel = {
                     app.hideDialog()
@@ -91,15 +62,15 @@ class MapOfflineEditScreenViewModel(
     }
 
     /** 点击确定 */
-    fun onClickSure() {
-        weakAct.get()?.apply {
+    fun onClickSure(nav: DestinationsNavigator) {
+        MapActivity.instant.get()?.apply {
             val name = inputNameFlow.value
             if (name.isEmpty()) {
                 app.showError("地图名称不能为空！")
                 return
             }
             MapboxModel.instant.renameOffline(this, _id, name)
-            controller?.navigateUp()
+            nav.navigateUp()
         }
     }
 }

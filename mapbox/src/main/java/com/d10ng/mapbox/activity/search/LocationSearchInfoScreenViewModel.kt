@@ -1,65 +1,39 @@
 package com.d10ng.mapbox.activity.search
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
-import com.d10ng.compose.BaseActivity
-import com.d10ng.compose.BaseComposeScreenObject
-import com.d10ng.compose.BaseViewModel
+import com.d10ng.mapbox.activity.destinations.LocationSearchInfoScreenDestination
+import com.d10ng.mapbox.activity.navArgs
 import com.d10ng.mapbox.view.LocationSureDialogBuilder
 import com.d10ng.tianditu.bean.LocationSearch
-import com.google.accompanist.navigation.animation.composable
 import com.mapbox.geojson.Point
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-object LocationSearchInfoScreenObj : BaseComposeScreenObject("LocationSearchInfoScreen") {
+data class LocationSearchInfoScreenNavArgs(
+    val search: String,
+    val area: String,
+    val areaCode: Int
+)
 
-    const val SEARCH = "search"
-    const val AREA = "area"
-    const val AREA_CODE = "areaCode"
-
-    @OptIn(ExperimentalAnimationApi::class)
-    override fun composable(
-        builder: NavGraphBuilder,
-        controller: NavHostController,
-        act: BaseActivity
-    ) {
-        builder.composable(
-            route = "$name/{$SEARCH}/{$AREA}/{$AREA_CODE}",
-            arguments = listOf(
-                navArgument(SEARCH) { type = NavType.StringType },
-                navArgument(AREA) { type = NavType.StringType },
-                navArgument(AREA_CODE) { type = NavType.IntType }
-            )
-        ) {
-            LocationSearchInfoScreen(controller, act)
-        }
-    }
-
-    fun go(controller: NavHostController, search: String, area: String, areaCode: Int) {
-        controller.navigate("$name/$search/$area/$areaCode")
-    }
-}
-
-class LocationSearchInfoScreenViewModel(
+class LocationSearchInfoScreenViewModel constructor(
     savedStateHandle: SavedStateHandle
-) : BaseViewModel() {
+) : ViewModel() {
 
-    private val _search = savedStateHandle.get<String>(LocationSearchInfoScreenObj.SEARCH) ?: ""
-    private val _area = savedStateHandle.get<String>(LocationSearchInfoScreenObj.AREA) ?: ""
-    private val _areaCode = savedStateHandle.get<Int>(LocationSearchInfoScreenObj.AREA_CODE) ?: 0
+    private val navArgs = savedStateHandle.navArgs<LocationSearchInfoScreenNavArgs>()
+
+    private val _search = navArgs.search
+    private val _area = navArgs.area
+    private val _areaCode = navArgs.areaCode
 
     /** 结果 */
     val resultFlow = MutableStateFlow<LocationSearch?>(null)
 
-    override fun init(act: BaseActivity, controller: NavHostController) {
-        super.init(act, controller)
+    init {
         viewModelScope.launch {
+            val act = LocationSearchActivity.instant.get() ?: return@launch
             val result = LocationSearchManager.instant.search(act, _search, _areaCode.toString())
             resultFlow.emit(result)
         }
@@ -67,31 +41,20 @@ class LocationSearchInfoScreenViewModel(
 
     fun getArea() = _area
 
-    /** 点击返回 */
-    fun onClickBack() {
-        controller?.navigateUp()
+
+    /** 点击区域 */
+    fun onClickItem(nav: DestinationsNavigator, value: LocationSearch.Area) {
+        nav.navigate(LocationSearchInfoScreenDestination(_search, value.name, value.adminCode))
     }
 
     /** 点击区域 */
-    fun onClickItem(value: LocationSearch.Area) {
-        controller?.let { LocationSearchInfoScreenObj.go(it, _search, value.name, value.adminCode) }
-    }
-
-    /** 点击区域 */
-    fun onClickItem(value: LocationSearch.Statistics.AllAdmin) {
-        controller?.let {
-            LocationSearchInfoScreenObj.go(
-                it,
-                _search,
-                value.adminName,
-                value.adminCode
-            )
-        }
+    fun onClickItem(nav: DestinationsNavigator, value: LocationSearch.Statistics.AllAdmin) {
+        nav.navigate(LocationSearchInfoScreenDestination(_search, value.adminName, value.adminCode))
     }
 
     /** 点击搜索结果 */
     fun onClickItem(value: LocationSearch.Poi) {
-        weakAct.get()?.apply {
+        LocationSearchActivity.instant.get()?.apply {
             val ls = value.lonlat.split(",")
             val lng = ls[0].toDoubleOrNull() ?: 0.0
             val lat = ls[1].toDoubleOrNull() ?: 0.0
@@ -102,7 +65,7 @@ class LocationSearchInfoScreenViewModel(
                 target = target,
                 onClickSure = {
                     app.hideDialog()
-                    LocationSearchManager.instant.finish(this, target)
+                    LocationSearchManager.instant.finish(target)
                 },
                 onClickCancel = {
                     app.hideDialog()

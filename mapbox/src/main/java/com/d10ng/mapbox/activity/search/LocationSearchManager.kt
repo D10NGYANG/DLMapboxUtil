@@ -1,9 +1,8 @@
 package com.d10ng.mapbox.activity.search
 
 import android.app.Activity
-import com.d10ng.applib.app.goTo
+import com.d10ng.app.app.goTo
 import com.d10ng.compose.BaseActivity
-import com.d10ng.coroutines.launchIO
 import com.d10ng.tianditu.api.TianDiTuApi
 import com.d10ng.tianditu.bean.LocationSearch
 import com.mapbox.geojson.Point
@@ -13,7 +12,6 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import java.lang.ref.WeakReference
 
 class LocationSearchManager {
 
@@ -26,9 +24,6 @@ class LocationSearchManager {
 
     /** 等待结果协程 */
     private var scope: CoroutineScope? = null
-
-    /** 当前活动 */
-    private var curAct: WeakReference<Activity>? = null
 
     /**
      * 打开页面
@@ -43,7 +38,7 @@ class LocationSearchManager {
             launch {
                 resultFlow.collect {
                     result.invoke(it)
-                    curAct?.get()?.finish()
+                    LocationSearchActivity.instant.get()?.finish()
                     this.cancel()
                 }
             }
@@ -52,13 +47,11 @@ class LocationSearchManager {
 
     /**
      * 获得定位
-     * @param act Activity
      * @param result Point?
      */
     @Synchronized
-    fun finish(act: Activity, result: Point?) {
-        curAct = WeakReference(act)
-        launchIO { resultFlow.emit(result) }
+    fun finish(result: Point?) {
+        CoroutineScope(Dispatchers.IO).launch { resultFlow.emit(result) }
     }
 
     /** 获取结果 */

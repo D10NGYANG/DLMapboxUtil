@@ -2,12 +2,14 @@ package com.d10ng.mapbox.activity.show
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.d10ng.compose.BaseActivity
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.view.TitleBar
 import com.d10ng.mapbox.activity.map.Compass
@@ -22,17 +24,8 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 
 @Composable
 fun LocationShowScreen(
-    act: BaseActivity,
-    point: Point,
-    model: LocationShowScreenViewModel = viewModel(
-        key = "LocationShowScreen",
-        factory = LocationShowScreenViewModel.Factory(act, point)
-    )
+    model: LocationShowScreenViewModel = viewModel()
 ) {
-    LaunchedEffect(act) {
-        model.init(act)
-    }
-
     val layer by model.layerFlow.collectAsState()
     val zoom by model.zoomFlow.collectAsState()
     val target by model.targetFlow.collectAsState()

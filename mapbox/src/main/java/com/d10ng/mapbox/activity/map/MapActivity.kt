@@ -4,28 +4,37 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import com.d10ng.compose.BaseActivity
 import com.d10ng.compose.ui.AppTheme
-import com.d10ng.compose.view.AnimatedNavHostDefault
+import com.d10ng.mapbox.activity.NavGraphs
 import com.d10ng.mapbox.model.LocationModel
 import com.d10ng.mapbox.model.MapModel
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
+import java.lang.ref.WeakReference
 
 class MapActivity : BaseActivity() {
 
-    @OptIn(ExperimentalAnimationApi::class)
+    companion object {
+        var instant: WeakReference<MapActivity?> = WeakReference(null)
+    }
+
+    @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialNavigationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        instant = WeakReference(this)
         setContent {
             AppTheme(app = app) {
-                val controller = rememberAnimatedNavController()
-                Navigation(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    controller = controller
+                val engine = rememberAnimatedNavHostEngine()
+                val navController = engine.rememberNavController()
+
+                DestinationsNavHost(
+                    engine = engine,
+                    navController = navController,
+                    navGraph = NavGraphs.Map,
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }
@@ -39,25 +48,7 @@ class MapActivity : BaseActivity() {
 
     override fun onDestroy() {
         LocationModel.instant.stopRequestLocation(this)
+        instant = WeakReference(null)
         super.onDestroy()
-    }
-
-    @OptIn(ExperimentalAnimationApi::class)
-    @Composable
-    private fun Navigation(
-        modifier: Modifier,
-        controller: NavHostController
-    ) {
-        AnimatedNavHostDefault(
-            controller,
-            MapMainScreenObj.name,
-            modifier = modifier
-        ) {
-            MapMainScreenObj.composable(this, controller, this@MapActivity)
-            MapOfflineListScreenObj.composable(this, controller, this@MapActivity)
-            MapOfflineAreaScreenObj.composable(this, controller, this@MapActivity)
-            MapOfflineAddScreenObj.composable(this, controller, this@MapActivity)
-            MapOfflineEditScreenObj.composable(this, controller, this@MapActivity)
-        }
     }
 }

@@ -5,52 +5,48 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import com.d10ng.compose.BaseActivity
 import com.d10ng.compose.ui.AppTheme
-import com.d10ng.compose.view.AnimatedNavHostDefault
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.d10ng.mapbox.activity.NavGraphs
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
+import java.lang.ref.WeakReference
 
 class LocationSearchActivity : BaseActivity() {
 
-    @OptIn(ExperimentalAnimationApi::class)
+    companion object {
+        var instant: WeakReference<LocationSearchActivity?> = WeakReference(null)
+    }
+
+    @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialNavigationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        instant = WeakReference(this)
         setContent {
             AppTheme(app = app) {
-                val controller = rememberAnimatedNavController()
-                Navigation(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    controller = controller
+                val engine = rememberAnimatedNavHostEngine()
+                val navController = engine.rememberNavController()
+
+                DestinationsNavHost(
+                    engine = engine,
+                    navController = navController,
+                    navGraph = NavGraphs.LocationSearch,
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                LocationSearchManager.instant.finish(this@LocationSearchActivity, null)
+                LocationSearchManager.instant.finish(null)
             }
         })
     }
 
-    @OptIn(ExperimentalAnimationApi::class)
-    @Composable
-    private fun Navigation(
-        modifier: Modifier,
-        controller: NavHostController
-    ) {
-        AnimatedNavHostDefault(
-            controller,
-            LocationSearchMainScreenObj.name,
-            modifier = modifier
-        ) {
-            LocationSearchMainScreenObj.composable(this, controller, this@LocationSearchActivity)
-            LocationSearchInfoScreenObj.composable(this, controller, this@LocationSearchActivity)
-            LocationByLatLngScreenObj.composable(this, controller, this@LocationSearchActivity)
-        }
+    override fun onDestroy() {
+        instant = WeakReference(null)
+        super.onDestroy()
     }
 }

@@ -1,36 +1,20 @@
 package com.d10ng.mapbox.activity.search
 
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import com.d10ng.compose.BaseActivity
-import com.d10ng.compose.BaseComposeScreenObject
-import com.d10ng.compose.BaseViewModel
+import com.d10ng.mapbox.activity.destinations.LocationByLatLngScreenDestination
+import com.d10ng.mapbox.activity.destinations.LocationSearchInfoScreenDestination
 import com.d10ng.mapbox.view.LocationSureDialogBuilder
 import com.d10ng.tianditu.bean.LocationSearch
-import com.google.accompanist.navigation.animation.composable
 import com.mapbox.geojson.Point
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 
-object LocationSearchMainScreenObj : BaseComposeScreenObject("LocationSearchMainScreen") {
-    @OptIn(ExperimentalAnimationApi::class)
-    override fun composable(
-        builder: NavGraphBuilder,
-        controller: NavHostController,
-        act: BaseActivity
-    ) {
-        builder.composable(name) {
-            LocationSearchMainScreen(controller, act)
-        }
-    }
-}
-
 @OptIn(FlowPreview::class)
-class LocationSearchMainScreenViewModel : BaseViewModel() {
+class LocationSearchMainScreenViewModel : ViewModel() {
 
     /** 输入搜索内容 */
     val inputFlow = MutableStateFlow("")
@@ -48,9 +32,7 @@ class LocationSearchMainScreenViewModel : BaseViewModel() {
 
     /** 点击返回 */
     fun onClickBack() {
-        weakAct.get()?.apply {
-            LocationSearchManager.instant.finish(this, null)
-        }
+        LocationSearchManager.instant.finish(null)
     }
 
     /** 更新搜索内容 */
@@ -66,7 +48,7 @@ class LocationSearchMainScreenViewModel : BaseViewModel() {
     /** 搜索 */
     private fun search(value: String) {
         viewModelScope.launch {
-            weakAct.get()?.apply {
+            LocationSearchActivity.instant.get()?.apply {
                 val result = LocationSearchManager.instant.search(this, value)
                 resultFlow.emit(result)
             }
@@ -74,37 +56,23 @@ class LocationSearchMainScreenViewModel : BaseViewModel() {
     }
 
     /** 点击通过经纬度查询 */
-    fun onClickByLatLng() {
-        controller?.let { LocationByLatLngScreenObj.go(it) }
+    fun onClickByLatLng(nav: DestinationsNavigator) {
+        nav.navigate(LocationByLatLngScreenDestination)
     }
 
     /** 点击区域 */
-    fun onClickItem(value: LocationSearch.Area) {
-        controller?.let {
-            LocationSearchInfoScreenObj.go(
-                it,
-                inputFlow.value,
-                value.name,
-                value.adminCode
-            )
-        }
+    fun onClickItem(nav: DestinationsNavigator, value: LocationSearch.Area) {
+        nav.navigate(LocationSearchInfoScreenDestination(inputFlow.value, value.name, value.adminCode))
     }
 
     /** 点击区域 */
-    fun onClickItem(value: LocationSearch.Statistics.AllAdmin) {
-        controller?.let {
-            LocationSearchInfoScreenObj.go(
-                it,
-                inputFlow.value,
-                value.adminName,
-                value.adminCode
-            )
-        }
+    fun onClickItem(nav: DestinationsNavigator, value: LocationSearch.Statistics.AllAdmin) {
+        nav.navigate(LocationSearchInfoScreenDestination(inputFlow.value, value.adminName, value.adminCode))
     }
 
     /** 点击搜索结果 */
     fun onClickItem(value: LocationSearch.Poi) {
-        weakAct.get()?.apply {
+        LocationSearchActivity.instant.get()?.apply {
             val ls = value.lonlat.split(",")
             val lng = ls[0].toDoubleOrNull() ?: 0.0
             val lat = ls[1].toDoubleOrNull() ?: 0.0
@@ -115,7 +83,7 @@ class LocationSearchMainScreenViewModel : BaseViewModel() {
                 target = target,
                 onClickSure = {
                     app.hideDialog()
-                    LocationSearchManager.instant.finish(this, target)
+                    LocationSearchManager.instant.finish(target)
                 },
                 onClickCancel = {
                     app.hideDialog()

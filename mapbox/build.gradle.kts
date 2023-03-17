@@ -7,6 +7,7 @@ plugins {
     id("org.jetbrains.kotlin.kapt")
     id("org.jetbrains.kotlin.plugin.parcelize")
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("com.google.devtools.ksp")
     id("maven-publish")
 }
 
@@ -72,12 +73,16 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlin_serialization_json")
 
     // MapBox 地图
-    api("com.mapbox.maps:android:10.5.0")
+    api("com.mapbox.maps:android:10.11.2")
+
+    // 导航路由
+    implementation("io.github.raamcosta.compose-destinations:animations-core:$compose_destinations_ver")
+    ksp("io.github.raamcosta.compose-destinations:ksp:$compose_destinations_ver")
 
     // jetpack compose 框架
     implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.0")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.1")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.2.2")
     // 定位工具
     implementation("com.github.D10NGYANG:DLGpsUtil:2.2.1")
     // 经纬度工具

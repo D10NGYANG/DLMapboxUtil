@@ -12,33 +12,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import com.d10ng.compose.BaseActivity
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppText
 import com.d10ng.compose.view.TitleBar
 import com.d10ng.mapbox.view.InputItem
+import com.d10ng.mapbox.view.PageTransitions
 import com.d10ng.mapbox.view.SureButton
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlin.math.roundToInt
 
+@MapNavGraph
+@Destination(style = PageTransitions::class)
 @Composable
 fun MapOfflineAddScreen(
-    controller: NavHostController,
-    act: BaseActivity,
+    nav: DestinationsNavigator,
     model: MapOfflineAddScreenViewModel = viewModel()
 ) {
-    LaunchedEffect(controller, act) { model.init(act, controller) }
-
     val inputName by model.inputNameFlow.collectAsState()
     val zoomRange by model.zoomRangeFlow.collectAsState()
 
     MapOfflineAddScreenView(
         inputName = inputName,
         zoomRange = zoomRange,
-        onClickBack = { model.onClickBack() },
+        onClickBack = nav::navigateUp,
         onUpdateInputName = { model.updateInputName(it) },
         onUpdateZoomRange = { model.updateZoomRange(it) },
-        onClickSure = { model.onClickSure() }
+        onClickSure = { model.onClickSure(nav) }
     )
 }
 

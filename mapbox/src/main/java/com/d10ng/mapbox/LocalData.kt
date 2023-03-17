@@ -1,7 +1,7 @@
 package com.d10ng.mapbox
 
 import android.content.Context
-import com.d10ng.applib.system.SpfUtils
+import com.d10ng.app.system.SpfUtils
 import com.d10ng.mapbox.constant.MapLayerType
 
 /** 默认表单 */

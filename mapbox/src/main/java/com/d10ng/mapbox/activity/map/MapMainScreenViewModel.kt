@@ -1,36 +1,19 @@
 package com.d10ng.mapbox.activity.map
 
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import com.d10ng.compose.BaseActivity
-import com.d10ng.compose.BaseComposeScreenObject
-import com.d10ng.compose.BaseViewModel
 import com.d10ng.latlnglib.toLatitudeString
 import com.d10ng.latlnglib.toLongitudeString
+import com.d10ng.mapbox.activity.destinations.MapOfflineListScreenDestination
 import com.d10ng.mapbox.model.LocationModel
 import com.d10ng.mapbox.model.MapModel
 import com.d10ng.mapbox.view.MapLayerDialogBuilder
-import com.google.accompanist.navigation.animation.composable
 import com.mapbox.geojson.Point
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-object MapMainScreenObj : BaseComposeScreenObject("MapMainScreen") {
-    @OptIn(ExperimentalAnimationApi::class)
-    override fun composable(
-        builder: NavGraphBuilder,
-        controller: NavHostController,
-        act: BaseActivity
-    ) {
-        builder.composable(name) {
-            MapMainScreen(controller, act)
-        }
-    }
-}
-
-class MapMainScreenViewModel : BaseViewModel() {
+class MapMainScreenViewModel : ViewModel() {
 
     /** 位置文本 */
     val locationTextFlow = MutableStateFlow("正在获取当前位置...")
@@ -61,12 +44,12 @@ class MapMainScreenViewModel : BaseViewModel() {
 
     /** 点击返回 */
     fun onClickBack() {
-        weakAct.get()?.finish()
+        MapActivity.instant.get()?.finish()
     }
 
     /** 点击离线地图 */
-    fun onClickOffline() {
-        controller?.let { MapOfflineListScreenObj.go(it) }
+    fun onClickOffline(nav: DestinationsNavigator) {
+        nav.navigate(MapOfflineListScreenDestination)
     }
 
     /** 点击放大 */
@@ -91,7 +74,7 @@ class MapMainScreenViewModel : BaseViewModel() {
 
     /** 点击图层切换 */
     fun onClickLayer() {
-        weakAct.get()?.apply {
+        MapActivity.instant.get()?.apply {
             app.showDialog(MapLayerDialogBuilder(
                 value = layerFlow.value,
                 onChange = {

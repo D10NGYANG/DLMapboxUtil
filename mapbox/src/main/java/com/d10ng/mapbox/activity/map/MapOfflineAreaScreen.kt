@@ -6,7 +6,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -17,27 +16,23 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import com.d10ng.compose.BaseActivity
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
 import com.d10ng.compose.view.TitleBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.constant.MapLayerType
-import com.d10ng.mapbox.view.MapLayerLocationControllerBar
-import com.d10ng.mapbox.view.MapZoomControllerBar
-import com.d10ng.mapbox.view.MapboxView
-import com.d10ng.mapbox.view.SureButton
+import com.d10ng.mapbox.view.*
 import com.mapbox.geojson.Point
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@MapNavGraph
+@Destination(style = PageTransitions::class)
 @Composable
 fun MapOfflineAreaScreen(
-    controller: NavHostController,
-    act: BaseActivity,
+    nav: DestinationsNavigator,
     model: MapOfflineAreaScreenViewModel = viewModel()
 ) {
-    LaunchedEffect(controller, act) { model.init(act, controller) }
-
     val layer by model.layerFlow.collectAsState()
     val zoom by model.zoomFlow.collectAsState()
     val target by model.targetFlow.collectAsState()
@@ -46,7 +41,7 @@ fun MapOfflineAreaScreen(
         layer = layer,
         zoom = zoom,
         target = target,
-        onClickBack = { model.onClickBack() },
+        onClickBack = nav::navigateUp,
         onClickSearch = { model.onClickSearch() },
         onClickZoomIn = { model.onClickZoomIn() },
         onClickZoomOut = { model.onClickZoomOut() },
@@ -54,7 +49,7 @@ fun MapOfflineAreaScreen(
         onClickLocation = { model.onClickLocation() },
         onUpdateZoom = { model.updateZoom(it) },
         onUpdateTarget = { model.updateTarget(it) },
-        onClickDownload = { model.onClickDownload() }
+        onClickDownload = { model.onClickDownload(nav) }
     )
 }
 

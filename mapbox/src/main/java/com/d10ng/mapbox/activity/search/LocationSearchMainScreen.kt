@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -17,8 +16,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import com.d10ng.compose.BaseActivity
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
 import com.d10ng.compose.ui.AppText
@@ -27,16 +24,18 @@ import com.d10ng.compose.view.ListItem
 import com.d10ng.compose.view.MiniButton
 import com.d10ng.compose.view.TitleBar
 import com.d10ng.mapbox.R
+import com.d10ng.mapbox.view.PageTransitions
 import com.d10ng.tianditu.bean.LocationSearch
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@LocationSearchNavGraph(start = true)
+@Destination(style = PageTransitions::class)
 @Composable
 fun LocationSearchMainScreen(
-    controller: NavHostController,
-    act: BaseActivity,
+    nav: DestinationsNavigator,
     model: LocationSearchMainScreenViewModel = viewModel()
 ) {
-    LaunchedEffect(controller, act) { model.init(act, controller) }
-
     val input by model.inputFlow.collectAsState()
     val result by model.resultFlow.collectAsState()
 
@@ -46,9 +45,9 @@ fun LocationSearchMainScreen(
         onClickBack = { model.onClickBack() },
         onUpdateInput = { model.updateInput(it) },
         onClickSearch = { model.onClickSearch() },
-        onClickByLatLng = { model.onClickByLatLng() },
-        onClickAreaItem = { model.onClickItem(it) },
-        onClickAdminItem = { model.onClickItem(it) },
+        onClickByLatLng = { model.onClickByLatLng(nav) },
+        onClickAreaItem = { model.onClickItem(nav, it) },
+        onClickAdminItem = { model.onClickItem(nav, it) },
         onClickPoiItem = { model.onClickItem(it) }
     )
 }

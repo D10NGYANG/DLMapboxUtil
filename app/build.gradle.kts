@@ -25,7 +25,7 @@ android {
         }
         ndk {
             // 选择要添加的对应cpu类型的.so库
-            abiFilters.addAll(mutableSetOf(/*"arm64-v8a", */"armeabi-v7a"))
+            abiFilters.addAll(mutableSetOf("arm64-v8a", "armeabi-v7a"))
         }
     }
 
@@ -77,6 +77,8 @@ dependencies {
 
     // jetpack compose 框架
     implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.0")
+    // APP通用工具
+    implementation("com.github.D10NGYANG:DLAppUtil:2.2.2")
     // 日期工具兼容Android8.0以下设备
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.2")
 

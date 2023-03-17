@@ -5,33 +5,35 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import com.d10ng.compose.BaseActivity
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.view.TitleBar
+import com.d10ng.mapbox.view.PageTransitions
 import com.d10ng.tianditu.bean.LocationSearch
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@LocationSearchNavGraph
+@Destination(
+    style = PageTransitions::class,
+    navArgsDelegate = LocationSearchInfoScreenNavArgs::class
+)
 @Composable
 fun LocationSearchInfoScreen(
-    controller: NavHostController,
-    act: BaseActivity,
+    nav: DestinationsNavigator,
     model: LocationSearchInfoScreenViewModel = viewModel()
 ) {
-    LaunchedEffect(controller, act) { model.init(act, controller) }
-
     val result by model.resultFlow.collectAsState()
 
     LocationSearchInfoScreenView(
         area = model.getArea(),
         result = result,
-        onClickBack = { model.onClickBack() },
-        onClickAreaItem = { model.onClickItem(it) },
-        onClickAdminItem = { model.onClickItem(it) },
+        onClickBack = nav::navigateUp,
+        onClickAreaItem = { model.onClickItem(nav, it) },
+        onClickAdminItem = { model.onClickItem(nav, it) },
         onClickPoiItem = { model.onClickItem(it) }
     )
 }

@@ -1,34 +1,17 @@
 package com.d10ng.mapbox.activity.map
 
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import com.d10ng.compose.BaseActivity
-import com.d10ng.compose.BaseComposeScreenObject
-import com.d10ng.compose.BaseViewModel
+import com.d10ng.mapbox.activity.destinations.MapOfflineAddScreenDestination
 import com.d10ng.mapbox.activity.search.LocationSearchManager
 import com.d10ng.mapbox.constant.MapLayerType
 import com.d10ng.mapbox.model.MapModel
 import com.d10ng.mapbox.view.MapLayerDialogBuilder
-import com.google.accompanist.navigation.animation.composable
 import com.mapbox.geojson.Point
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
-object MapOfflineAreaScreenObj : BaseComposeScreenObject("MapOfflineAreaScreen") {
-    @OptIn(ExperimentalAnimationApi::class)
-    override fun composable(
-        builder: NavGraphBuilder,
-        controller: NavHostController,
-        act: BaseActivity
-    ) {
-        builder.composable(name) {
-            MapOfflineAreaScreen(controller, act)
-        }
-    }
-}
-
-class MapOfflineAreaScreenViewModel : BaseViewModel() {
+class MapOfflineAreaScreenViewModel : ViewModel() {
 
     /** 地图样式 */
     val layerFlow = MapModel.instant.layerTypeFlow
@@ -39,10 +22,10 @@ class MapOfflineAreaScreenViewModel : BaseViewModel() {
     /** 地图中心 */
     val targetFlow = MapModel.instant.targetFlow
 
-    override fun init(act: BaseActivity, controller: NavHostController) {
-        super.init(act, controller)
+    init {
         viewModelScope.launch {
             layerFlow.collect { type ->
+                val act = MapActivity.instant.get()?: return@collect
                 if (!type.isCanDown) {
                     MapModel.instant.updateLayer(
                         act.applicationContext,
@@ -53,14 +36,9 @@ class MapOfflineAreaScreenViewModel : BaseViewModel() {
         }
     }
 
-    /** 点击返回 */
-    fun onClickBack() {
-        controller?.navigateUp()
-    }
-
     /** 点击搜索 */
     fun onClickSearch() {
-        weakAct.get()?.apply {
+        MapActivity.instant.get()?.apply {
             LocationSearchManager.instant.startActivity(this) {
                 if (it != null) {
                     updateTarget(it)
@@ -91,7 +69,7 @@ class MapOfflineAreaScreenViewModel : BaseViewModel() {
 
     /** 点击图层切换 */
     fun onClickLayer() {
-        weakAct.get()?.apply {
+        MapActivity.instant.get()?.apply {
             app.showDialog(MapLayerDialogBuilder(
                 value = layerFlow.value,
                 isOnlyShowCanDown = true,
@@ -109,7 +87,7 @@ class MapOfflineAreaScreenViewModel : BaseViewModel() {
     }
 
     /** 点击下载 */
-    fun onClickDownload() {
-        controller?.let { MapOfflineAddScreenObj.go(it) }
+    fun onClickDownload(nav: DestinationsNavigator) {
+        nav.navigate(MapOfflineAddScreenDestination())
     }
 }

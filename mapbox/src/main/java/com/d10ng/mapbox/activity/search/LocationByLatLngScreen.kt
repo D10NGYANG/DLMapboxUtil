@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -13,27 +12,23 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import com.d10ng.compose.BaseActivity
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.view.MiniButton
 import com.d10ng.compose.view.TitleBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.constant.MapLayerType
-import com.d10ng.mapbox.view.InputItem
-import com.d10ng.mapbox.view.MapLayerLocationControllerBar
-import com.d10ng.mapbox.view.MapZoomControllerBar
-import com.d10ng.mapbox.view.MapboxView
+import com.d10ng.mapbox.view.*
 import com.mapbox.geojson.Point
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@LocationSearchNavGraph
+@Destination(style = PageTransitions::class)
 @Composable
 fun LocationByLatLngScreen(
-    controller: NavHostController,
-    act: BaseActivity,
+    nav: DestinationsNavigator,
     model: LocationByLatLngScreenViewModel = viewModel()
 ) {
-    LaunchedEffect(controller, act) { model.init(act, controller) }
-
     val layer by model.layerFlow.collectAsState()
     val zoom by model.zoomFlow.collectAsState()
     val target by model.targetFlow.collectAsState()
@@ -42,7 +37,7 @@ fun LocationByLatLngScreen(
         layer = layer,
         zoom = zoom,
         target = target,
-        onClickBack = { model.onClickBack() },
+        onClickBack = nav::navigateUp,
         onClickLat = { model.onClickLat() },
         onClickLng = { model.onClickLng() },
         onClickZoomIn = { model.onClickZoomIn() },

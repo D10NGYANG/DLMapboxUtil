@@ -1,32 +1,13 @@
 package com.d10ng.mapbox.activity.search
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import com.d10ng.compose.BaseActivity
-import com.d10ng.compose.BaseComposeScreenObject
-import com.d10ng.compose.BaseViewModel
+import androidx.lifecycle.ViewModel
 import com.d10ng.compose.dialog.builder.InputDialogBuilder
 import com.d10ng.mapbox.model.MapModel
 import com.d10ng.mapbox.view.MapLayerDialogBuilder
-import com.google.accompanist.navigation.animation.composable
 import com.mapbox.geojson.Point
 
-object LocationByLatLngScreenObj : BaseComposeScreenObject("LocationByLatLngScreen") {
-    @OptIn(ExperimentalAnimationApi::class)
-    override fun composable(
-        builder: NavGraphBuilder,
-        controller: NavHostController,
-        act: BaseActivity
-    ) {
-        builder.composable(name) {
-            LocationByLatLngScreen(controller, act)
-        }
-    }
-}
-
-class LocationByLatLngScreenViewModel : BaseViewModel() {
+class LocationByLatLngScreenViewModel : ViewModel() {
 
     /** 地图样式 */
     val layerFlow = MapModel.instant.layerTypeFlow
@@ -37,14 +18,9 @@ class LocationByLatLngScreenViewModel : BaseViewModel() {
     /** 地图中心 */
     val targetFlow = MapModel.instant.targetFlow
 
-    /** 点击返回 */
-    fun onClickBack() {
-        controller?.navigateUp()
-    }
-
     /** 点击纬度进行编辑 */
     fun onClickLat() {
-        weakAct.get()?.apply {
+        LocationSearchActivity.instant.get()?.apply {
             app.showDialog(InputDialogBuilder(
                 title = "纬度",
                 message = "请输入目标纬度，-90至90，eg:22.3",
@@ -80,7 +56,7 @@ class LocationByLatLngScreenViewModel : BaseViewModel() {
 
     /** 点击经度进行编辑 */
     fun onClickLng() {
-        weakAct.get()?.apply {
+        LocationSearchActivity.instant.get()?.apply {
             app.showDialog(InputDialogBuilder(
                 title = "经度",
                 message = "请输入目标经度，-180至180，eg:113.2",
@@ -136,7 +112,7 @@ class LocationByLatLngScreenViewModel : BaseViewModel() {
 
     /** 点击图层切换 */
     fun onClickLayer() {
-        weakAct.get()?.apply {
+        LocationSearchActivity.instant.get()?.apply {
             app.showDialog(MapLayerDialogBuilder(
                 value = layerFlow.value,
                 onChange = {
@@ -154,9 +130,6 @@ class LocationByLatLngScreenViewModel : BaseViewModel() {
 
     /** 点击确定 */
     fun onClickSure() {
-        weakAct.get()?.apply {
-            val point = targetFlow.value
-            LocationSearchManager.instant.finish(this, point)
-        }
+        LocationSearchManager.instant.finish(targetFlow.value)
     }
 }
