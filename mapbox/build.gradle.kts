@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "0.9.5"
+version = "0.9.6"
 
 android {
     namespace = "com.d10ng.mapbox"
@@ -20,7 +20,6 @@ android {
 
     defaultConfig {
         minSdk = Project.min_sdk
-        targetSdk = Project.target_sdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -32,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    kotlin {
+        jvmToolchain(8)
     }
     composeOptions {
         kotlinCompilerExtensionVersion = compose_compiler_ver
@@ -54,7 +53,7 @@ android {
 
 dependencies {
     // Android
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.10.0")
 
     // 单元测试（可选）
     testImplementation("junit:junit:4.13.2")
@@ -80,13 +79,13 @@ dependencies {
     ksp("io.github.raamcosta.compose-destinations:ksp:$compose_destinations_ver")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.1")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.2")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.2.3")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.3.0")
     // 定位工具
     implementation("com.github.D10NGYANG:DLGpsUtil:2.2.1")
     // 经纬度工具
-    implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.5.1")
+    implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.6.8")
     // 天地图API
     implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.5.0")
     // 网络请求框架

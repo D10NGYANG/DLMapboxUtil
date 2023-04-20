@@ -4,7 +4,7 @@ object Project {
     const val target_sdk = 30
 }
 
-const val android_build_ver = "7.4.2"
+const val android_build_ver = "8.0.0"
 const val kotlin_ver = "1.8.10"
 const val ksp_ver = "1.8.10-1.0.9"
 const val kotlin_coroutines_ver = "1.6.4"

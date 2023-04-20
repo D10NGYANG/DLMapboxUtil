@@ -45,11 +45,11 @@ android {
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    kotlin {
+        jvmToolchain(8)
     }
     composeOptions {
         kotlinCompilerExtensionVersion = compose_compiler_ver
@@ -57,18 +57,13 @@ android {
     buildFeatures {
         compose = true
     }
-    packagingOptions {
-        resources {
-            excludes.add("/META-INF/{AL2.0,LGPL2.1}")
-        }
-    }
 }
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
 
     // Android
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.10.0")
 
     // 单元测试（可选）
     testImplementation("junit:junit:4.13.2")
@@ -76,11 +71,11 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.1")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.2")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.2.3")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.3.0")
     // 日期工具兼容Android8.0以下设备
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.2")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 
     implementation(project(":mapbox"))
     // 天地图API
