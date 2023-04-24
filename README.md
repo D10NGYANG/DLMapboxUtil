@@ -21,13 +21,13 @@ Step 2. Add the dependency
 ```build.gradle
 dependencies {
     // 地图封装
-    implementation("com.github.D10NGYANG:DLMapboxUtil:0.9.6")
+    implementation("com.github.D10NGYANG:DLMapboxUtil:0.9.7")
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.2")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.3")
     // APP通用工具
     implementation("com.github.D10NGYANG:DLAppUtil:2.3.0")
     // 定位工具
-    implementation("com.github.D10NGYANG:DLGpsUtil:2.2.1")
+    implementation("com.github.D10NGYANG:DLGpsUtil:2.3.0")
     // 经纬度工具
     implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.6.8")
     // 天地图API

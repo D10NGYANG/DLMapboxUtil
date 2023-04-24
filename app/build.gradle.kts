@@ -71,7 +71,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.2")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.3")
     // APP通用工具
     implementation("com.github.D10NGYANG:DLAppUtil:2.3.0")
     // 日期工具兼容Android8.0以下设备

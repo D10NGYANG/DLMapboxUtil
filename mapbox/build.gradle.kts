@@ -4,15 +4,13 @@ val bds100MavenPassword: String by project
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.kapt")
-    id("org.jetbrains.kotlin.plugin.parcelize")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
     id("maven-publish")
 }
 
 group = "com.github.D10NGYANG"
-version = "0.9.6"
+version = "0.9.7"
 
 android {
     namespace = "com.d10ng.mapbox"
@@ -79,11 +77,11 @@ dependencies {
     ksp("io.github.raamcosta.compose-destinations:ksp:$compose_destinations_ver")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.2")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.3")
     // APP通用工具
     implementation("com.github.D10NGYANG:DLAppUtil:2.3.0")
     // 定位工具
-    implementation("com.github.D10NGYANG:DLGpsUtil:2.2.1")
+    implementation("com.github.D10NGYANG:DLGpsUtil:2.3.0")
     // 经纬度工具
     implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.6.8")
     // 天地图API
