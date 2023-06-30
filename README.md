@@ -5,7 +5,7 @@ Mapbox for jetpack compose 地图封装（含离线地图）
 <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/map.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/map_type.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/map_offline.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/map_offline_add.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/map_offline_add_config.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/search.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/search_sure.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/show.png" width="240"/> <img src="https://github.com/D10NGYANG/DLMapboxUtil/blob/master/image/show_other.png" width="240"/>
 
 # 使用说明
-Step 1. Add the JitPack repository to your build file
+Step 1. 添加仓库
 ```build.gradle
 allprojects {
   repositories {
@@ -17,23 +17,24 @@ allprojects {
   }
 }
 ```
-Step 2. Add the dependency
+
+Step 2. 添加依赖
 ```build.gradle
 dependencies {
     // 地图封装
-    implementation("com.github.D10NGYANG:DLMapboxUtil:0.9.7")
+    implementation("com.github.D10NGYANG:DLMapboxUtil:0.9.9")
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.3")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.5")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.3.0")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.3.2")
     // 定位工具
-    implementation("com.github.D10NGYANG:DLGpsUtil:2.3.0")
+    implementation("com.github.D10NGYANG:DLGpsUtil:2.3.3")
     // 经纬度工具
-    implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.6.8")
+    implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.7.3")
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.5.0")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.5.2")
     // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.8.0")
+    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.8.3")
 }
 ```
 
