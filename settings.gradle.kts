@@ -13,7 +13,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven("https://jitpack.io")
         maven("https://raw.githubusercontent.com/D10NGYANG/maven-repo/main/repository")
         maven {
             setUrl("https://api.mapbox.com/downloads/v2/releases/maven")

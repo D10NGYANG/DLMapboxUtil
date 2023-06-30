@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "0.9.8"
+version = "0.9.9"
 
 android {
     namespace = "com.d10ng.mapbox"
@@ -70,24 +70,24 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlin_serialization_json")
 
     // MapBox 地图
-    api("com.mapbox.maps:android:10.13.0")
+    api("com.mapbox.maps:android:10.14.1")
 
     // 导航路由
     implementation("io.github.raamcosta.compose-destinations:animations-core:$compose_destinations_ver")
     ksp("io.github.raamcosta.compose-destinations:ksp:$compose_destinations_ver")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.4")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.5")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.3.1")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.3.2")
     // 定位工具
-    implementation("com.github.D10NGYANG:DLGpsUtil:2.3.2")
+    implementation("com.github.D10NGYANG:DLGpsUtil:2.3.3")
     // 经纬度工具
-    implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.7.1")
+    implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.7.3")
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.5.1")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.5.2")
     // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.8.2")
+    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.8.3")
 }
 
 afterEvaluate {

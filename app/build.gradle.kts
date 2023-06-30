@@ -70,18 +70,18 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.4")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.5")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.3.1")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.3.2")
     // 日期工具兼容Android8.0以下设备
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 
     implementation(project(":mapbox"))
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.5.1")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.5.2")
     // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.8.2")
+    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.8.3")
 
     // 内存泄漏检查
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.11")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
 }
