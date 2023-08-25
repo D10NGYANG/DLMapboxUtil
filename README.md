@@ -22,19 +22,19 @@ Step 2. 添加依赖
 ```build.gradle
 dependencies {
     // 地图封装
-    implementation("com.github.D10NGYANG:DLMapboxUtil:1.0.0")
+    implementation("com.github.D10NGYANG:DLMapboxUtil:1.0.1")
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.6")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.7")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.3.3")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.3.4")
     // 定位工具
-    implementation("com.github.D10NGYANG:DLGpsUtil:2.3.4")
+    implementation("com.github.D10NGYANG:DLGpsUtil:2.3.5")
     // 经纬度工具
-    implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.7.4")
+    implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.7.5")
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.5.3")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.5.4")
     // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.8.4")
+    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.8.5")
 }
 ```
 

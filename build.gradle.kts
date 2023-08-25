@@ -9,7 +9,7 @@ plugins {
 
 tasks.register<Delete>(name = "clean") {
     group = "build"
-    delete(rootProject.buildDir)
+    delete(rootProject.layout.buildDirectory)
 }
 
 fun isNonStable(version: String): Boolean {
