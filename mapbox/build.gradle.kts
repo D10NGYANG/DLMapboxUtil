@@ -80,7 +80,7 @@ dependencies {
     ksp("io.github.raamcosta.compose-destinations:ksp:$compose_destinations_ver")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.0")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.1")
     // APP通用工具
     implementation("com.github.D10NGYANG:DLAppUtil:2.4.4")
     // 经纬度工具

@@ -1,15 +1,24 @@
 package com.d10ng.mapbox.activity.show
 
 import androidx.lifecycle.ViewModel
+import com.d10ng.app.base.ActivityManager
+import com.d10ng.app.base.startBaiDuMapMaker
+import com.d10ng.app.base.startGaoDeMapMaker
 import com.d10ng.app.resource.makeBitmapFromDrawable
+import com.d10ng.compose.model.UiViewModelManager
+import com.d10ng.compose.ui.sheet.builder.ActionSheetBuilder
+import com.d10ng.latlnglib.bean.DLatLng
+import com.d10ng.latlnglib.constant.CoordinateSystemType
+import com.d10ng.latlnglib.convert
 import com.d10ng.mapbox.R
+import com.d10ng.mapbox.startup.StartupInitializer
 import com.d10ng.mapbox.stores.MapViewStore
 import com.mapbox.geojson.Point
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class LocationShowScreenViewModel: ViewModel() {
+class LocationShowScreenViewModel : ViewModel() {
 
     companion object {
         private const val POINT = "POINT"
@@ -36,26 +45,15 @@ class LocationShowScreenViewModel: ViewModel() {
 
     /** 点击返回 */
     fun onClickBack() {
-        LocationShowActivity.instant.get()?.finish()
+        ActivityManager.top().value?.finish()
     }
 
     /** 地图加载完成 */
     fun onMapStyleLoad(style: Style) {
-        LocationShowActivity.instant.get()?.apply {
-            makeBitmapFromDrawable(R.drawable.ic_map_location_target_25)?.apply {
+        StartupInitializer.application
+            .makeBitmapFromDrawable(R.drawable.ic_map_location_target_25)?.apply {
                 style.addImage(POINT, this)
             }
-        }
-    }
-
-    /** 点击放大 */
-    fun onClickZoomIn() {
-        MapViewStore.zoomIn()
-    }
-
-    /** 点击缩小 */
-    fun onClickZoomOut() {
-        MapViewStore.zoomOut()
     }
 
     /** 更新比例 */
@@ -89,36 +87,26 @@ class LocationShowScreenViewModel: ViewModel() {
 
     /** 点击到这去 */
     fun onClickGo() {
-        LocationShowActivity.instant.get()?.apply {
-            // TODO
-//            app.showDialog(RadioDialogBuilder(
-//                title = "提示",
-//                message = "使用第三方地图进行导航规划",
-//                map = OtherMapType.toDialogMap(),
-//                select = "",
-//                customItemView = { _, info, onClick ->
-//                    OtherMapRadioDialogItem(info = info, onClick = onClick)
-//                },
-//                isRow = false,
-//                onSelect = { select ->
-//                    app.hideDialog()
-//                    val type = select.second as OtherMapType
-//                    val dLatLng = DLatLng(_initPoint.latitude(), _initPoint.longitude())
-//                    val latlng =
-//                        dLatLng.convert(CoordinateSystemType.WGS84, CoordinateSystemType.GCJ02)
-//                    when (type) {
-//                        OtherMapType.GAODE -> startGaoDeMapMaker(
-//                            latlng.latitude,
-//                            latlng.longitude
-//                        )
-//                        OtherMapType.BAIDU -> startBaiDuMapMaker(
-//                            latlng.latitude,
-//                            latlng.longitude
-//                        )
-//                        else -> {}
-//                    }
-//                }
-//            ))
-        }
+        UiViewModelManager.showSheet(ActionSheetBuilder(
+            items = setOf("高德地图", "百度地图"),
+            onItemClick = { value ->
+                val act = ActivityManager.top().value ?: return@ActionSheetBuilder
+                val d = DLatLng(_initPoint.latitude(), _initPoint.longitude())
+                val point = d.convert(CoordinateSystemType.WGS84, CoordinateSystemType.GCJ02)
+                when (value) {
+                    "高德地图" -> act.startGaoDeMapMaker(
+                        point.latitude,
+                        point.longitude
+                    )
+
+                    "百度地图" -> act.startBaiDuMapMaker(
+                        point.latitude,
+                        point.longitude
+                    )
+
+                    else -> {}
+                }
+            }
+        ))
     }
 }

@@ -6,36 +6,28 @@ import androidx.activity.compose.setContent
 import com.d10ng.app.base.getClearTopIntent
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.activity.BaseMapboxActivity
+import com.d10ng.mapbox.stores.MapViewStore
 import com.mapbox.geojson.Point
-import java.lang.ref.WeakReference
 
 class LocationShowActivity : BaseMapboxActivity() {
 
     companion object {
         const val PARAM_LAT = "lat"
         const val PARAM_LNG = "lng"
-        var instant = WeakReference<LocationShowActivity?>(null)
-        var initPoint: Point = Point.fromLngLat(0.0, 0.0)
+        var initPoint: Point = MapViewStore.targetFlow.value
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        instant = WeakReference(this)
-
         val lat = intent.getDoubleExtra(PARAM_LAT, 0.0)
         val lng = intent.getDoubleExtra(PARAM_LNG, 0.0)
-        initPoint = Point.fromLngLat(lng, lat)
+        if (lat != 0.0 && lng != 0.0) initPoint = Point.fromLngLat(lng, lat)
 
         setContent {
             LocationShowScreen()
             UiViewModelManager.Init(act = this)
         }
-    }
-
-    override fun onDestroy() {
-        instant = WeakReference(null)
-        super.onDestroy()
     }
 }
 

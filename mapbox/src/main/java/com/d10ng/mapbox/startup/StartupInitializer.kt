@@ -11,8 +11,14 @@ import com.d10ng.mapbox.stores.MapboxStore
  * @Date 2023/9/15 18:28
  */
 class StartupInitializer : Initializer<Unit> {
+
+    companion object {
+        lateinit var application: Application
+    }
+
     override fun create(context: Context) {
-        MapboxStore.init(context as Application)
+        application = context as Application
+        MapboxStore.init(context)
     }
 
     override fun dependencies(): MutableList<Class<out Initializer<*>>> {

@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -19,6 +18,7 @@ import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.activity.map.Compass
 import com.d10ng.mapbox.constant.MapLayerType
+import com.d10ng.mapbox.stores.MapViewStore
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
@@ -41,10 +41,10 @@ fun LocationShowScreen(
         zoom = zoom,
         target = target,
         pointOption = pointOption,
-        onClickBack = { model.onClickBack() },
+        onClickBack = model::onClickBack,
         onMapStyleLoad = { model.onMapStyleLoad(it) },
-        onClickZoomIn = { model.onClickZoomIn() },
-        onClickZoomOut = { model.onClickZoomOut() },
+        onClickZoomIn = MapViewStore::zoomIn,
+        onClickZoomOut = MapViewStore::zoomOut,
         onClickLayer = { model.onClickLayer() },
         onClickLocation = { model.onClickLocation() },
         onUpdateZoom = { model.updateZoom(it) },
@@ -76,9 +76,8 @@ fun LocationShowScreenView(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColor.Neutral.bg)
-            .navigationBarsPadding()
     ) {
-        NavBar(title = "位置", onClickBack = onClickBack)
+        NavBar(title = "位置", onClickBack = onClickBack, titleAlignment = Alignment.CenterStart)
         Box(
             modifier = Modifier
                 .fillMaxSize()
