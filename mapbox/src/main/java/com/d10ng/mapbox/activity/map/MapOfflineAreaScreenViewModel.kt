@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.d10ng.mapbox.activity.destinations.MapOfflineAddScreenDestination
 import com.d10ng.mapbox.activity.search.LocationSearchManager
 import com.d10ng.mapbox.constant.MapLayerType
-import com.d10ng.mapbox.stores.MapStore
+import com.d10ng.mapbox.stores.MapViewStore
 import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
@@ -13,19 +13,19 @@ import kotlinx.coroutines.launch
 class MapOfflineAreaScreenViewModel : ViewModel() {
 
     /** 地图样式 */
-    val layerFlow = MapStore.layerTypeFlow
+    val layerFlow = MapViewStore.layerTypeFlow
 
     /** 缩放比例 */
-    val zoomFlow = MapStore.zoomFlow
+    val zoomFlow = MapViewStore.zoomFlow
 
     /** 地图中心 */
-    val targetFlow = MapStore.targetFlow
+    val targetFlow = MapViewStore.targetFlow
 
     init {
         viewModelScope.launch {
             layerFlow.collect { type ->
                 if (!type.isCanDown) {
-                    MapStore.updateLayer(MapLayerType.MAPBOX_STREETS)
+                    MapViewStore.updateLayer(MapLayerType.MAPBOX_STREETS)
                 }
             }
         }
@@ -44,22 +44,22 @@ class MapOfflineAreaScreenViewModel : ViewModel() {
 
     /** 点击放大 */
     fun onClickZoomIn() {
-        MapStore.zoomIn()
+        MapViewStore.zoomIn()
     }
 
     /** 点击缩小 */
     fun onClickZoomOut() {
-        MapStore.zoomOut()
+        MapViewStore.zoomOut()
     }
 
     /** 更新比例 */
     fun updateZoom(value: Double) {
-        MapStore.updateZoom(value)
+        MapViewStore.updateZoom(value)
     }
 
     /** 更新地图中心 */
     fun updateTarget(value: Point) {
-        MapStore.updateTarget(value)
+        MapViewStore.updateTarget(value)
     }
 
     /** 点击图层切换 */
@@ -79,7 +79,7 @@ class MapOfflineAreaScreenViewModel : ViewModel() {
 
     /** 点击移动到当前位置 */
     fun onClickLocation() {
-        MapStore.moveToCurrentLocation()
+        MapViewStore.moveToCurrentLocation()
     }
 
     /** 点击下载 */

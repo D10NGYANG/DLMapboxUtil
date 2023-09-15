@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
  * @Author d10ng
  * @Date 2023/9/15 18:12
  */
-object MapStore {
+object MapViewStore {
 
     /** 地图最大缩放倍数 mapbox默认为25.5 */
     private const val MAP_BOX_ZOOM_MAX = 20.0

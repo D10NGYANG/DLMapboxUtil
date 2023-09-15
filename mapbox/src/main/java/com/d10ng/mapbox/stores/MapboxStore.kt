@@ -26,11 +26,11 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 /**
- * 地图离线存储
+ * 地图管理器
  * @Author d10ng
  * @Date 2023/9/15 18:29
  */
-object OfflineMapStore {
+object MapboxStore {
 
     private lateinit var application: Application
 
@@ -110,7 +110,7 @@ object OfflineMapStore {
         maxZoom: Int,
         title: String,
     ) {
-        val style = MapStore.getCurrentLayer().source
+        val style = MapViewStore.getCurrentLayer().source
         val json = JSONObject().apply {
             put("style", style)
             put("minZoom", minZoom)
@@ -122,7 +122,7 @@ object OfflineMapStore {
         tileStore?.loadTileRegion(
             System.currentTimeMillis().toString(),
             TileRegionLoadOptions.Builder()
-                .geometry(MapStore.targetFlow.value)
+                .geometry(MapViewStore.targetFlow.value)
                 .descriptors(
                     listOf(
                         offlineManager.createTilesetDescriptor(

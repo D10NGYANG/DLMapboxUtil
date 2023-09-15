@@ -3,7 +3,7 @@ package com.d10ng.mapbox.startup
 import android.app.Application
 import android.content.Context
 import androidx.startup.Initializer
-import com.d10ng.mapbox.stores.OfflineMapStore
+import com.d10ng.mapbox.stores.MapboxStore
 
 /**
  * 启动初始化
@@ -12,7 +12,7 @@ import com.d10ng.mapbox.stores.OfflineMapStore
  */
 class StartupInitializer : Initializer<Unit> {
     override fun create(context: Context) {
-        OfflineMapStore.init(context as Application)
+        MapboxStore.init(context as Application)
     }
 
     override fun dependencies(): MutableList<Class<out Initializer<*>>> {

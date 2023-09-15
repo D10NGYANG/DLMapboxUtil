@@ -12,7 +12,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.constant.MapLayerType
-import com.d10ng.mapbox.stores.OfflineMapStore
+import com.d10ng.mapbox.stores.MapboxStore
 import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
@@ -97,7 +97,7 @@ fun MapboxView(
                 context,
                 MapInitOptions(
                     context,
-                    ResourceOptions.Builder().accessToken(OfflineMapStore.token).build()
+                    ResourceOptions.Builder().accessToken(MapboxStore.token).build()
                 )
             ).apply {
                 // 不显示地图官方LOGO

@@ -3,7 +3,7 @@ package com.d10ng.mapbox.activity.map
 import androidx.lifecycle.ViewModel
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.activity.destinations.MapOfflineListScreenDestination
-import com.d10ng.mapbox.stores.OfflineMapStore
+import com.d10ng.mapbox.stores.MapboxStore
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.math.roundToInt
@@ -33,7 +33,7 @@ class MapOfflineAddScreenViewModel : ViewModel() {
                 UiViewModelManager.showErrorNotify("地图名称不能为空！")
                 return
             }
-            OfflineMapStore.addOfflineDownload(
+            MapboxStore.addOfflineDownload(
                 minZoom = zoomRangeFlow.value.start.roundToInt(),
                 maxZoom = zoomRangeFlow.value.endInclusive.roundToInt(),
                 title = inputNameFlow.value

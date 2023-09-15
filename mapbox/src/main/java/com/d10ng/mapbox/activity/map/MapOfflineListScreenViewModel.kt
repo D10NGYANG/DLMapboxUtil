@@ -5,25 +5,25 @@ import androidx.lifecycle.viewModelScope
 import com.d10ng.mapbox.activity.destinations.MapOfflineAreaScreenDestination
 import com.d10ng.mapbox.activity.destinations.MapOfflineEditScreenDestination
 import com.d10ng.mapbox.bean.OfflineMapInfo
-import com.d10ng.mapbox.stores.OfflineMapStore
+import com.d10ng.mapbox.stores.MapboxStore
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
 class MapOfflineListScreenViewModel : ViewModel() {
 
     /** 离线地图信息 */
-    val offlineMapInfoListFlow = OfflineMapStore.offlineMapInfoListFlow
+    val offlineMapInfoListFlow = MapboxStore.offlineMapInfoListFlow
 
     /** 离线地图快照 */
-    val offlineMapSnapshotFlow = OfflineMapStore.offlineMapSnapshotFlow
+    val offlineMapSnapshotFlow = MapboxStore.offlineMapSnapshotFlow
 
     init {
         // 刷新离线地图列表
-        OfflineMapStore.refreshMapOfflineList()
+        MapboxStore.refreshMapOfflineList()
         viewModelScope.launch {
             offlineMapInfoListFlow.collect {
                 // 刷新快照
-                OfflineMapStore.updateSnapshot()
+                MapboxStore.updateSnapshot()
             }
         }
     }
