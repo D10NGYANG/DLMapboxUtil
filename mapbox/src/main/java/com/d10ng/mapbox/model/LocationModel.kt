@@ -1,15 +1,17 @@
 package com.d10ng.mapbox.model
 
 import android.Manifest
-import com.d10ng.app.app.hasPermissions
-import com.d10ng.app.app.reqPermissions
-import com.d10ng.compose.BaseActivity
+import androidx.activity.ComponentActivity
+import com.d10ng.app.base.PermissionManager
 import com.d10ng.gps.ALocationListener
 import com.d10ng.gps.isLocationEnabled
 import com.d10ng.gps.startRequestLocation
 import com.d10ng.gps.stopRequestLocation
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 internal class LocationModel {
 
@@ -34,20 +36,17 @@ internal class LocationModel {
 
     /** 检查定位权限 */
     @Synchronized
-    private fun checkLocationPermission(act: BaseActivity, result: (Boolean) -> Unit = {}) {
-        if (isHasLocationPermissionFlow.value == true || act.hasPermissions(locationPermission)) {
+    private fun checkLocationPermission(act: ComponentActivity, result: (Boolean) -> Unit = {}) {
+        if (isHasLocationPermissionFlow.value == true || PermissionManager.has(locationPermission)) {
             if (isHasLocationPermissionFlow.value != true) isHasLocationPermissionFlow.value = true
             result(true)
             return
         }
-        val permissionResultFlow = act.reqPermissions(*locationPermission)
         CoroutineScope(Dispatchers.IO).launch {
-            permissionResultFlow.collect {
-                withContext(Dispatchers.Main) {
-                    isHasLocationPermissionFlow.value = it
-                    result(it)
-                }
-                cancel()
+            val isSuccess = PermissionManager.request(locationPermission)
+            withContext(Dispatchers.Main) {
+                isHasLocationPermissionFlow.value = isSuccess
+                result(isSuccess)
             }
         }
     }
@@ -58,7 +57,7 @@ internal class LocationModel {
      * @param act BaseActivity
      */
     @Synchronized
-    fun startRequestLocation(act: BaseActivity) {
+    fun startRequestLocation(act: ComponentActivity) {
         if (!act.isLocationEnabled()) return
         checkLocationPermission(act) {
             if (it) act.application.startRequestLocation(locationGpsListener)
@@ -67,7 +66,7 @@ internal class LocationModel {
 
     /** 关闭获取手机定位 */
     @Synchronized
-    fun stopRequestLocation(act: BaseActivity) {
+    fun stopRequestLocation(act: ComponentActivity) {
         act.application.stopRequestLocation(locationGpsListener)
     }
 }

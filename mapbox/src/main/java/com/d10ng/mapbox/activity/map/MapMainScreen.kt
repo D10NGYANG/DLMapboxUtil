@@ -2,8 +2,14 @@ package com.d10ng.mapbox.activity.map
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -17,14 +23,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
 import com.d10ng.compose.ui.AppText
-import com.d10ng.compose.view.MiniButton
-import com.d10ng.compose.view.TitleBar
+import com.d10ng.compose.ui.PageTransitions
+import com.d10ng.compose.ui.base.Button
+import com.d10ng.compose.ui.base.ButtonSize
+import com.d10ng.compose.ui.base.ButtonType
+import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.constant.MapLayerType
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
-import com.d10ng.mapbox.view.PageTransitions
 import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -75,16 +83,17 @@ private fun MapMainScreenView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColor.System.background)
+            .background(AppColor.Neutral.bg)
             .navigationBarsPadding()
     ) {
-        TitleBar(value = "地图", onClickBack = onClickBack) {
-            MiniButton(
+        NavBar(title = "地图", onClickBack = onClickBack) {
+            Button(
                 text = "离线地图",
                 onClick = onClickOffline,
                 modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(end = 16.dp)
+                    .padding(end = 16.dp),
+                type = ButtonType.PRIMARY,
+                size = ButtonSize.MINI
             )
         }
         Box(
@@ -148,6 +157,6 @@ fun BoxScope.UserLocationBar(
             .align(Alignment.TopStart),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = text, style = AppText.Normal.Title.v12)
+        Text(text = text, style = AppText.Normal.Title.mini)
     }
 }

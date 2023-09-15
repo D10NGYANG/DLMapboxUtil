@@ -1,22 +1,32 @@
 package com.d10ng.mapbox.activity.map
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.RangeSlider
-import androidx.compose.material.SliderDefaults
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.material3.RangeSlider
+import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppText
-import com.d10ng.compose.view.TitleBar
+import com.d10ng.compose.ui.PageTransitions
+import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.view.InputItem
-import com.d10ng.mapbox.view.PageTransitions
 import com.d10ng.mapbox.view.SureButton
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -54,10 +64,10 @@ private fun MapOfflineAddScreenView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColor.System.background)
+            .background(AppColor.Neutral.bg)
             .navigationBarsPadding()
     ) {
-        TitleBar(value = "配置离线地图", onClickBack = onClickBack)
+        NavBar(title = "配置离线地图", onClickBack = onClickBack)
 
         LazyColumn(
             modifier = Modifier
@@ -92,7 +102,6 @@ private fun MapOfflineAddScreenView(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun ZoomRangePicker(
     zoomRange: ClosedFloatingPointRange<Float>,
@@ -106,12 +115,12 @@ private fun ZoomRangePicker(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(top = 4.dp)
-            .background(AppColor.System.background)
+            .background(AppColor.Neutral.bg)
             .padding(16.dp)
     ) {
         Text(
             text = "地图层级：${zoomRange.start.roundToInt()} ~ ${zoomRange.endInclusive.roundToInt()} 级",
-            style = AppText.Normal.Title.v14
+            style = AppText.Normal.Title.small
         )
 
         RangeSlider(
@@ -126,11 +135,11 @@ private fun ZoomRangePicker(
                 onUpdateZoomRange(tempRange)
             },
             colors = SliderDefaults.colors(
-                thumbColor = AppColor.System.secondary,
-                activeTrackColor = AppColor.System.background,
-                inactiveTrackColor = AppColor.System.background,
-                activeTickColor = AppColor.System.secondary,
-                inactiveTickColor = AppColor.System.secondary
+                thumbColor = AppColor.Main.primary,
+                activeTrackColor = AppColor.Neutral.bg,
+                inactiveTrackColor = AppColor.Neutral.bg,
+                activeTickColor = AppColor.Main.primary,
+                inactiveTickColor = AppColor.Main.primary
             )
         )
 

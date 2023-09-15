@@ -3,7 +3,12 @@ package com.d10ng.mapbox.activity.map
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,10 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
-import com.d10ng.compose.view.TitleBar
+import com.d10ng.compose.ui.PageTransitions
+import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.view.InputItem
-import com.d10ng.mapbox.view.PageTransitions
 import com.d10ng.mapbox.view.SureButton
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -57,15 +62,14 @@ fun MapOfflineEditScreenView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColor.System.background)
+            .background(AppColor.Neutral.bg)
             .navigationBarsPadding()
     ) {
-        TitleBar(value = "编辑离线地图", onClickBack = onClickBack) {
+        NavBar(title = "编辑离线地图", onClickBack = onClickBack) {
             Image(
                 painter = painterResource(id = R.drawable.ic_baseline_delete_24),
                 contentDescription = "删除",
                 modifier = Modifier
-                    .align(Alignment.CenterEnd)
                     .padding(end = 4.dp)
                     .size(46.dp)
                     .clip(AppShape.RC.Cycle)

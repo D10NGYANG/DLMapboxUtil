@@ -2,7 +2,12 @@ package com.d10ng.mapbox.activity.search
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -13,11 +18,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
-import com.d10ng.compose.view.MiniButton
-import com.d10ng.compose.view.TitleBar
+import com.d10ng.compose.ui.PageTransitions
+import com.d10ng.compose.ui.base.Button
+import com.d10ng.compose.ui.base.ButtonSize
+import com.d10ng.compose.ui.base.ButtonType
+import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.constant.MapLayerType
-import com.d10ng.mapbox.view.*
+import com.d10ng.mapbox.view.InputItem
+import com.d10ng.mapbox.view.MapLayerLocationControllerBar
+import com.d10ng.mapbox.view.MapZoomControllerBar
+import com.d10ng.mapbox.view.MapboxView
 import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -69,16 +80,17 @@ private fun LocationByLatLngScreenView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColor.System.background)
+            .background(AppColor.Neutral.bg)
             .navigationBarsPadding()
     ) {
-        TitleBar(value = "经纬度位置", onClickBack = onClickBack) {
-            MiniButton(
+        NavBar(title = "经纬度位置", onClickBack = onClickBack) {
+            Button(
                 text = "确定",
                 onClick = onClickSure,
                 modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(end = 16.dp)
+                    .padding(end = 16.dp),
+                type = ButtonType.PRIMARY,
+                size = ButtonSize.MINI
             )
         }
         InputItem(

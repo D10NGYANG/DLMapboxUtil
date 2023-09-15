@@ -2,9 +2,9 @@ package com.d10ng.mapbox.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,7 +23,7 @@ fun SureButton(
     Button(
         shape = AppShape.RC.Cycle,
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = AppColor.System.secondary
+            containerColor = AppColor.Main.primary
         ),
         contentPadding = contentPadding,
         modifier = modifier,
@@ -32,7 +32,7 @@ fun SureButton(
     ) {
         Text(
             text = text,
-            style = AppText.Bold.OnSecondary.v14
+            style = AppText.Bold.White.v14
         )
     }
 }

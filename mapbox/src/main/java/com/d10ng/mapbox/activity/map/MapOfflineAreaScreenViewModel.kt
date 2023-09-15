@@ -6,7 +6,6 @@ import com.d10ng.mapbox.activity.destinations.MapOfflineAddScreenDestination
 import com.d10ng.mapbox.activity.search.LocationSearchManager
 import com.d10ng.mapbox.constant.MapLayerType
 import com.d10ng.mapbox.model.MapModel
-import com.d10ng.mapbox.view.MapLayerDialogBuilder
 import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
@@ -69,16 +68,17 @@ class MapOfflineAreaScreenViewModel : ViewModel() {
 
     /** 点击图层切换 */
     fun onClickLayer() {
-        MapActivity.instant.get()?.apply {
-            app.showDialog(MapLayerDialogBuilder(
-                value = layerFlow.value,
-                isOnlyShowCanDown = true,
-                onChange = {
-                    app.hideDialog()
-                    MapModel.instant.updateLayer(this, it)
-                }
-            ))
-        }
+        // TODO
+//        MapActivity.instant.get()?.apply {
+//            app.showDialog(MapLayerDialogBuilder(
+//                value = layerFlow.value,
+//                isOnlyShowCanDown = true,
+//                onChange = {
+//                    app.hideDialog()
+//                    MapModel.instant.updateLayer(this, it)
+//                }
+//            ))
+//        }
     }
 
     /** 点击移动到当前位置 */

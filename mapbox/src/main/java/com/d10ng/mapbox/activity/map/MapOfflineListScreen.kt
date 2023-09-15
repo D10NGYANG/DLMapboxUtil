@@ -5,7 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,12 +22,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
 import com.d10ng.compose.ui.AppText
-import com.d10ng.compose.view.TitleBar
+import com.d10ng.compose.ui.PageTransitions
+import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.bean.OfflineMapInfo
-import com.d10ng.mapbox.view.PageTransitions
-import com.google.accompanist.flowlayout.FlowMainAxisAlignment
-import com.google.accompanist.flowlayout.FlowRow
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -50,6 +48,7 @@ fun MapOfflineListScreen(
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun MapOfflineListScreenView(
     infoList: List<OfflineMapInfo>,
@@ -61,15 +60,14 @@ private fun MapOfflineListScreenView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColor.System.background)
+            .background(AppColor.Neutral.bg)
             .navigationBarsPadding()
     ) {
-        TitleBar(value = "离线地图", onClickBack = onClickBack) {
+        NavBar(title = "离线地图", onClickBack = onClickBack) {
             Image(
                 painter = painterResource(id = R.drawable.ic_toolbar_add_24),
                 contentDescription = "添加",
                 modifier = Modifier
-                    .align(Alignment.CenterEnd)
                     .padding(end = 4.dp)
                     .size(46.dp)
                     .clip(AppShape.RC.Cycle)
@@ -85,8 +83,8 @@ private fun MapOfflineListScreenView(
                     .fillMaxSize()
                     .weight(1f)
                     .padding(16.dp),
-                mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
-                crossAxisSpacing = 16.dp
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 infoList.forEach { item ->
                     OfflineMapItem(value = item, bitmap = snapshotMap[item.region.id]) {
@@ -131,7 +129,7 @@ private fun OfflineMapItem(
     Box(
         modifier = Modifier
             .size(160.dp)
-            .background(AppColor.System.divider, AppShape.RC.v6)
+            .background(AppColor.Neutral.line, AppShape.RC.v6)
             .clip(AppShape.RC.v6)
             .clickable { onClick() }
     ) {
@@ -147,7 +145,7 @@ private fun OfflineMapItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .background(AppColor.System.primary)
+                .background(AppColor.Neutral.card)
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             contentAlignment = Alignment.CenterStart
         ) {

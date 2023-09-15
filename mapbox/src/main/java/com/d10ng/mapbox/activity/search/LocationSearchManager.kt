@@ -1,8 +1,8 @@
 package com.d10ng.mapbox.activity.search
 
 import android.app.Activity
-import com.d10ng.app.app.goTo
-import com.d10ng.compose.BaseActivity
+import com.d10ng.app.base.goTo
+import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.tianditu.api.TianDiTuApi
 import com.d10ng.tianditu.bean.LocationSearch
 import com.mapbox.geojson.Point
@@ -59,14 +59,15 @@ class LocationSearchManager {
 
     /** 搜索 */
     suspend fun search(
-        act: BaseActivity,
+        // TODO
+        act: Activity,
         value: String,
         specify: String? = null,
     ): LocationSearch? {
         if (value.isEmpty()) return null
         val result = TianDiTuApi.getLocationSearchV2(value, specify)
         return if (result != null && result.status.infocode != 1000) {
-            act.app.showError(result.status.cndesc)
+            UiViewModelManager.showErrorNotify(result.status.cndesc)
             null
         } else result
     }

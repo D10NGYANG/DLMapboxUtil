@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d10ng.mapbox.activity.destinations.LocationByLatLngScreenDestination
 import com.d10ng.mapbox.activity.destinations.LocationSearchInfoScreenDestination
-import com.d10ng.mapbox.view.LocationSureDialogBuilder
 import com.d10ng.tianditu.bean.LocationSearch
 import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -77,18 +76,19 @@ class LocationSearchMainScreenViewModel : ViewModel() {
             val lng = ls[0].toDoubleOrNull() ?: 0.0
             val lat = ls[1].toDoubleOrNull() ?: 0.0
             val target = Point.fromLngLat(lng, lat)
-            app.showDialog(LocationSureDialogBuilder(
-                title = "位置确定",
-                message = value.address,
-                target = target,
-                onClickSure = {
-                    app.hideDialog()
-                    LocationSearchManager.instant.finish(target)
-                },
-                onClickCancel = {
-                    app.hideDialog()
-                }
-            ))
+            // TODO
+//            app.showDialog(LocationSureDialogBuilder(
+//                title = "位置确定",
+//                message = value.address,
+//                target = target,
+//                onClickSure = {
+//                    app.hideDialog()
+//                    LocationSearchManager.instant.finish(target)
+//                },
+//                onClickCancel = {
+//                    app.hideDialog()
+//                }
+//            ))
         }
     }
 }

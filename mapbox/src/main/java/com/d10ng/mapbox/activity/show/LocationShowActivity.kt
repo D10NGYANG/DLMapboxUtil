@@ -1,16 +1,19 @@
 package com.d10ng.mapbox.activity.show
 
+import android.app.Activity
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.d10ng.app.app.getClearTopIntent
-import com.d10ng.compose.BaseActivity
-import com.d10ng.compose.ui.AppTheme
+import com.d10ng.app.base.getClearTopIntent
+import com.d10ng.app.view.lockScreenOrientation
+import com.d10ng.app.view.setStatusBar
+import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.model.LocationModel
 import com.d10ng.mapbox.model.MapModel
 import com.mapbox.geojson.Point
 import java.lang.ref.WeakReference
 
-class LocationShowActivity : BaseActivity() {
+class LocationShowActivity : ComponentActivity() {
 
     companion object {
         const val PARAM_LAT = "lat"
@@ -22,6 +25,11 @@ class LocationShowActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // 锁定屏幕方向
+        lockScreenOrientation()
+        // 设置状态栏颜色
+        setStatusBar()
+
         instant = WeakReference(this)
 
         val lat = intent.getDoubleExtra(PARAM_LAT, 0.0)
@@ -31,9 +39,8 @@ class LocationShowActivity : BaseActivity() {
         LocationModel.instant.startRequestLocation(this)
 
         setContent {
-            AppTheme(app = app) {
-                LocationShowScreen()
-            }
+            LocationShowScreen()
+            UiViewModelManager.Init(act = this)
         }
     }
 
@@ -55,7 +62,7 @@ class LocationShowActivity : BaseActivity() {
  * @param lat Double
  * @param lng Double
  */
-fun BaseActivity.goToLocationShowActivity(lat: Double, lng: Double) {
+fun Activity.goToLocationShowActivity(lat: Double, lng: Double) {
     val intent = getClearTopIntent(LocationShowActivity::class.java).apply {
         putExtra(LocationShowActivity.PARAM_LAT, lat)
         putExtra(LocationShowActivity.PARAM_LNG, lng)

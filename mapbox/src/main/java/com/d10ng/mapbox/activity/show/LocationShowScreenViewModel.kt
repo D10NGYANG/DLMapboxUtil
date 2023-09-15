@@ -2,17 +2,8 @@ package com.d10ng.mapbox.activity.show
 
 import androidx.lifecycle.ViewModel
 import com.d10ng.app.resource.makeBitmapFromDrawable
-import com.d10ng.compose.dialog.builder.RadioDialogBuilder
-import com.d10ng.gps.startBaiDuMapMaker
-import com.d10ng.gps.startGaoDeMapMaker
-import com.d10ng.latlnglib.bean.DLatLng
-import com.d10ng.latlnglib.constant.CoordinateSystemType
-import com.d10ng.latlnglib.convert
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.model.MapModel
-import com.d10ng.mapbox.view.MapLayerDialogBuilder
-import com.d10ng.mapbox.view.OtherMapRadioDialogItem
-import com.d10ng.mapbox.view.OtherMapType
 import com.mapbox.geojson.Point
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
@@ -79,15 +70,16 @@ class LocationShowScreenViewModel: ViewModel() {
 
     /** 点击图层切换 */
     fun onClickLayer() {
-        LocationShowActivity.instant.get()?.apply {
-            app.showDialog(MapLayerDialogBuilder(
-                value = layerFlow.value,
-                onChange = {
-                    app.hideDialog()
-                    MapModel.instant.updateLayer(this, it)
-                }
-            ))
-        }
+        // TODO
+//        LocationShowActivity.instant.get()?.apply {
+//            app.showDialog(MapLayerDialogBuilder(
+//                value = layerFlow.value,
+//                onChange = {
+//                    app.hideDialog()
+//                    MapModel.instant.updateLayer(this, it)
+//                }
+//            ))
+//        }
     }
 
     /** 点击移动到位置 */
@@ -98,34 +90,35 @@ class LocationShowScreenViewModel: ViewModel() {
     /** 点击到这去 */
     fun onClickGo() {
         LocationShowActivity.instant.get()?.apply {
-            app.showDialog(RadioDialogBuilder(
-                title = "提示",
-                message = "使用第三方地图进行导航规划",
-                map = OtherMapType.toDialogMap(),
-                select = "",
-                customItemView = { _, info, onClick ->
-                    OtherMapRadioDialogItem(info = info, onClick = onClick)
-                },
-                isRow = false,
-                onSelect = { select ->
-                    app.hideDialog()
-                    val type = select.second as OtherMapType
-                    val dLatLng = DLatLng(_initPoint.latitude(), _initPoint.longitude())
-                    val latlng =
-                        dLatLng.convert(CoordinateSystemType.WGS84, CoordinateSystemType.GCJ02)
-                    when (type) {
-                        OtherMapType.GAODE -> startGaoDeMapMaker(
-                            latlng.latitude,
-                            latlng.longitude
-                        )
-                        OtherMapType.BAIDU -> startBaiDuMapMaker(
-                            latlng.latitude,
-                            latlng.longitude
-                        )
-                        else -> {}
-                    }
-                }
-            ))
+            // TODO
+//            app.showDialog(RadioDialogBuilder(
+//                title = "提示",
+//                message = "使用第三方地图进行导航规划",
+//                map = OtherMapType.toDialogMap(),
+//                select = "",
+//                customItemView = { _, info, onClick ->
+//                    OtherMapRadioDialogItem(info = info, onClick = onClick)
+//                },
+//                isRow = false,
+//                onSelect = { select ->
+//                    app.hideDialog()
+//                    val type = select.second as OtherMapType
+//                    val dLatLng = DLatLng(_initPoint.latitude(), _initPoint.longitude())
+//                    val latlng =
+//                        dLatLng.convert(CoordinateSystemType.WGS84, CoordinateSystemType.GCJ02)
+//                    when (type) {
+//                        OtherMapType.GAODE -> startGaoDeMapMaker(
+//                            latlng.latitude,
+//                            latlng.longitude
+//                        )
+//                        OtherMapType.BAIDU -> startBaiDuMapMaker(
+//                            latlng.latitude,
+//                            latlng.longitude
+//                        )
+//                        else -> {}
+//                    }
+//                }
+//            ))
         }
     }
 }

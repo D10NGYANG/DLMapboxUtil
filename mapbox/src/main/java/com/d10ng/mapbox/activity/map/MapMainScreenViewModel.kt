@@ -7,7 +7,6 @@ import com.d10ng.latlnglib.toLongitudeString
 import com.d10ng.mapbox.activity.destinations.MapOfflineListScreenDestination
 import com.d10ng.mapbox.model.LocationModel
 import com.d10ng.mapbox.model.MapModel
-import com.d10ng.mapbox.view.MapLayerDialogBuilder
 import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -74,15 +73,16 @@ class MapMainScreenViewModel : ViewModel() {
 
     /** 点击图层切换 */
     fun onClickLayer() {
-        MapActivity.instant.get()?.apply {
-            app.showDialog(MapLayerDialogBuilder(
-                value = layerFlow.value,
-                onChange = {
-                    app.hideDialog()
-                    MapModel.instant.updateLayer(this, it)
-                }
-            ))
-        }
+        // TODO
+//        MapActivity.instant.get()?.apply {
+//            app.showDialog(MapLayerDialogBuilder(
+//                value = layerFlow.value,
+//                onChange = {
+//                    app.hideDialog()
+//                    MapModel.instant.updateLayer(this, it)
+//                }
+//            ))
+//        }
     }
 
     /** 点击移动到当前位置 */

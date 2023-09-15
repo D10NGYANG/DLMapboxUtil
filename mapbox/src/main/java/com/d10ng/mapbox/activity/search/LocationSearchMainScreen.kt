@@ -2,11 +2,19 @@ package com.d10ng.mapbox.activity.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,12 +27,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
 import com.d10ng.compose.ui.AppText
+import com.d10ng.compose.ui.PageTransitions
+import com.d10ng.compose.ui.base.Button
+import com.d10ng.compose.ui.base.ButtonSize
+import com.d10ng.compose.ui.base.ButtonType
+import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.compose.view.Input
 import com.d10ng.compose.view.ListItem
-import com.d10ng.compose.view.MiniButton
-import com.d10ng.compose.view.TitleBar
 import com.d10ng.mapbox.R
-import com.d10ng.mapbox.view.PageTransitions
 import com.d10ng.tianditu.bean.LocationSearch
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -67,10 +77,10 @@ private fun LocationSearchMainScreenView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColor.System.background)
+            .background(AppColor.Neutral.bg)
             .navigationBarsPadding()
     ) {
-        TitleBar(value = "位置搜索", onClickBack = onClickBack)
+        NavBar(title = "位置搜索", onClickBack = onClickBack)
         SearchBar(input = input, onUpdateInput = onUpdateInput, onClickSearch = onClickSearch)
         LocationByLatLngBar(onClick = onClickByLatLng)
         LocationSearchView(
@@ -94,7 +104,7 @@ private fun SearchBar(
     Row(
         modifier = Modifier
             .padding(top = 1.dp)
-            .background(AppColor.System.primary)
+            .background(AppColor.Neutral.card)
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -103,7 +113,7 @@ private fun SearchBar(
                 .fillMaxWidth()
                 .weight(1f)
                 .padding(end = 16.dp)
-                .background(AppColor.System.background, AppShape.RC.v6)
+                .background(AppColor.Neutral.bg, AppShape.RC.v6)
                 .padding(horizontal = 12.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -113,7 +123,7 @@ private fun SearchBar(
                 modifier = Modifier
                     .padding(end = 12.dp)
                     .size(24.dp),
-                tint = AppColor.Text.hint
+                tint = AppColor.Neutral.hint
             )
             Input(
                 modifier = Modifier
@@ -126,7 +136,12 @@ private fun SearchBar(
                 placeholderStyle = AppText.Normal.Hint.v16
             )
         }
-        MiniButton(text = "搜索", onClick = onClickSearch)
+        Button(
+            text = "搜索",
+            onClick = onClickSearch,
+            type = ButtonType.PRIMARY,
+            size = ButtonSize.MINI
+        )
     }
 }
 
@@ -138,7 +153,7 @@ private fun LocationByLatLngBar(
         modifier = Modifier
             .padding(top = 1.dp)
             .fillMaxWidth()
-            .background(AppColor.System.primary)
+            .background(AppColor.Neutral.card)
             .clickable { onClick() }
             .padding(16.dp)
     ) {
@@ -177,7 +192,7 @@ fun LocationSearchView(
                                 .padding(top = 1.dp)
                                 .fillMaxWidth()
                                 .height(50.dp)
-                                .background(AppColor.System.primary),
+                                .background(AppColor.Neutral.card),
                             iconId = R.drawable.ic_baseline_public_24,
                             iconSizeDp = 24.dp,
                             title = result.area.name,
@@ -196,7 +211,7 @@ fun LocationSearchView(
                                 .padding(top = 1.dp)
                                 .fillMaxWidth()
                                 .height(50.dp)
-                                .background(AppColor.System.primary),
+                                .background(AppColor.Neutral.card),
                             iconId = R.drawable.ic_baseline_map_24,
                             title = item.adminName,
                             right = item.count.toString(),
@@ -215,7 +230,7 @@ fun LocationSearchView(
                                 .padding(top = 1.dp)
                                 .fillMaxWidth()
                                 .height(50.dp)
-                                .background(AppColor.System.primary),
+                                .background(AppColor.Neutral.card),
                             title = item.name,
                             iconId = R.drawable.ic_baseline_room_24,
                             note = item.address,

@@ -10,8 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
-import com.d10ng.compose.view.TitleBar
-import com.d10ng.mapbox.view.PageTransitions
+import com.d10ng.compose.ui.PageTransitions
+import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.tianditu.bean.LocationSearch
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -50,10 +50,10 @@ private fun LocationSearchInfoScreenView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColor.System.background)
+            .background(AppColor.Neutral.bg)
             .navigationBarsPadding()
     ) {
-        TitleBar(value = area, onClickBack = onClickBack)
+        NavBar(title = area, onClickBack = onClickBack)
         LocationSearchView(
             modifier = Modifier
                 .fillMaxSize()

@@ -1,6 +1,7 @@
 package com.d10ng.mapbox.activity.map
 
 import androidx.lifecycle.ViewModel
+import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.activity.destinations.MapOfflineListScreenDestination
 import com.d10ng.mapbox.model.MapboxModel
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -29,7 +30,7 @@ class MapOfflineAddScreenViewModel : ViewModel() {
     fun onClickSure(nav: DestinationsNavigator) {
         MapActivity.instant.get()?.apply {
             if (inputNameFlow.value.isEmpty()) {
-                app.showError("地图名称不能为空！")
+                UiViewModelManager.showErrorNotify("地图名称不能为空！")
                 return
             }
             MapboxModel.instant.addOfflineDownload(

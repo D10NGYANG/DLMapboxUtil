@@ -4,7 +4,17 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,10 +28,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
-import com.d10ng.compose.view.TitleBar
+import com.d10ng.compose.ui.PageTransitions
+import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.constant.MapLayerType
-import com.d10ng.mapbox.view.*
+import com.d10ng.mapbox.view.MapLayerLocationControllerBar
+import com.d10ng.mapbox.view.MapZoomControllerBar
+import com.d10ng.mapbox.view.MapboxView
+import com.d10ng.mapbox.view.SureButton
 import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -71,15 +85,14 @@ private fun MapOfflineAreaScreenView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColor.System.background)
+            .background(AppColor.Neutral.bg)
             .navigationBarsPadding()
     ) {
-        TitleBar(value = "地图", onClickBack = onClickBack) {
+        NavBar(title = "地图", onClickBack = onClickBack) {
             Image(
                 painter = painterResource(id = R.drawable.ic_search_24),
                 contentDescription = "搜索",
                 modifier = Modifier
-                    .align(Alignment.CenterEnd)
                     .padding(end = 4.dp)
                     .size(46.dp)
                     .clip(AppShape.RC.Cycle)
@@ -140,7 +153,7 @@ private fun MapOfflineAreaScreenView(
                     .fillMaxSize()
                     .padding(top = 30.dp, bottom = 150.dp, start = 30.dp, end = 30.dp)
                     .align(Alignment.Center)
-                    .border(1.dp, AppColor.System.secondary)
+                    .border(1.dp, AppColor.Main.primary)
             )
 
             MapZoomControllerBar(

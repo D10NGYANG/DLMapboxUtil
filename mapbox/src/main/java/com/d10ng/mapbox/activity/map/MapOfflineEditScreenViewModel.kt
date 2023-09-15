@@ -3,7 +3,7 @@ package com.d10ng.mapbox.activity.map
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.d10ng.compose.dialog.builder.BaseDialogBuilder
+import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.activity.navArgs
 import com.d10ng.mapbox.model.MapboxModel
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -43,22 +43,23 @@ class MapOfflineEditScreenViewModel constructor(
 
     /** 点击删除 */
     fun onClickDelete(nav: DestinationsNavigator) {
-        MapActivity.instant.get()?.apply {
-            app.showDialog(BaseDialogBuilder(
-                title = "注意",
-                message = "确定删除当前离线地图吗？",
-                sureButton = "确定",
-                cancelButton = "取消",
-                onClickSure = {
-                    app.hideDialog()
-                    MapboxModel.instant.deleteOffline(_id)
-                    nav.navigateUp()
-                },
-                onClickCancel = {
-                    app.hideDialog()
-                }
-            ))
-        }
+        // TODO
+//        MapActivity.instant.get()?.apply {
+//            app.showDialog(BaseDialogBuilder(
+//                title = "注意",
+//                message = "确定删除当前离线地图吗？",
+//                sureButton = "确定",
+//                cancelButton = "取消",
+//                onClickSure = {
+//                    app.hideDialog()
+//                    MapboxModel.instant.deleteOffline(_id)
+//                    nav.navigateUp()
+//                },
+//                onClickCancel = {
+//                    app.hideDialog()
+//                }
+//            ))
+//        }
     }
 
     /** 点击确定 */
@@ -66,7 +67,7 @@ class MapOfflineEditScreenViewModel constructor(
         MapActivity.instant.get()?.apply {
             val name = inputNameFlow.value
             if (name.isEmpty()) {
-                app.showError("地图名称不能为空！")
+                UiViewModelManager.showErrorNotify("地图名称不能为空！")
                 return
             }
             MapboxModel.instant.renameOffline(this, _id, name)

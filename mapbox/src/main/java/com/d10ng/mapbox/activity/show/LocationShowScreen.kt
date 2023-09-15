@@ -1,7 +1,12 @@
 package com.d10ng.mapbox.activity.show
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -11,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
-import com.d10ng.compose.view.TitleBar
+import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.activity.map.Compass
 import com.d10ng.mapbox.constant.MapLayerType
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
@@ -70,10 +75,10 @@ fun LocationShowScreenView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColor.System.background)
+            .background(AppColor.Neutral.bg)
             .navigationBarsPadding()
     ) {
-        TitleBar(value = "位置", onClickBack = onClickBack)
+        NavBar(title = "位置", onClickBack = onClickBack)
         Box(
             modifier = Modifier
                 .fillMaxSize()
