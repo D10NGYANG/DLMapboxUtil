@@ -62,7 +62,7 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
 
     // Android
-    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.core:core-ktx:1.12.0")
 
     // 单元测试（可选）
     testImplementation("junit:junit:4.13.2")
@@ -70,9 +70,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.7")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.0")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.3.4")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.4.3")
     // 日期工具兼容Android8.0以下设备
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 

@@ -51,7 +51,7 @@ android {
 
 dependencies {
     // Android
-    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.core:core-ktx:1.12.0")
 
     // 单元测试（可选）
     testImplementation("junit:junit:4.13.2")
@@ -70,16 +70,16 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlin_serialization_json")
 
     // MapBox 地图
-    api("com.mapbox.maps:android:10.15.0")
+    api("com.mapbox.maps:android:10.16.0")
 
     // 导航路由
     implementation("io.github.raamcosta.compose-destinations:animations-core:$compose_destinations_ver")
     ksp("io.github.raamcosta.compose-destinations:ksp:$compose_destinations_ver")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:1.3.7")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.0")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.3.4")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.4.3")
     // 定位工具
     implementation("com.github.D10NGYANG:DLGpsUtil:2.3.5")
     // 经纬度工具
