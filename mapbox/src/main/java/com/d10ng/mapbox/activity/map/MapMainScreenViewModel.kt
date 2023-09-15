@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.d10ng.latlnglib.toLatitudeString
 import com.d10ng.latlnglib.toLongitudeString
 import com.d10ng.mapbox.activity.destinations.MapOfflineListScreenDestination
-import com.d10ng.mapbox.model.LocationModel
-import com.d10ng.mapbox.model.MapModel
+import com.d10ng.mapbox.stores.LocationStore
+import com.d10ng.mapbox.stores.MapStore
 import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,18 +18,18 @@ class MapMainScreenViewModel : ViewModel() {
     val locationTextFlow = MutableStateFlow("正在获取当前位置...")
 
     /** 地图样式 */
-    val layerFlow = MapModel.instant.layerTypeFlow
+    val layerFlow = MapStore.layerTypeFlow
 
     /** 缩放比例 */
-    val zoomFlow = MapModel.instant.zoomFlow
+    val zoomFlow = MapStore.zoomFlow
 
     /** 地图中心 */
-    val targetFlow = MapModel.instant.targetFlow
+    val targetFlow = MapStore.targetFlow
 
     init {
         viewModelScope.launch {
             val pattern = "Fd°m′S.ss″"
-            LocationModel.instant.locationFlow.collect {
+            LocationStore.getValueFlow().collect {
                 it ?: return@collect
                 val builder = StringBuilder("位置:")
                 builder.append(it.latitude.toLatitudeString(pattern))
@@ -53,22 +53,22 @@ class MapMainScreenViewModel : ViewModel() {
 
     /** 点击放大 */
     fun onClickZoomIn() {
-        MapModel.instant.zoomIn()
+        MapStore.zoomIn()
     }
 
     /** 点击缩小 */
     fun onClickZoomOut() {
-        MapModel.instant.zoomOut()
+        MapStore.zoomOut()
     }
 
     /** 更新比例 */
     fun updateZoom(value: Double) {
-        MapModel.instant.updateZoom(value)
+        MapStore.updateZoom(value)
     }
 
     /** 更新地图中心 */
     fun updateTarget(value: Point) {
-        MapModel.instant.updateTarget(value)
+        MapStore.updateTarget(value)
     }
 
     /** 点击图层切换 */
@@ -87,6 +87,6 @@ class MapMainScreenViewModel : ViewModel() {
 
     /** 点击移动到当前位置 */
     fun onClickLocation() {
-        MapModel.instant.move2CurrentLocation()
+        MapStore.moveToCurrentLocation()
     }
 }

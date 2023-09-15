@@ -2,18 +2,14 @@ package com.d10ng.mapbox.activity.show
 
 import android.app.Activity
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.d10ng.app.base.getClearTopIntent
-import com.d10ng.app.view.lockScreenOrientation
-import com.d10ng.app.view.setStatusBar
 import com.d10ng.compose.model.UiViewModelManager
-import com.d10ng.mapbox.model.LocationModel
-import com.d10ng.mapbox.model.MapModel
+import com.d10ng.mapbox.activity.BaseMapboxActivity
 import com.mapbox.geojson.Point
 import java.lang.ref.WeakReference
 
-class LocationShowActivity : ComponentActivity() {
+class LocationShowActivity : BaseMapboxActivity() {
 
     companion object {
         const val PARAM_LAT = "lat"
@@ -25,18 +21,11 @@ class LocationShowActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 锁定屏幕方向
-        lockScreenOrientation()
-        // 设置状态栏颜色
-        setStatusBar()
-
         instant = WeakReference(this)
 
         val lat = intent.getDoubleExtra(PARAM_LAT, 0.0)
         val lng = intent.getDoubleExtra(PARAM_LNG, 0.0)
         initPoint = Point.fromLngLat(lng, lat)
-
-        LocationModel.instant.startRequestLocation(this)
 
         setContent {
             LocationShowScreen()
@@ -44,13 +33,7 @@ class LocationShowActivity : ComponentActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        MapModel.instant.initLayer(this)
-    }
-
     override fun onDestroy() {
-        LocationModel.instant.stopRequestLocation(this)
         instant = WeakReference(null)
         super.onDestroy()
     }

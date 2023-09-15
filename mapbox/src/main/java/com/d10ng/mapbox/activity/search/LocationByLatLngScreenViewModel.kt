@@ -1,19 +1,19 @@
 package com.d10ng.mapbox.activity.search
 
 import androidx.lifecycle.ViewModel
-import com.d10ng.mapbox.model.MapModel
+import com.d10ng.mapbox.stores.MapStore
 import com.mapbox.geojson.Point
 
 class LocationByLatLngScreenViewModel : ViewModel() {
 
     /** 地图样式 */
-    val layerFlow = MapModel.instant.layerTypeFlow
+    val layerFlow = MapStore.layerTypeFlow
 
     /** 缩放比例 */
-    val zoomFlow = MapModel.instant.zoomFlow
+    val zoomFlow = MapStore.zoomFlow
 
     /** 地图中心 */
-    val targetFlow = MapModel.instant.targetFlow
+    val targetFlow = MapStore.targetFlow
 
     /** 点击纬度进行编辑 */
     fun onClickLat() {
@@ -91,22 +91,22 @@ class LocationByLatLngScreenViewModel : ViewModel() {
 
     /** 点击放大 */
     fun onClickZoomIn() {
-        MapModel.instant.zoomIn()
+        MapStore.zoomIn()
     }
 
     /** 点击缩小 */
     fun onClickZoomOut() {
-        MapModel.instant.zoomOut()
+        MapStore.zoomOut()
     }
 
     /** 更新比例 */
     fun updateZoom(value: Double) {
-        MapModel.instant.updateZoom(value)
+        MapStore.updateZoom(value)
     }
 
     /** 更新地图中心 */
     fun updateTarget(value: Point) {
-        MapModel.instant.updateTarget(value)
+        MapStore.updateTarget(value)
     }
 
     /** 点击图层切换 */
@@ -125,7 +125,7 @@ class LocationByLatLngScreenViewModel : ViewModel() {
 
     /** 点击移动到当前位置 */
     fun onClickLocation() {
-        MapModel.instant.move2CurrentLocation()
+        MapStore.moveToCurrentLocation()
     }
 
     /** 点击确定 */

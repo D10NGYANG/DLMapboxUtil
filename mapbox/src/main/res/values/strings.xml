@@ -1,9 +1,0 @@
-<resources>
-    <!-- MapLayerType 地图图层名字 -->
-    <string name="map_type_1">天地图标准</string>
-    <string name="map_type_2">天地图卫星</string>
-    <string name="map_type_3">高德标准</string>
-    <string name="map_type_4">高德卫星</string>
-    <string name="map_type_5">Mapbox标准</string>
-    <string name="map_type_6">Mapbox卫星</string>
-</resources>

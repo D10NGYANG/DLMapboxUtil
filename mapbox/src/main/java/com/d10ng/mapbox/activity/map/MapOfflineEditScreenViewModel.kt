@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.activity.navArgs
-import com.d10ng.mapbox.model.MapboxModel
+import com.d10ng.mapbox.stores.OfflineMapStore
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -25,7 +25,7 @@ class MapOfflineEditScreenViewModel constructor(
 
     /** 离线地图信息 */
     private val infoFlow =
-        MapboxModel.instant.offlineMapInfoListFlow.map { it.find { item -> item.region.id == _id } }
+        OfflineMapStore.offlineMapInfoListFlow.map { it.find { item -> item.region.id == _id } }
 
     /** 输入名字 */
     val inputNameFlow = MutableStateFlow("")
@@ -70,7 +70,7 @@ class MapOfflineEditScreenViewModel constructor(
                 UiViewModelManager.showErrorNotify("地图名称不能为空！")
                 return
             }
-            MapboxModel.instant.renameOffline(this, _id, name)
+            OfflineMapStore.renameOffline(_id, name)
             nav.navigateUp()
         }
     }

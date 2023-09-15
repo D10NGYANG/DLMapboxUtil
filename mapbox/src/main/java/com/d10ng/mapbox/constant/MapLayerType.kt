@@ -10,59 +10,45 @@ import com.mapbox.maps.Style
  * @Time: 2021/3/5 4:29 下午
  */
 enum class MapLayerType(
+    // TODO delete
     val intValue: Int,
+    // 源地址
     val source: String,
-    val nameSrcId: Int,
+    // 名称
+    val label: String,
+    // 图片资源ID
     val imgSrcId: Int,
+    // 坐标系类型
     val coordinateSystemType: CoordinateSystemType,
+    // 是否可下载
     val isCanDown: Boolean
 ) {
 
     // 天地图 标准地图
-    TIAN_VECTOR(
+    TD_VECTOR(
         1,
         "https://oss.irim.online/mob/map/tian_vector.json",
-        R.string.map_type_1,
+        "天地图标准",
         R.mipmap.img_map_layer_type_1,
         CoordinateSystemType.WGS84,
         false
     ),
 
     // 天地图 卫星地图
-    TIAN_SATELLITE(
+    TD_SATELLITE(
         2,
         "https://oss.irim.online/mob/map/tain_satellite.json",
-        R.string.map_type_2,
+        "天地图卫星",
         R.mipmap.img_map_layer_type_2,
         CoordinateSystemType.WGS84,
         false
     ),
 
-    // 高德 标准地图
-    /*GD_NORMAL(
-        3,
-        "https://oss.irim.online/mob/map/gd_vector.json",
-        R.string.map_type_3,
-        R.mipmap.img_map_layer_type_1,
-        CoordinateSystemType.GCJ02,
-        true
-    ),*/
-
-    // 高德 卫星地图
-    /*GD_SATELLITE(
-        4,
-        "https://oss.irim.online/mob/map/gd_satellite.json",
-        R.string.map_type_4,
-        R.mipmap.img_map_layer_type_2,
-        CoordinateSystemType.GCJ02,
-        true
-    ),*/
-
     // mapbox 标准地图
     MAPBOX_STREETS(
         5,
         Style.LIGHT,
-        R.string.map_type_5,
+        "Mapbox标准",
         R.mipmap.img_map_layer_type_5,
         CoordinateSystemType.WGS84,
         true
@@ -72,22 +58,19 @@ enum class MapLayerType(
     MAPBOX_SATELLITE_STREETS(
         6,
         Style.SATELLITE_STREETS,
-        R.string.map_type_6,
+        "Mapbox卫星",
         R.mipmap.img_map_layer_type_6,
         CoordinateSystemType.WGS84,
         true
     );
 
-    // 测试
-    //SATELLITE(2, "asset://map_5.json", R.mipmap.img_map_layer_type_2);
-
 
     companion object {
 
         @JvmStatic
-        fun parseByInt(value: Int) = values().find { it.intValue == value } ?: TIAN_VECTOR
+        fun parseByInt(value: Int) = values().find { it.intValue == value } ?: TD_VECTOR
 
         @JvmStatic
-        fun parseBySource(value: String) = values().find { it.source == value } ?: TIAN_VECTOR
+        fun parseBySource(value: String) = values().find { it.source == value } ?: TD_VECTOR
     }
 }

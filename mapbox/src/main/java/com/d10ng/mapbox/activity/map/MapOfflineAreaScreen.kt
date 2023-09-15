@@ -47,7 +47,7 @@ fun MapOfflineAreaScreen(
     nav: DestinationsNavigator,
     model: MapOfflineAreaScreenViewModel = viewModel()
 ) {
-    val layer by model.layerFlow.collectAsState()
+    val layer by model.layerFlow.collectAsState(initial = MapLayerType.TD_VECTOR)
     val zoom by model.zoomFlow.collectAsState()
     val target by model.targetFlow.collectAsState()
 

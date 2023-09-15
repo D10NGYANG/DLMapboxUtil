@@ -1,13 +1,20 @@
-package com.d10ng.mapbox.model
+package com.d10ng.mapbox.stores
 
-import android.content.Context
+import android.app.Application
 import android.graphics.Bitmap
 import com.d10ng.mapbox.bean.OfflineMapInfo
 import com.d10ng.mapbox.utils.getAllOfflineInfo
 import com.d10ng.mapbox.utils.getSnapshotBitmap
 import com.mapbox.bindgen.Expected
 import com.mapbox.bindgen.Value
-import com.mapbox.common.*
+import com.mapbox.common.TileDataDomain
+import com.mapbox.common.TileRegion
+import com.mapbox.common.TileRegionError
+import com.mapbox.common.TileRegionLoadOptions
+import com.mapbox.common.TileRegionLoadProgress
+import com.mapbox.common.TileStore
+import com.mapbox.common.TileStoreObserver
+import com.mapbox.common.TileStoreOptions
 import com.mapbox.geojson.Geometry
 import com.mapbox.maps.MapInitOptions
 import com.mapbox.maps.OfflineManager
@@ -18,15 +25,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
-class MapboxModel {
+/**
+ * 地图离线存储
+ * @Author d10ng
+ * @Date 2023/9/15 18:29
+ */
+object OfflineMapStore {
 
-    companion object {
-        val instant by lazy { MapboxModel() }
+    private lateinit var application: Application
+
+    internal fun init(app: Application) {
+        application = app
     }
 
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    private var token = ""
+    var token = ""
 
     /** 离线地图瓦片管理器 */
     private var tileStore: TileStore? = null
@@ -92,12 +106,11 @@ class MapboxModel {
      * @param title String
      */
     fun addOfflineDownload(
-        context: Context,
         minZoom: Int,
         maxZoom: Int,
         title: String,
     ) {
-        val style = MapModel.instant.layerTypeFlow.value.source
+        val style = MapStore.getCurrentLayer().source
         val json = JSONObject().apply {
             put("style", style)
             put("minZoom", minZoom)
@@ -105,11 +118,11 @@ class MapboxModel {
             put("title", title)
         }
         val offlineManager =
-            OfflineManager(MapInitOptions.getDefaultResourceOptions(context.applicationContext))
+            OfflineManager(MapInitOptions.getDefaultResourceOptions(application))
         tileStore?.loadTileRegion(
             System.currentTimeMillis().toString(),
             TileRegionLoadOptions.Builder()
-                .geometry(MapModel.instant.targetFlow.value)
+                .geometry(MapStore.targetFlow.value)
                 .descriptors(
                     listOf(
                         offlineManager.createTilesetDescriptor(
@@ -128,11 +141,10 @@ class MapboxModel {
 
     /**
      * 重命名离线地图
-     * @param context Context
      * @param id String
      * @param name String
      */
-    fun renameOffline(context: Context, id: String, name: String) {
+    fun renameOffline(id: String, name: String) {
         val info = offlineMapInfoListFlow.value.find { it.region.id == id } ?: return
         val json = JSONObject().apply {
             put("style", info.style.source)
@@ -141,7 +153,7 @@ class MapboxModel {
             put("title", name)
         }
         val offlineManager =
-            OfflineManager(MapInitOptions.getDefaultResourceOptions(context.applicationContext))
+            OfflineManager(MapInitOptions.getDefaultResourceOptions(application))
         tileStore?.loadTileRegion(
             info.region.id,
             TileRegionLoadOptions.Builder()
@@ -173,14 +185,13 @@ class MapboxModel {
 
     /**
      * 更新快照
-     * @param context Context
      */
-    suspend fun updateSnapshot(context: Context) {
-        val offlines = offlineMapInfoListFlow.value
+    suspend fun updateSnapshot() {
+        val offlineList = offlineMapInfoListFlow.value
         val map = offlineMapSnapshotFlow.value.toMutableMap()
-        for (item in offlines) {
+        for (item in offlineList) {
             if (map.containsKey(item.region.id)) continue
-            val bitmap = item.getSnapshotBitmap(context) ?: continue
+            val bitmap = item.getSnapshotBitmap(application) ?: continue
             map[item.region.id] = bitmap
         }
         offlineMapSnapshotFlow.emit(map)

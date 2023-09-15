@@ -23,7 +23,7 @@ import com.d10ng.http.Http
 import com.d10ng.mapbox.activity.map.MapActivity
 import com.d10ng.mapbox.activity.search.LocationSearchManager
 import com.d10ng.mapbox.activity.show.goToLocationShowActivity
-import com.d10ng.mapbox.model.MapboxModel
+import com.d10ng.mapbox.stores.OfflineMapStore
 import com.d10ng.tianditu.TianDiTuApiManager
 import com.mapbox.geojson.Point
 
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         initColor()
-        MapboxModel.instant.init(BuildConfig.myMapboxToken)
+        OfflineMapStore.init(BuildConfig.myMapboxToken)
         Http.init("", true)
         TianDiTuApiManager.init(BuildConfig.myTiandituToken)
 

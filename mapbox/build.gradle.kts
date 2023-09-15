@@ -69,6 +69,9 @@ dependencies {
     // kotlinx.serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlin_serialization_json")
 
+    // startup
+    implementation("androidx.startup:startup-runtime:1.1.1")
+
     // MapBox 地图
     api("com.mapbox.maps:android:10.16.0")
 
@@ -79,15 +82,16 @@ dependencies {
     // jetpack compose 框架
     implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.0")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.4.3")
-    // 定位工具
-    implementation("com.github.D10NGYANG:DLGpsUtil:2.3.5")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.4.4")
     // 经纬度工具
     implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.7.5")
     // 天地图API
     implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.5.4")
     // 网络请求框架
     implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.8.5")
+    // jetpack datastore 封装工具
+    implementation("com.github.D10NGYANG:DLDatastoreUtil:0.0.1")
+    ksp("com.github.D10NGYANG:DLDatastoreUtil-Processor:0.0.1")
 }
 
 afterEvaluate {

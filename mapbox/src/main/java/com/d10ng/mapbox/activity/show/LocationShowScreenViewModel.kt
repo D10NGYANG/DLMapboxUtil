@@ -3,7 +3,7 @@ package com.d10ng.mapbox.activity.show
 import androidx.lifecycle.ViewModel
 import com.d10ng.app.resource.makeBitmapFromDrawable
 import com.d10ng.mapbox.R
-import com.d10ng.mapbox.model.MapModel
+import com.d10ng.mapbox.stores.MapStore
 import com.mapbox.geojson.Point
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
@@ -18,10 +18,10 @@ class LocationShowScreenViewModel: ViewModel() {
     private val _initPoint = LocationShowActivity.initPoint
 
     /** 地图样式 */
-    val layerFlow = MapModel.instant.layerTypeFlow
+    val layerFlow = MapStore.layerTypeFlow
 
     /** 缩放比例 */
-    val zoomFlow = MapModel.instant.zoomFlow
+    val zoomFlow = MapStore.zoomFlow
 
     /** 地图中心 */
     val targetFlow = MutableStateFlow(_initPoint)
@@ -50,17 +50,17 @@ class LocationShowScreenViewModel: ViewModel() {
 
     /** 点击放大 */
     fun onClickZoomIn() {
-        MapModel.instant.zoomIn()
+        MapStore.zoomIn()
     }
 
     /** 点击缩小 */
     fun onClickZoomOut() {
-        MapModel.instant.zoomOut()
+        MapStore.zoomOut()
     }
 
     /** 更新比例 */
     fun updateZoom(value: Double) {
-        MapModel.instant.updateZoom(value)
+        MapStore.updateZoom(value)
     }
 
     /** 更新地图中心 */

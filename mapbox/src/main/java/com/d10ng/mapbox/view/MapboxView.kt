@@ -1,19 +1,35 @@
 package com.d10ng.mapbox.view
 
 import android.view.Gravity
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.constant.MapLayerType
+import com.d10ng.mapbox.stores.OfflineMapStore
 import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.geojson.Point
-import com.mapbox.maps.*
+import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.CoordinateBounds
+import com.mapbox.maps.MapInitOptions
+import com.mapbox.maps.MapView
+import com.mapbox.maps.ResourceOptions
+import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.animation.camera
 import com.mapbox.maps.plugin.animation.easeTo
 import com.mapbox.maps.plugin.annotation.annotations
-import com.mapbox.maps.plugin.annotation.generated.*
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotation
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
+import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotation
+import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationOptions
+import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.createPolylineAnnotationManager
 import com.mapbox.maps.plugin.attribution.attribution
 import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.gestures.OnMoveListener
@@ -22,21 +38,13 @@ import com.mapbox.maps.plugin.gestures.gestures
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.plugin.logo.logo
 import com.mapbox.maps.plugin.scalebar.scalebar
-
-/** 地图最大缩放倍数 mapbox默认为25.5 */
-const val MAP_BOX_ZOOM_MAX = 20.0
-
-/** 地图最小缩放倍数 mapbox默认为0.0 */
-const val MAP_BOX_ZOOM_MIN = 1.0
-
-/** 地图默认缩放倍数 */
-const val MAP_BOX_ZOOM_DEFAULT = 10.0
+import com.mapbox.maps.toCameraOptions
 
 @Composable
 fun MapboxView(
     modifier: Modifier = Modifier,
     layer: MapLayerType = MapLayerType.MAPBOX_STREETS,
-    cameraZoom: Double = MAP_BOX_ZOOM_DEFAULT,
+    cameraZoom: Double = 10.0,
     cameraTarget: Point = Point.fromLngLat(113.3946198, 23.0374143),
     pointOptions: Map<Int, PointAnnotationOptions> = mapOf(),
     lineOptions: Map<Int, PolylineAnnotationOptions> = mapOf(),
@@ -85,7 +93,13 @@ fun MapboxView(
 
     AndroidView(
         factory = { context ->
-            MapView(context).apply {
+            MapView(
+                context,
+                MapInitOptions(
+                    context,
+                    ResourceOptions.Builder().accessToken(OfflineMapStore.token).build()
+                )
+            ).apply {
                 // 不显示地图官方LOGO
                 logo.updateSettings { enabled = false }
                 // 不显示地图官方LOGO隔壁的图标
