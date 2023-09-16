@@ -3,10 +3,12 @@ package com.d10ng.mapbox.activity.search
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.d10ng.app.status.isNetworkAvailable
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.dialog.builder.InputDialogBuilder
 import com.d10ng.mapbox.stores.MapViewStore
 import com.d10ng.mapbox.view.MapLayerDialogBuilder
+import com.d10ng.tianditu.api.TianDiTuApi
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.launch
 
@@ -116,6 +118,20 @@ class LocationByLatLngScreenViewModel : ViewModel() {
 
     /** 点击确定 */
     fun onClickSure() {
-        viewModelScope.launch { LocationSearchManager.finish(targetFlow.value) }
+        viewModelScope.launch {
+            if (isNetworkAvailable()) {
+                // 逆地理编码获取POI信息
+                val geocode = TianDiTuApi.getReGeocode(
+                    targetFlow.value.longitude(),
+                    targetFlow.value.latitude()
+                )
+                if (geocode != null) {
+                    LocationSearchManager.finish(geocode)
+                    return@launch
+                }
+            } else {
+                LocationSearchManager.finish(targetFlow.value)
+            }
+        }
     }
 }

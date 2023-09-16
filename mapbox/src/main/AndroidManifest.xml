@@ -11,6 +11,9 @@
             android:name=".activity.map.MapActivity"
             android:exported="true" />
         <activity
+            android:name=".activity.navigation.MapNavigationActivity"
+            android:exported="true" />
+        <activity
             android:name=".activity.offline.MapOfflineActivity"
             android:exported="true" />
         <activity

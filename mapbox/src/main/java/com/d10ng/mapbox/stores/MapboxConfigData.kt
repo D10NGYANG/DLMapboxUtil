@@ -19,4 +19,8 @@ interface MapboxConfigData {
     // 选择位置历史记录
     @PreferenceKey
     val history: Set<String>
+
+    // 导航目标点
+    @PreferenceKey
+    val navigationTarget: String
 }

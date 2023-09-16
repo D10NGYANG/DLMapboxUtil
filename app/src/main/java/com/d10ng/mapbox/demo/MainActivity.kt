@@ -22,6 +22,7 @@ import com.d10ng.compose.ui.base.Button
 import com.d10ng.compose.ui.base.ButtonType
 import com.d10ng.mapbox.MapboxUtil
 import com.d10ng.mapbox.activity.map.MapActivity
+import com.d10ng.mapbox.activity.navigation.MapNavigationActivity
 import com.d10ng.mapbox.activity.offline.MapOfflineActivity
 import com.d10ng.mapbox.activity.search.LocationSearchManager
 import com.d10ng.mapbox.activity.show.goToLocationShowActivity
@@ -63,6 +64,9 @@ class MainActivity : ComponentActivity() {
                 })
                 Button(text = "显示", type = ButtonType.PRIMARY, onClick = {
                     goToLocationShowActivity(selectPoint.latitude(), selectPoint.longitude())
+                })
+                Button(text = "导航", type = ButtonType.PRIMARY, onClick = {
+                    goTo(MapNavigationActivity::class.java)
                 })
             }
         }

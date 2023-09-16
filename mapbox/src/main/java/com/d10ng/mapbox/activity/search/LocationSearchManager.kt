@@ -1,6 +1,7 @@
 package com.d10ng.mapbox.activity.search
 
 import android.app.Activity
+import com.d10ng.app.base.ActivityManager
 import com.d10ng.app.base.goTo
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.bean.HistoryInfo
@@ -8,6 +9,7 @@ import com.d10ng.mapbox.bean.toHistoryInfo
 import com.d10ng.mapbox.stores.HistoryStore
 import com.d10ng.tianditu.api.TianDiTuApi
 import com.d10ng.tianditu.bean.LocationSearch
+import com.d10ng.tianditu.bean.ReGeocode
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,9 +42,13 @@ object LocationSearchManager {
         job = CoroutineScope(Dispatchers.IO).launch {
             resultFlow.take(1).collect {
                 result(it)
-                LocationSearchActivity.instant.get()?.finish()
+                ActivityManager.getActivity<LocationSearchActivity>()?.finish()
             }
         }
+    }
+
+    internal suspend fun finish(geocode: ReGeocode) {
+        finish(geocode.toHistoryInfo())
     }
 
     internal suspend fun finish(poi: LocationSearch.Poi) {

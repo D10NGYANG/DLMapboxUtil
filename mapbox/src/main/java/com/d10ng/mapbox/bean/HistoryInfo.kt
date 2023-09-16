@@ -1,6 +1,7 @@
 package com.d10ng.mapbox.bean
 
 import com.d10ng.tianditu.bean.LocationSearch
+import com.d10ng.tianditu.bean.ReGeocode
 import kotlinx.serialization.Serializable
 
 /**
@@ -32,3 +33,11 @@ fun LocationSearch.Poi.toHistoryInfo(): HistoryInfo {
         time = System.currentTimeMillis()
     )
 }
+
+fun ReGeocode.toHistoryInfo() = HistoryInfo(
+    name = result.addressComponent.poi,
+    address = result.formattedAddress,
+    longitude = result.location.lon,
+    latitude = result.location.lat,
+    time = System.currentTimeMillis()
+)

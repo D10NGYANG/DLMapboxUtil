@@ -83,12 +83,14 @@ dependencies {
     implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.1")
     // APP通用工具
     implementation("com.github.D10NGYANG:DLAppUtil:2.4.6")
+    // 通用处理工具
+    implementation("com.github.D10NGYANG:DLCommonUtil:0.0.2")
     // 经纬度工具
-    implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.7.5")
+    implementation("com.github.D10NGYANG:DLLatLngUtil:1.7.5")
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi-jvm:0.5.4")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.5.4")
     // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil-jvm:0.8.5")
+    implementation("com.github.D10NGYANG:DLHttpUtil:0.8.5")
     // jetpack datastore 封装工具
     implementation("com.github.D10NGYANG:DLDatastoreUtil:0.0.1")
     ksp("com.github.D10NGYANG:DLDatastoreUtil-Processor:0.0.1")
