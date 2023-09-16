@@ -5,6 +5,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.d10ng.compose.model.UiViewModelManager
@@ -28,7 +29,9 @@ class LocationSearchActivity : BaseMapboxActivity() {
                 engine = engine,
                 navController = navController,
                 navGraph = NavGraphs.LocationSearch,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .navigationBarsPadding()
             )
             UiViewModelManager.Init(act = this)
         }

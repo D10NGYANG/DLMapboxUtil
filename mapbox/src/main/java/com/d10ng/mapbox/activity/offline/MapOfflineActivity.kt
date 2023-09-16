@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.ui.Modifier
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.activity.BaseMapboxActivity
@@ -31,7 +32,9 @@ class MapOfflineActivity : BaseMapboxActivity() {
                 engine = engine,
                 navController = navController,
                 navGraph = NavGraphs.Offline,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .navigationBarsPadding()
             )
             UiViewModelManager.Init(act = this)
         }
