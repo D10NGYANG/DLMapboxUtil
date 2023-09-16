@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -31,7 +30,7 @@ import com.mapbox.geojson.Point
 fun MapMainScreen(
     model: MapMainScreenViewModel = viewModel()
 ) {
-    val layer by model.layerFlow.collectAsState(initial = MapLayerType.TD_VECTOR)
+    val layer by model.layerFlow.collectAsState()
     val zoom by model.zoomFlow.collectAsState()
     val target by model.targetFlow.collectAsState()
 
@@ -68,7 +67,6 @@ private fun MapMainScreenView(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColor.Neutral.bg)
-            .navigationBarsPadding()
     ) {
         NavBar(title = "地图", onClickBack = onClickBack, titleAlignment = Alignment.CenterStart) {
             Button(

@@ -5,7 +5,6 @@ import com.mapbox.geojson.Point
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 /**
@@ -28,13 +27,21 @@ object MapViewStore {
     private val defaultPoint: Point = Point.fromLngLat(116.40769, 39.89945)
 
     /** 图层样式 */
-    val layerTypeFlow = MapboxConfigDataStore.getLayerFlow().map { it ?: MapLayerType.TD_VECTOR }
+    val layerTypeFlow = MutableStateFlow(MapLayerType.TD_VECTOR)
 
     /** 缩放比例 */
     val zoomFlow = MutableStateFlow(MAP_BOX_ZOOM_DEFAULT)
 
     /** 地图中心 */
     val targetFlow = MutableStateFlow(defaultPoint)
+
+    init {
+        CoroutineScope(Dispatchers.IO).launch {
+            MapboxConfigDataStore.getLayerFlow().collect {
+                layerTypeFlow.value = it ?: MapLayerType.TD_VECTOR
+            }
+        }
+    }
 
     /**
      * 获取当前地图样式

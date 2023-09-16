@@ -42,7 +42,7 @@ fun LocationByLatLngScreen(
     nav: DestinationsNavigator,
     model: LocationByLatLngScreenViewModel = viewModel()
 ) {
-    val layer by model.layerFlow.collectAsState(initial = MapLayerType.TD_VECTOR)
+    val layer by model.layerFlow.collectAsState()
     val zoom by model.zoomFlow.collectAsState()
     val target by model.targetFlow.collectAsState()
 

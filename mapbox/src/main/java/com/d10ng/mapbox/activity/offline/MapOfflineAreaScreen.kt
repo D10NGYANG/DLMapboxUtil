@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -44,7 +43,7 @@ fun MapOfflineAreaScreen(
     nav: DestinationsNavigator,
     model: MapOfflineAreaScreenViewModel = viewModel()
 ) {
-    val layer by model.layerFlow.collectAsState(initial = MapLayerType.TD_VECTOR)
+    val layer by model.layerFlow.collectAsState()
     val zoom by model.zoomFlow.collectAsState()
     val target by model.targetFlow.collectAsState()
 
@@ -83,7 +82,6 @@ private fun MapOfflineAreaScreenView(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColor.Neutral.bg)
-            .navigationBarsPadding()
     ) {
         NavBar(title = "地图", onClickBack = onClickBack, titleAlignment = Alignment.CenterStart) {
             NavBarIconButton(

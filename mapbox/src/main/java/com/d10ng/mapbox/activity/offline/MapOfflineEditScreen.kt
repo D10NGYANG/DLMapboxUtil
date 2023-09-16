@@ -3,7 +3,6 @@ package com.d10ng.mapbox.activity.offline
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -61,7 +60,6 @@ fun MapOfflineEditScreenView(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColor.Neutral.bg)
-            .navigationBarsPadding()
     ) {
         NavBar(
             title = "编辑离线地图",

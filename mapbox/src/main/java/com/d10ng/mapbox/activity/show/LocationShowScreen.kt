@@ -34,7 +34,7 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 fun LocationShowScreen(
     model: LocationShowScreenViewModel = viewModel()
 ) {
-    val layer by model.layerFlow.collectAsState(initial = MapLayerType.TD_VECTOR)
+    val layer by model.layerFlow.collectAsState()
     val zoom by model.zoomFlow.collectAsState()
     val target by model.targetFlow.collectAsState()
     val pointOption by model.pointOptionFlow.collectAsState()

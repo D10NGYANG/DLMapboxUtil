@@ -42,7 +42,7 @@ fun MapOfflineListScreen(
     MapOfflineListScreenView(
         infoList = infoList,
         snapshotMap = snapshotMap,
-        onClickBack = nav::navigateUp,
+        onClickBack = { model.onClickBack() },
         onClickAdd = { model.onClickAdd(nav) },
         onClickItem = { model.onClickItem(nav, it) }
     )
@@ -61,7 +61,6 @@ private fun MapOfflineListScreenView(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColor.Neutral.bg)
-            .navigationBarsPadding()
     ) {
         NavBar(
             title = "离线地图",

@@ -41,7 +41,7 @@ import com.mapbox.maps.toCameraOptions
 @Composable
 fun MapboxView(
     modifier: Modifier = Modifier,
-    layer: MapLayerType = MapLayerType.MAPBOX_STREETS,
+    layer: MapLayerType = MapLayerType.TD_VECTOR,
     cameraZoom: Double = 10.0,
     cameraTarget: Point = Point.fromLngLat(113.3946198, 23.0374143),
     pointOptions: Map<Int, PointAnnotationOptions> = mapOf(),

@@ -2,6 +2,7 @@ package com.d10ng.mapbox.activity.offline
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.d10ng.app.base.ActivityManager
 import com.d10ng.mapbox.activity.destinations.MapOfflineAreaScreenDestination
 import com.d10ng.mapbox.activity.destinations.MapOfflineEditScreenDestination
 import com.d10ng.mapbox.bean.OfflineMapInfo
@@ -26,6 +27,11 @@ class MapOfflineListScreenViewModel : ViewModel() {
                 MapboxStore.updateSnapshot()
             }
         }
+    }
+
+    /** 点击返回 */
+    fun onClickBack() {
+        ActivityManager.finishTop()
     }
 
     /** 点击添加 */

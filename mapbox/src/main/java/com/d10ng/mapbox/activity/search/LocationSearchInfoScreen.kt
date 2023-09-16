@@ -3,7 +3,6 @@ package com.d10ng.mapbox.activity.search
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -52,7 +51,6 @@ private fun LocationSearchInfoScreenView(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColor.Neutral.bg)
-            .navigationBarsPadding()
     ) {
         NavBar(title = area, onClickBack = onClickBack, titleAlignment = Alignment.CenterStart)
         LocationSearchView(
