@@ -2,11 +2,10 @@ package com.d10ng.mapbox.activity.map
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.d10ng.latlnglib.toLatitudeString
-import com.d10ng.latlnglib.toLongitudeString
 import com.d10ng.mapbox.activity.destinations.MapOfflineListScreenDestination
 import com.d10ng.mapbox.stores.LocationStore
 import com.d10ng.mapbox.stores.MapViewStore
+import com.d10ng.mapbox.utils.toShowString
 import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,14 +27,9 @@ class MapMainScreenViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            val pattern = "Fd°m′S.ss″"
             LocationStore.getValueFlow().collect {
                 it ?: return@collect
-                val builder = StringBuilder("位置:")
-                builder.append(it.latitude.toLatitudeString(pattern))
-                    .append(",")
-                    .append(it.longitude.toLongitudeString(pattern))
-                locationTextFlow.emit(builder.toString())
+                locationTextFlow.emit(it.toShowString())
             }
         }
     }

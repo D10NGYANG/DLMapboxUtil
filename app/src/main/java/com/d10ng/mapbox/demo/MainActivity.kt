@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             var selectPoint by remember {
-                mutableStateOf(Point.fromLngLat(113.22, 22.33))
+                mutableStateOf(Point.fromLngLat(116.411794, 39.9068))
             }
             Column(
                 modifier = Modifier

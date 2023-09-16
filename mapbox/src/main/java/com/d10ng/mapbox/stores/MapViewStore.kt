@@ -25,7 +25,7 @@ object MapViewStore {
     private const val MAP_BOX_ZOOM_DEFAULT = 10.0
 
     /** 默认经纬度位置 */
-    private val defaultPoint: Point = Point.fromLngLat(113.031227, 23.153469)
+    private val defaultPoint: Point = Point.fromLngLat(116.40769, 39.89945)
 
     /** 图层样式 */
     val layerTypeFlow = MapboxConfigDataStore.getLayerFlow().map { it ?: MapLayerType.TD_VECTOR }

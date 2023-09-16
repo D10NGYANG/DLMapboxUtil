@@ -15,14 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
+import com.d10ng.compose.ui.AppShape
+import com.d10ng.compose.ui.base.Button
+import com.d10ng.compose.ui.base.ButtonType
 import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.activity.map.Compass
+import com.d10ng.mapbox.activity.map.LocationTextBar
 import com.d10ng.mapbox.constant.MapLayerType
 import com.d10ng.mapbox.stores.MapViewStore
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
-import com.d10ng.mapbox.view.SureButton
 import com.mapbox.geojson.Point
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
@@ -35,12 +38,14 @@ fun LocationShowScreen(
     val zoom by model.zoomFlow.collectAsState()
     val target by model.targetFlow.collectAsState()
     val pointOption by model.pointOptionFlow.collectAsState()
+    val locationText by model.locationTextFlow.collectAsState()
 
     LocationShowScreenView(
         layer = layer,
         zoom = zoom,
         target = target,
         pointOption = pointOption,
+        locationText = locationText,
         onClickBack = model::onClickBack,
         onMapStyleLoad = { model.onMapStyleLoad(it) },
         onClickZoomIn = MapViewStore::zoomIn,
@@ -59,6 +64,7 @@ fun LocationShowScreenView(
     zoom: Double,
     target: Point,
     pointOption: PointAnnotationOptions?,
+    locationText: String,
     onClickBack: () -> Unit = {},
     onMapStyleLoad: (Style) -> Unit = {},
     onClickZoomIn: () -> Unit = {},
@@ -94,6 +100,8 @@ fun LocationShowScreenView(
                 pointOptions = points
             )
 
+            LocationTextBar(locationText)
+
             Compass()
 
             MapZoomControllerBar(
@@ -112,13 +120,15 @@ fun LocationShowScreenView(
                 onClickLocation = onClickLocation
             )
 
-            SureButton(
+            Button(
                 modifier = Modifier
                     .width(160.dp)
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 50.dp),
                 text = "到这去",
-                onClick = onClickGo
+                onClick = onClickGo,
+                type = ButtonType.PRIMARY,
+                shape = AppShape.RC.Cycle
             )
         }
     }

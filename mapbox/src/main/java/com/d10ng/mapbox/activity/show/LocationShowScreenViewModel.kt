@@ -13,6 +13,8 @@ import com.d10ng.latlnglib.convert
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.startup.StartupInitializer
 import com.d10ng.mapbox.stores.MapViewStore
+import com.d10ng.mapbox.utils.toShowString
+import com.d10ng.mapbox.view.MapLayerDialogBuilder
 import com.mapbox.geojson.Point
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
@@ -40,8 +42,12 @@ class LocationShowScreenViewModel : ViewModel() {
         PointAnnotationOptions()
             .withGeometry(_initPoint)
             .withIconImage(POINT)
-            .withIconSize(1.0)
+            .withIconSize(0.8)
+            .withIconOffset(listOf(0.0, -20.0))
     )
+
+    /** 位置文本 */
+    val locationTextFlow = MutableStateFlow(_initPoint.toShowString())
 
     /** 点击返回 */
     fun onClickBack() {
@@ -51,7 +57,7 @@ class LocationShowScreenViewModel : ViewModel() {
     /** 地图加载完成 */
     fun onMapStyleLoad(style: Style) {
         StartupInitializer.application
-            .makeBitmapFromDrawable(R.drawable.ic_map_location_target_25)?.apply {
+            .makeBitmapFromDrawable(R.drawable.ic_map_point_32)?.apply {
                 style.addImage(POINT, this)
             }
     }
@@ -68,16 +74,12 @@ class LocationShowScreenViewModel : ViewModel() {
 
     /** 点击图层切换 */
     fun onClickLayer() {
-        // TODO
-//        LocationShowActivity.instant.get()?.apply {
-//            app.showDialog(MapLayerDialogBuilder(
-//                value = layerFlow.value,
-//                onChange = {
-//                    app.hideDialog()
-//                    MapModel.instant.updateLayer(this, it)
-//                }
-//            ))
-//        }
+        UiViewModelManager.showDialog(MapLayerDialogBuilder(
+            value = MapViewStore.getCurrentLayer(),
+            onChange = {
+                MapViewStore.updateLayer(it)
+            }
+        ))
     }
 
     /** 点击移动到位置 */

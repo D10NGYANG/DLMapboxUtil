@@ -30,6 +30,8 @@ import com.d10ng.compose.ui.base.ButtonType
 import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.constant.MapLayerType
+import com.d10ng.mapbox.stores.LocationStore
+import com.d10ng.mapbox.utils.toShowString
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
@@ -110,7 +112,7 @@ private fun MapMainScreenView(
                 onCameraCenterChange = onUpdateTarget
             )
 
-            UserLocationBar(text = locationText)
+            UserLocationTextBar()
             Compass()
 
             MapZoomControllerBar(
@@ -140,20 +142,26 @@ fun BoxScope.Compass() {
         contentScale = ContentScale.FillBounds,
         modifier = Modifier
             .padding(16.dp)
-            .size(30.dp)
+            .size(37.dp)
             .align(Alignment.TopEnd)
     )
 }
 
 @Composable
-fun BoxScope.UserLocationBar(
+fun BoxScope.UserLocationTextBar() {
+    val loc by LocationStore.getValueFlow().collectAsState(initial = null)
+    LocationTextBar(text = loc?.toShowString("当前位置:") ?: "正在获取当前位置...")
+}
+
+@Composable
+fun BoxScope.LocationTextBar(
     text: String
 ) {
     Box(
         modifier = Modifier
             .padding(16.dp)
             .background(Color(0xCCFFFFFF), AppShape.RC.v8)
-            .padding(8.dp, 4.dp)
+            .padding(12.dp)
             .align(Alignment.TopStart),
         contentAlignment = Alignment.Center
     ) {
