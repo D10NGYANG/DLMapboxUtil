@@ -1,9 +1,7 @@
-package com.d10ng.mapbox.activity.map
+package com.d10ng.mapbox.activity.offline
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,34 +11,33 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
 import com.d10ng.compose.ui.PageTransitions
+import com.d10ng.compose.ui.base.Button
+import com.d10ng.compose.ui.base.ButtonType
 import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.constant.MapLayerType
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
-import com.d10ng.mapbox.view.SureButton
+import com.d10ng.mapbox.view.NavBarIconButton
 import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@MapNavGraph
+@OfflineNavGraph
 @Destination(style = PageTransitions::class)
 @Composable
 fun MapOfflineAreaScreen(
@@ -88,16 +85,10 @@ private fun MapOfflineAreaScreenView(
             .background(AppColor.Neutral.bg)
             .navigationBarsPadding()
     ) {
-        NavBar(title = "地图", onClickBack = onClickBack) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_search_24),
-                contentDescription = "搜索",
-                modifier = Modifier
-                    .padding(end = 4.dp)
-                    .size(46.dp)
-                    .clip(AppShape.RC.Cycle)
-                    .clickable { onClickSearch() },
-                contentScale = ContentScale.Inside
+        NavBar(title = "地图", onClickBack = onClickBack, titleAlignment = Alignment.CenterStart) {
+            NavBarIconButton(
+                icon = R.drawable.ic_search_24,
+                onClick = onClickSearch
             )
         }
         Box(
@@ -125,7 +116,7 @@ private fun MapOfflineAreaScreenView(
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(150.dp)
+                    .height(200.dp)
                     .align(Alignment.BottomCenter)
                     .background(Color.Black.copy(alpha = 0.5f))
             )
@@ -134,7 +125,7 @@ private fun MapOfflineAreaScreenView(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(30.dp)
-                    .padding(top = 30.dp, bottom = 150.dp)
+                    .padding(top = 30.dp, bottom = 200.dp)
                     .align(Alignment.CenterStart)
                     .background(Color.Black.copy(alpha = 0.5f))
             )
@@ -143,7 +134,7 @@ private fun MapOfflineAreaScreenView(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(30.dp)
-                    .padding(top = 30.dp, bottom = 150.dp)
+                    .padding(top = 30.dp, bottom = 200.dp)
                     .align(Alignment.CenterEnd)
                     .background(Color.Black.copy(alpha = 0.5f))
             )
@@ -151,7 +142,7 @@ private fun MapOfflineAreaScreenView(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 30.dp, bottom = 150.dp, start = 30.dp, end = 30.dp)
+                    .padding(top = 30.dp, bottom = 200.dp, start = 30.dp, end = 30.dp)
                     .align(Alignment.Center)
                     .border(1.dp, AppColor.Main.primary)
             )
@@ -172,14 +163,26 @@ private fun MapOfflineAreaScreenView(
                 onClickLocation = onClickLocation
             )
 
-            SureButton(
+            Button(
                 modifier = Modifier
                     .width(160.dp)
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 50.dp),
                 text = "立即下载",
-                onClick = onClickDownload
+                onClick = onClickDownload,
+                type = ButtonType.PRIMARY,
+                shape = AppShape.RC.Cycle
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun MapOfflineAreaScreenViewPreview() {
+    MapOfflineAreaScreenView(
+        layer = MapLayerType.TD_VECTOR,
+        zoom = 10.0,
+        target = Point.fromLngLat(0.0, 0.0)
+    )
 }

@@ -1,4 +1,4 @@
-package com.d10ng.mapbox.activity.map
+package com.d10ng.mapbox.activity.offline
 
 import androidx.lifecycle.ViewModel
 import com.d10ng.compose.model.UiViewModelManager
@@ -28,17 +28,19 @@ class MapOfflineAddScreenViewModel : ViewModel() {
 
     /** 点击确定 */
     fun onClickSure(nav: DestinationsNavigator) {
-        MapActivity.instant.get()?.apply {
-            if (inputNameFlow.value.isEmpty()) {
-                UiViewModelManager.showErrorNotify("地图名称不能为空！")
-                return
-            }
-            MapboxStore.addOfflineDownload(
-                minZoom = zoomRangeFlow.value.start.roundToInt(),
-                maxZoom = zoomRangeFlow.value.endInclusive.roundToInt(),
-                title = inputNameFlow.value
-            )
-            nav.popBackStack(MapOfflineListScreenDestination, false)
+        if (inputNameFlow.value.isEmpty()) {
+            UiViewModelManager.showErrorNotify("地图名称不能为空！")
+            return
         }
+        if (inputNameFlow.value.length > 20) {
+            UiViewModelManager.showErrorNotify("地图名称不能超过20个字符！")
+            return
+        }
+        MapboxStore.addOfflineDownload(
+            minZoom = zoomRangeFlow.value.start.roundToInt(),
+            maxZoom = zoomRangeFlow.value.endInclusive.roundToInt(),
+            title = inputNameFlow.value
+        )
+        nav.popBackStack(MapOfflineListScreenDestination, false)
     }
 }

@@ -19,10 +19,10 @@ import com.d10ng.compose.ui.AppShape
 import com.d10ng.compose.ui.base.Button
 import com.d10ng.compose.ui.base.ButtonType
 import com.d10ng.compose.ui.navigation.NavBar
-import com.d10ng.mapbox.activity.map.Compass
-import com.d10ng.mapbox.activity.map.LocationTextBar
 import com.d10ng.mapbox.constant.MapLayerType
 import com.d10ng.mapbox.stores.MapViewStore
+import com.d10ng.mapbox.view.Compass
+import com.d10ng.mapbox.view.LocationTextBar
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView

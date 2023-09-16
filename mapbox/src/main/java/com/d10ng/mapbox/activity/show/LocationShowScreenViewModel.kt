@@ -51,7 +51,7 @@ class LocationShowScreenViewModel : ViewModel() {
 
     /** 点击返回 */
     fun onClickBack() {
-        ActivityManager.top().value?.finish()
+        ActivityManager.finishTop()
     }
 
     /** 地图加载完成 */

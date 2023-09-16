@@ -18,6 +18,7 @@ import com.mapbox.common.TileStoreOptions
 import com.mapbox.geojson.Geometry
 import com.mapbox.maps.MapInitOptions
 import com.mapbox.maps.OfflineManager
+import com.mapbox.maps.ResourceOptionsManager
 import com.mapbox.maps.TilesetDescriptorOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,6 +54,11 @@ object MapboxStore {
 
     fun init(token: String) {
         this.token = token
+        // 初始化TOKEN
+        MapInitOptions(
+            application,
+            ResourceOptionsManager.getDefault(application, MapboxStore.token).resourceOptions
+        )
         tileStore = TileStore.create().apply {
             setOption(
                 TileStoreOptions.MAPBOX_ACCESS_TOKEN,

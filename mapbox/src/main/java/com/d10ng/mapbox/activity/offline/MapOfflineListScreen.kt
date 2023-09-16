@@ -1,4 +1,4 @@
-package com.d10ng.mapbox.activity.map
+package com.d10ng.mapbox.activity.offline
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -26,10 +25,11 @@ import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.bean.OfflineMapInfo
+import com.d10ng.mapbox.view.NavBarIconButton
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@MapNavGraph
+@OfflineNavGraph(start = true)
 @Destination(style = PageTransitions::class)
 @Composable
 fun MapOfflineListScreen(
@@ -63,16 +63,14 @@ private fun MapOfflineListScreenView(
             .background(AppColor.Neutral.bg)
             .navigationBarsPadding()
     ) {
-        NavBar(title = "离线地图", onClickBack = onClickBack) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_toolbar_add_24),
-                contentDescription = "添加",
-                modifier = Modifier
-                    .padding(end = 4.dp)
-                    .size(46.dp)
-                    .clip(AppShape.RC.Cycle)
-                    .clickable { onClickAdd() },
-                contentScale = ContentScale.Inside
+        NavBar(
+            title = "离线地图",
+            onClickBack = onClickBack,
+            titleAlignment = Alignment.CenterStart
+        ) {
+            NavBarIconButton(
+                icon = R.drawable.ic_toolbar_add_24,
+                onClick = onClickAdd
             )
         }
         if (infoList.isEmpty()) {
@@ -108,12 +106,13 @@ private fun ColumnScope.BoxDataEmpty() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_offline_map_empty_100),
+                painter = painterResource(id = R.drawable.ic_offline_map_empty_124),
                 contentDescription = "还未下载离线地图"
             )
             Text(
                 text = "还未下载离线地图",
-                style = AppText.Normal.Hint.v16
+                style = AppText.Normal.Hint.default,
+                modifier = Modifier.padding(top = 16.dp)
             )
         }
     }
@@ -145,13 +144,13 @@ private fun OfflineMapItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .background(AppColor.Neutral.card)
+                .background(Color.White)
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             contentAlignment = Alignment.CenterStart
         ) {
             Text(
                 text = value.title,
-                style = AppText.Normal.Title.v14,
+                style = AppText.Normal.Title.default,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -165,7 +164,7 @@ private fun OfflineMapItem(
             ) {
                 Text(
                     text = "$progress%",
-                    style = AppText.Bold.Title.v24,
+                    style = AppText.Bold.Title.large,
                     color = Color.White
                 )
             }

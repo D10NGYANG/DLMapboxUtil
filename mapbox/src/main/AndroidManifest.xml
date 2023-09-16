@@ -9,13 +9,16 @@
     <application>
         <activity
             android:name=".activity.map.MapActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
+        <activity
+            android:name=".activity.offline.MapOfflineActivity"
+            android:exported="true" />
         <activity
             android:name=".activity.search.LocationSearchActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".activity.show.LocationShowActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

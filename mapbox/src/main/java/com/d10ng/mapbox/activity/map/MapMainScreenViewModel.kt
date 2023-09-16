@@ -1,20 +1,15 @@
 package com.d10ng.mapbox.activity.map
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.d10ng.mapbox.activity.destinations.MapOfflineListScreenDestination
-import com.d10ng.mapbox.stores.LocationStore
+import com.d10ng.app.base.ActivityManager
+import com.d10ng.app.base.goTo
+import com.d10ng.compose.model.UiViewModelManager
+import com.d10ng.mapbox.activity.offline.MapOfflineActivity
 import com.d10ng.mapbox.stores.MapViewStore
-import com.d10ng.mapbox.utils.toShowString
+import com.d10ng.mapbox.view.MapLayerDialogBuilder
 import com.mapbox.geojson.Point
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 
 class MapMainScreenViewModel : ViewModel() {
-
-    /** 位置文本 */
-    val locationTextFlow = MutableStateFlow("正在获取当前位置...")
 
     /** 地图样式 */
     val layerFlow = MapViewStore.layerTypeFlow
@@ -25,24 +20,15 @@ class MapMainScreenViewModel : ViewModel() {
     /** 地图中心 */
     val targetFlow = MapViewStore.targetFlow
 
-    init {
-        viewModelScope.launch {
-            LocationStore.getValueFlow().collect {
-                it ?: return@collect
-                locationTextFlow.emit(it.toShowString())
-            }
-        }
-    }
-
 
     /** 点击返回 */
     fun onClickBack() {
-        MapActivity.instant.get()?.finish()
+        ActivityManager.finishTop()
     }
 
     /** 点击离线地图 */
-    fun onClickOffline(nav: DestinationsNavigator) {
-        nav.navigate(MapOfflineListScreenDestination)
+    fun onClickOffline() {
+        ActivityManager.top().value?.goTo(MapOfflineActivity::class.java)
     }
 
     /** 点击放大 */
@@ -67,16 +53,12 @@ class MapMainScreenViewModel : ViewModel() {
 
     /** 点击图层切换 */
     fun onClickLayer() {
-        // TODO
-//        MapActivity.instant.get()?.apply {
-//            app.showDialog(MapLayerDialogBuilder(
-//                value = layerFlow.value,
-//                onChange = {
-//                    app.hideDialog()
-//                    MapModel.instant.updateLayer(this, it)
-//                }
-//            ))
-//        }
+        UiViewModelManager.showDialog(MapLayerDialogBuilder(
+            value = MapViewStore.getCurrentLayer(),
+            onChange = {
+                MapViewStore.updateLayer(it)
+            }
+        ))
     }
 
     /** 点击移动到当前位置 */

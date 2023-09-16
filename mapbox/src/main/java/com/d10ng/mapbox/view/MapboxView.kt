@@ -12,14 +12,12 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.constant.MapLayerType
-import com.d10ng.mapbox.stores.MapboxStore
+import com.d10ng.mapbox.utils.Logger
 import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.CoordinateBounds
-import com.mapbox.maps.MapInitOptions
 import com.mapbox.maps.MapView
-import com.mapbox.maps.ResourceOptions
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.animation.camera
 import com.mapbox.maps.plugin.animation.easeTo
@@ -94,11 +92,7 @@ fun MapboxView(
     AndroidView(
         factory = { context ->
             MapView(
-                context,
-                MapInitOptions(
-                    context,
-                    ResourceOptions.Builder().accessToken(MapboxStore.token).build()
-                )
+                context
             ).apply {
                 // 不显示地图官方LOGO
                 logo.updateSettings { enabled = false }
@@ -164,7 +158,7 @@ fun MapboxView(
             val mapbox = map.getMapboxMap()
             // 设置地图样式
             if (mapbox.getStyle()?.styleURI != layer.source) {
-                println("MapboxView 设置地图样式 ${layer.source}")
+                Logger.i("MapboxView 设置地图样式 ${layer.source}")
                 mapbox.loadStyleUri(layer.source) { style ->
                     onStyleLoad.invoke(style)
                 }
@@ -172,7 +166,7 @@ fun MapboxView(
             // 设置显示位置和缩放比例
             val camera = mapbox.cameraState
             if (camera.zoom != cameraZoom || camera.center != cameraTarget) {
-                println("MapboxView 设置显示位置和缩放比例 $cameraZoom, $cameraTarget")
+                Logger.i("MapboxView 设置显示位置和缩放比例 $cameraZoom, $cameraTarget")
                 val position = CameraOptions.Builder()
                     .zoom(cameraZoom)
                     .center(cameraTarget)
@@ -187,7 +181,7 @@ fun MapboxView(
                     val deleteList = pointAnnotations.filter { s ->
                         !pointOptions.containsKey(s.key)
                     }
-                    println("MapboxView 先将没有的图标删除, size=${deleteList.size}")
+                    Logger.i("MapboxView 先将没有的图标删除, size=${deleteList.size}")
                     manager.delete(deleteList.values.toList())
                     deleteList.forEach { pointAnnotations.remove(it.key) }
                     // 将已经有的图标进行调整
@@ -195,13 +189,13 @@ fun MapboxView(
                         pointOptions[s.key]?.let { s.value.updateByOptions(it) }
                         s.value
                     }
-                    println("MapboxView 将已经有的图标进行调整, size=${oldList.size}")
+                    Logger.i("MapboxView 将已经有的图标进行调整, size=${oldList.size}")
                     manager.update(oldList)
                     // 添加新增的图标
                     val newList = pointOptions.filter { p ->
                         !pointAnnotations.containsKey(p.key)
                     }
-                    println("MapboxView 添加新增的图标, size=${newList.size}")
+                    Logger.i("MapboxView 添加新增的图标, size=${newList.size}")
                     newList.forEach { pointAnnotations[it.key] = manager.create(it.value) }
                 }
             }
@@ -213,7 +207,7 @@ fun MapboxView(
                     val deleteList = lineAnnotations.filter { s ->
                         !lineOptions.containsKey(s.key)
                     }
-                    println("MapboxView 先将没有的线条删除, size=${deleteList.size}")
+                    Logger.i("MapboxView 先将没有的线条删除, size=${deleteList.size}")
                     manager.delete(deleteList.values.toList())
                     deleteList.forEach { lineAnnotations.remove(it.key) }
                     // 将已经有的线条进行调整
@@ -221,13 +215,13 @@ fun MapboxView(
                         lineOptions[s.key]?.let { s.value.updateByOptions(it) }
                         s.value
                     }
-                    println("MapboxView 将已经有的线条进行调整, size=${oldList.size}")
+                    Logger.i("MapboxView 将已经有的线条进行调整, size=${oldList.size}")
                     manager.update(oldList)
                     // 添加新增的线条
                     val newList = lineOptions.filter { p ->
                         !lineAnnotations.containsKey(p.key)
                     }
-                    println("MapboxView 添加新增的线条, size=${newList.size}")
+                    Logger.i("MapboxView 添加新增的线条, size=${newList.size}")
                     newList.forEach { lineAnnotations[it.key] = manager.create(it.value) }
                 }
             }

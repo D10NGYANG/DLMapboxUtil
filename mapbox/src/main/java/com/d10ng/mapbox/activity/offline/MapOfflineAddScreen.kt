@@ -1,14 +1,15 @@
-package com.d10ng.mapbox.activity.map
+package com.d10ng.mapbox.activity.offline
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
@@ -23,16 +24,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
+import com.d10ng.compose.ui.AppShape
 import com.d10ng.compose.ui.AppText
 import com.d10ng.compose.ui.PageTransitions
+import com.d10ng.compose.ui.base.Button
+import com.d10ng.compose.ui.base.ButtonType
+import com.d10ng.compose.ui.base.CellGroup
+import com.d10ng.compose.ui.form.Field
 import com.d10ng.compose.ui.navigation.NavBar
-import com.d10ng.mapbox.view.InputItem
-import com.d10ng.mapbox.view.SureButton
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlin.math.roundToInt
 
-@MapNavGraph
+@OfflineNavGraph
 @Destination(style = PageTransitions::class)
 @Composable
 fun MapOfflineAddScreen(
@@ -65,39 +69,50 @@ private fun MapOfflineAddScreenView(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColor.Neutral.bg)
-            .navigationBarsPadding()
     ) {
-        NavBar(title = "配置离线地图", onClickBack = onClickBack)
+        NavBar(
+            title = "配置离线地图",
+            onClickBack = onClickBack,
+            titleAlignment = Alignment.CenterStart
+        )
 
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .weight(1f),
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item {
-                InputItem(
+            CellGroup(
+                modifier = Modifier.padding(top = 12.dp),
+                border = false
+            ) {
+                Field(
                     value = inputName,
                     onValueChange = onUpdateInputName,
-                    title = "地图名称：",
-                    placeholder = "请输入备注地图名称"
+                    label = "地图名称",
+                    placeholder = "请输入备注地图名称",
+                    border = false
                 )
             }
-            item {
+            CellGroup(
+                modifier = Modifier.padding(top = 12.dp),
+                border = false
+            ) {
                 ZoomRangePicker(
                     zoomRange = zoomRange,
                     onUpdateZoomRange = onUpdateZoomRange
                 )
             }
-            item {
-                SureButton(
-                    modifier = Modifier
-                        .padding(vertical = 30.dp)
-                        .width(150.dp),
-                    text = "下载",
-                    onClick = onClickSure
-                )
-            }
+            Button(
+                modifier = Modifier
+                    .padding(vertical = 30.dp)
+                    .width(150.dp),
+                text = "下载",
+                onClick = onClickSure,
+                type = ButtonType.PRIMARY,
+                shape = AppShape.RC.Cycle
+            )
         }
     }
 }
@@ -113,15 +128,24 @@ private fun ZoomRangePicker(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight()
             .padding(top = 4.dp)
-            .background(AppColor.Neutral.bg)
             .padding(16.dp)
     ) {
-        Text(
-            text = "地图层级：${zoomRange.start.roundToInt()} ~ ${zoomRange.endInclusive.roundToInt()} 级",
-            style = AppText.Normal.Title.small
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "地图层级",
+                style = AppText.Normal.Title.default
+            )
+            Box(modifier = Modifier.width(55.dp))
+            Text(
+                text = "${zoomRange.start.roundToInt()} ~ ${zoomRange.endInclusive.roundToInt()} 级",
+                style = AppText.Normal.Body.default
+            )
+        }
+
 
         RangeSlider(
             value = zoomRange,
@@ -143,10 +167,10 @@ private fun ZoomRangePicker(
             )
         )
 
-        Text(text = "层级说明：", style = AppText.Normal.Body.v12)
-        Text(text = "* 全球覆盖：0 - 5", style = AppText.Normal.Hint.v12)
-        Text(text = "* 区域信息：6 - 10", style = AppText.Normal.Hint.v12)
-        Text(text = "* 本地信息：11 - 14", style = AppText.Normal.Hint.v12)
-        Text(text = "* 街道细节：15 - 16", style = AppText.Normal.Hint.v12)
+        Text(text = "层级说明", style = AppText.Normal.Body.default)
+        Text(text = "* 全球覆盖：0 - 5", style = AppText.Normal.Tips.small)
+        Text(text = "* 区域信息：6 - 10", style = AppText.Normal.Tips.small)
+        Text(text = "* 本地信息：11 - 14", style = AppText.Normal.Tips.small)
+        Text(text = "* 街道细节：15 - 16", style = AppText.Normal.Tips.small)
     }
 }

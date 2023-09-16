@@ -1,4 +1,4 @@
-package com.d10ng.mapbox.activity.map
+package com.d10ng.mapbox.activity.offline
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

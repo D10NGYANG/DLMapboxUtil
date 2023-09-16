@@ -19,12 +19,10 @@ import androidx.compose.ui.graphics.Color
 import com.d10ng.app.base.goTo
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.base.Button
-import com.d10ng.http.Http
+import com.d10ng.mapbox.MapboxUtil
 import com.d10ng.mapbox.activity.map.MapActivity
 import com.d10ng.mapbox.activity.search.LocationSearchManager
 import com.d10ng.mapbox.activity.show.goToLocationShowActivity
-import com.d10ng.mapbox.stores.MapboxStore
-import com.d10ng.tianditu.TianDiTuApiManager
 import com.mapbox.geojson.Point
 
 class MainActivity : ComponentActivity() {
@@ -32,9 +30,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         initColor()
-        MapboxStore.init(BuildConfig.myMapboxToken)
-        Http.init("", true)
-        TianDiTuApiManager.init(BuildConfig.myTiandituToken)
+        MapboxUtil.init(BuildConfig.myMapboxToken, BuildConfig.myTiandituToken, true)
 
         setContent {
             var selectPoint by remember {

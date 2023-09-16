@@ -82,7 +82,7 @@ dependencies {
     // jetpack compose 框架
     implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.1")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.4.4")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.4.6")
     // 经纬度工具
     implementation("com.github.D10NGYANG:DLLatLngUtil-jvm:1.7.5")
     // 天地图API

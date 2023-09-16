@@ -1,11 +1,14 @@
-package com.d10ng.mapbox.activity.map
+package com.d10ng.mapbox.activity.offline
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.d10ng.app.base.ActivityManager
+import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.activity.destinations.MapOfflineAddScreenDestination
 import com.d10ng.mapbox.activity.search.LocationSearchManager
 import com.d10ng.mapbox.constant.MapLayerType
 import com.d10ng.mapbox.stores.MapViewStore
+import com.d10ng.mapbox.view.MapLayerDialogBuilder
 import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
@@ -33,7 +36,7 @@ class MapOfflineAreaScreenViewModel : ViewModel() {
 
     /** 点击搜索 */
     fun onClickSearch() {
-        MapActivity.instant.get()?.apply {
+        ActivityManager.top().value?.apply {
             LocationSearchManager.instant.startActivity(this) {
                 if (it != null) {
                     updateTarget(it)
@@ -64,17 +67,13 @@ class MapOfflineAreaScreenViewModel : ViewModel() {
 
     /** 点击图层切换 */
     fun onClickLayer() {
-        // TODO
-//        MapActivity.instant.get()?.apply {
-//            app.showDialog(MapLayerDialogBuilder(
-//                value = layerFlow.value,
-//                isOnlyShowCanDown = true,
-//                onChange = {
-//                    app.hideDialog()
-//                    MapModel.instant.updateLayer(this, it)
-//                }
-//            ))
-//        }
+        UiViewModelManager.showDialog(MapLayerDialogBuilder(
+            value = MapViewStore.getCurrentLayer(),
+            isOnlyShowCanDown = true,
+            onChange = {
+                MapViewStore.updateLayer(it)
+            }
+        ))
     }
 
     /** 点击移动到当前位置 */
