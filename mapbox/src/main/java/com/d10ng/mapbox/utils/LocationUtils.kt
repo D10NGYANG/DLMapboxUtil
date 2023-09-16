@@ -3,6 +3,7 @@ package com.d10ng.mapbox.utils
 import android.location.Location
 import com.d10ng.latlnglib.toLatitudeString
 import com.d10ng.latlnglib.toLongitudeString
+import com.d10ng.tianditu.bean.LocationSearch
 import com.mapbox.geojson.Point
 
 /**
@@ -50,4 +51,16 @@ fun toShowLocationText(
         .append(",")
         .append(lng.toLongitudeString(pattern))
     return builder.toString()
+}
+
+/**
+ * 将 Poi 转换为 Point
+ * @receiver LocationSearch.Poi
+ * @return Point
+ */
+fun LocationSearch.Poi.toPoint(): Point {
+    val ls = lonlat.split(",")
+    val lng = ls[0].toDoubleOrNull() ?: 0.0
+    val lat = ls[1].toDoubleOrNull() ?: 0.0
+    return Point.fromLngLat(lng, lat)
 }

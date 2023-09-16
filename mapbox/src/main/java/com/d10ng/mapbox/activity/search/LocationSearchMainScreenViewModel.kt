@@ -2,10 +2,15 @@ package com.d10ng.mapbox.activity.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.d10ng.compose.model.UiViewModelManager
+import com.d10ng.compose.ui.dialog.builder.ConfirmDialogBuilder
 import com.d10ng.mapbox.activity.destinations.LocationByLatLngScreenDestination
 import com.d10ng.mapbox.activity.destinations.LocationSearchInfoScreenDestination
+import com.d10ng.mapbox.bean.HistoryInfo
+import com.d10ng.mapbox.stores.HistoryStore
+import com.d10ng.mapbox.utils.toPoint
+import com.d10ng.mapbox.view.LocationConfirmView
 import com.d10ng.tianditu.bean.LocationSearch
-import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +22,12 @@ class LocationSearchMainScreenViewModel : ViewModel() {
 
     /** 输入搜索内容 */
     val inputFlow = MutableStateFlow("")
+
+    /** 是否正在执行搜索 */
+    val isSearchingFlow = MutableStateFlow(false)
+
+    /** 历史记录 */
+    val historyFlow = HistoryStore.valueFlow
 
     /** 结果 */
     val resultFlow = MutableStateFlow<LocationSearch?>(null)
@@ -31,7 +42,7 @@ class LocationSearchMainScreenViewModel : ViewModel() {
 
     /** 点击返回 */
     fun onClickBack() {
-        LocationSearchManager.instant.finish(null)
+        viewModelScope.launch { LocationSearchManager.finish(null) }
     }
 
     /** 更新搜索内容 */
@@ -44,13 +55,16 @@ class LocationSearchMainScreenViewModel : ViewModel() {
         search(inputFlow.value)
     }
 
-    /** 搜索 */
+    /**
+     * 搜索
+     * @param value String
+     */
     private fun search(value: String) {
         viewModelScope.launch {
-            LocationSearchActivity.instant.get()?.apply {
-                val result = LocationSearchManager.instant.search(this, value)
-                resultFlow.emit(result)
-            }
+            isSearchingFlow.value = true
+            val result = LocationSearchManager.search(value)
+            resultFlow.emit(result)
+            isSearchingFlow.value = false
         }
     }
 
@@ -61,34 +75,75 @@ class LocationSearchMainScreenViewModel : ViewModel() {
 
     /** 点击区域 */
     fun onClickItem(nav: DestinationsNavigator, value: LocationSearch.Area) {
-        nav.navigate(LocationSearchInfoScreenDestination(inputFlow.value, value.name, value.adminCode))
+        nav.navigate(
+            LocationSearchInfoScreenDestination(
+                inputFlow.value,
+                value.name,
+                value.adminCode
+            )
+        )
     }
 
     /** 点击区域 */
     fun onClickItem(nav: DestinationsNavigator, value: LocationSearch.Statistics.AllAdmin) {
-        nav.navigate(LocationSearchInfoScreenDestination(inputFlow.value, value.adminName, value.adminCode))
+        nav.navigate(
+            LocationSearchInfoScreenDestination(
+                inputFlow.value,
+                value.adminName,
+                value.adminCode
+            )
+        )
     }
 
-    /** 点击搜索结果 */
+    /**
+     * 点击搜索结果
+     * @param value Poi
+     */
     fun onClickItem(value: LocationSearch.Poi) {
-        LocationSearchActivity.instant.get()?.apply {
-            val ls = value.lonlat.split(",")
-            val lng = ls[0].toDoubleOrNull() ?: 0.0
-            val lat = ls[1].toDoubleOrNull() ?: 0.0
-            val target = Point.fromLngLat(lng, lat)
-            // TODO
-//            app.showDialog(LocationSureDialogBuilder(
-//                title = "位置确定",
-//                message = value.address,
-//                target = target,
-//                onClickSure = {
-//                    app.hideDialog()
-//                    LocationSearchManager.instant.finish(target)
-//                },
-//                onClickCancel = {
-//                    app.hideDialog()
-//                }
-//            ))
-        }
+        UiViewModelManager.showDialog(ConfirmDialogBuilder(
+            title = "位置确定",
+            content = "",
+            contentSlot = {
+                LocationConfirmView(
+                    label = value.name,
+                    description = value.address,
+                    point = value.toPoint()
+                )
+            },
+            onConfirmClick = {
+                LocationSearchManager.finish(value)
+                true
+            }
+        ))
+    }
+
+    /**
+     * 点击清除历史记录
+     */
+    fun onClickClearHistory() {
+        UiViewModelManager.showDialog(ConfirmDialogBuilder(
+            title = "提示",
+            content = "确定要清除历史记录吗？",
+            onConfirmClick = {
+                HistoryStore.clear()
+                true
+            }
+        ))
+    }
+
+    /**
+     * 点击删除历史记录
+     * @param value HistoryInfo
+     */
+    fun onClickRemoveHistory(value: HistoryInfo) {
+        viewModelScope.launch { HistoryStore.remove(value) }
+    }
+
+    /**
+     * 点击历史记录
+     * @param value HistoryInfo
+     */
+    fun onClickHistory(value: HistoryInfo) {
+        viewModelScope.launch { LocationSearchManager.finish(value) }
     }
 }

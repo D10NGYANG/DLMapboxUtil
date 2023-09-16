@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
@@ -53,7 +54,7 @@ private fun LocationSearchInfoScreenView(
             .background(AppColor.Neutral.bg)
             .navigationBarsPadding()
     ) {
-        NavBar(title = area, onClickBack = onClickBack)
+        NavBar(title = area, onClickBack = onClickBack, titleAlignment = Alignment.CenterStart)
         LocationSearchView(
             modifier = Modifier
                 .fillMaxSize()

@@ -15,4 +15,8 @@ interface MapboxConfigData {
     // 选择地图图层
     @PreferenceKey
     val layer: MapLayerType
+
+    // 选择位置历史记录
+    @PreferenceKey
+    val history: Set<String>
 }

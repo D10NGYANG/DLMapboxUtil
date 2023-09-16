@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -22,13 +21,16 @@ import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Button
 import com.d10ng.compose.ui.base.ButtonSize
 import com.d10ng.compose.ui.base.ButtonType
+import com.d10ng.compose.ui.base.Cell
+import com.d10ng.compose.ui.base.CellGroup
 import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.constant.MapLayerType
-import com.d10ng.mapbox.view.InputItem
+import com.d10ng.mapbox.view.Compass
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
+import com.d10ng.mapbox.view.UserLocationTextBar
 import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -81,9 +83,12 @@ private fun LocationByLatLngScreenView(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColor.Neutral.bg)
-            .navigationBarsPadding()
     ) {
-        NavBar(title = "经纬度位置", onClickBack = onClickBack) {
+        NavBar(
+            title = "经纬度位置",
+            onClickBack = onClickBack,
+            titleAlignment = Alignment.CenterStart
+        ) {
             Button(
                 text = "确定",
                 onClick = onClickSure,
@@ -93,20 +98,10 @@ private fun LocationByLatLngScreenView(
                 size = ButtonSize.MINI
             )
         }
-        InputItem(
-            value = target.latitude().toString(),
-            enabled = false,
-            onClick = onClickLat,
-            title = "纬度：",
-            placeholder = "请输入目标纬度，-90至90，eg:22.3"
-        )
-        InputItem(
-            value = target.longitude().toString(),
-            enabled = false,
-            onClick = onClickLng,
-            title = "经度：",
-            placeholder = "请输入目标经度，-180至180，eg:113.2"
-        )
+        CellGroup {
+            Cell(title = "纬度：${target.latitude()}", onClick = onClickLat)
+            Cell(title = "经度：${target.longitude()}", onClick = onClickLng, border = false)
+        }
         Box(
             modifier = Modifier
                 .padding(top = 8.dp)
@@ -121,6 +116,9 @@ private fun LocationByLatLngScreenView(
                 onCameraZoomChange = onUpdateZoom,
                 onCameraCenterChange = onUpdateTarget
             )
+
+            UserLocationTextBar()
+            Compass()
 
             Box(
                 modifier = Modifier.fillMaxSize(),

@@ -3,10 +3,13 @@ package com.d10ng.mapbox.activity.search
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.d10ng.compose.model.UiViewModelManager
+import com.d10ng.compose.ui.dialog.builder.ConfirmDialogBuilder
 import com.d10ng.mapbox.activity.destinations.LocationSearchInfoScreenDestination
 import com.d10ng.mapbox.activity.navArgs
+import com.d10ng.mapbox.utils.toPoint
+import com.d10ng.mapbox.view.LocationConfirmView
 import com.d10ng.tianditu.bean.LocationSearch
-import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -32,9 +35,10 @@ class LocationSearchInfoScreenViewModel constructor(
 
     init {
         viewModelScope.launch {
-            val act = LocationSearchActivity.instant.get() ?: return@launch
-            val result = LocationSearchManager.instant.search(act, _search, _areaCode.toString())
+            UiViewModelManager.showLoading()
+            val result = LocationSearchManager.search(_search, _areaCode.toString())
             resultFlow.emit(result)
+            UiViewModelManager.hideLoading()
         }
     }
 
@@ -53,24 +57,20 @@ class LocationSearchInfoScreenViewModel constructor(
 
     /** 点击搜索结果 */
     fun onClickItem(value: LocationSearch.Poi) {
-        LocationSearchActivity.instant.get()?.apply {
-            val ls = value.lonlat.split(",")
-            val lng = ls[0].toDoubleOrNull() ?: 0.0
-            val lat = ls[1].toDoubleOrNull() ?: 0.0
-            val target = Point.fromLngLat(lng, lat)
-            // TODO
-//            app.showDialog(LocationSureDialogBuilder(
-//                title = "位置确定",
-//                message = value.address,
-//                target = target,
-//                onClickSure = {
-//                    app.hideDialog()
-//                    LocationSearchManager.instant.finish(target)
-//                },
-//                onClickCancel = {
-//                    app.hideDialog()
-//                }
-//            ))
-        }
+        UiViewModelManager.showDialog(ConfirmDialogBuilder(
+            title = "位置确定",
+            content = "",
+            contentSlot = {
+                LocationConfirmView(
+                    label = value.name,
+                    description = value.address,
+                    point = value.toPoint()
+                )
+            },
+            onConfirmClick = {
+                LocationSearchManager.finish(value)
+                true
+            }
+        ))
     }
 }

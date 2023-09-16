@@ -37,7 +37,7 @@ class MapOfflineAreaScreenViewModel : ViewModel() {
     /** 点击搜索 */
     fun onClickSearch() {
         ActivityManager.top().value?.apply {
-            LocationSearchManager.instant.startActivity(this) {
+            LocationSearchManager.startActivity(this) {
                 if (it != null) {
                     updateTarget(it)
                 }

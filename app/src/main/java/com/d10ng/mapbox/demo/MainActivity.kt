@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
                     goTo(MapActivity::class.java)
                 })
                 Button(text = "搜索", onClick = {
-                    LocationSearchManager.instant.startActivity(this@MainActivity) {
+                    LocationSearchManager.startActivity(this@MainActivity) {
                         if (it != null) {
                             selectPoint = it
                         }
