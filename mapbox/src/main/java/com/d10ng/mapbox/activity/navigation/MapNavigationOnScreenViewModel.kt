@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d10ng.app.base.ActivityManager
 import com.d10ng.app.resource.makeBitmapFromDrawable
-import com.d10ng.common.toString
+import com.d10ng.common.base.toString
+import com.d10ng.common.coordinate.Coordinate
+import com.d10ng.common.coordinate.getDistanceOn2Points
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.AppColor
-import com.d10ng.latlnglib.bean.DLatLng
-import com.d10ng.latlnglib.getDistanceOn2Points
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.startup.StartupInitializer
 import com.d10ng.mapbox.stores.LocationStore
@@ -85,8 +85,8 @@ class MapNavigationOnScreenViewModel : ViewModel() {
                         )
                     // 计算距离
                     val distance = getDistanceOn2Points(
-                        DLatLng(cur.latitude(), cur.longitude()),
-                        DLatLng(tar.latitude(), tar.longitude())
+                        Coordinate(cur.latitude(), cur.longitude()),
+                        Coordinate(tar.latitude(), tar.longitude())
                     ) / 1000.0
                     distanceTextFlow.emit("${distance.toString(2)} km")
                     // 更新地图图标

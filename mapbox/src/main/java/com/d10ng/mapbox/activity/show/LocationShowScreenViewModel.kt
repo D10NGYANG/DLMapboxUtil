@@ -5,11 +5,11 @@ import com.d10ng.app.base.ActivityManager
 import com.d10ng.app.base.startBaiDuMapMaker
 import com.d10ng.app.base.startGaoDeMapMaker
 import com.d10ng.app.resource.makeBitmapFromDrawable
+import com.d10ng.common.coordinate.Coordinate
+import com.d10ng.common.coordinate.CoordinateSystemType
+import com.d10ng.common.coordinate.convert
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.sheet.builder.ActionSheetBuilder
-import com.d10ng.latlnglib.bean.DLatLng
-import com.d10ng.latlnglib.constant.CoordinateSystemType
-import com.d10ng.latlnglib.convert
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.startup.StartupInitializer
 import com.d10ng.mapbox.stores.MapViewStore
@@ -93,19 +93,11 @@ class LocationShowScreenViewModel : ViewModel() {
             items = setOf("高德地图", "百度地图"),
             onItemClick = { value ->
                 val act = ActivityManager.top().value ?: return@ActionSheetBuilder
-                val d = DLatLng(_initPoint.latitude(), _initPoint.longitude())
+                val d = Coordinate(_initPoint.latitude(), _initPoint.longitude())
                 val point = d.convert(CoordinateSystemType.WGS84, CoordinateSystemType.GCJ02)
                 when (value) {
-                    "高德地图" -> act.startGaoDeMapMaker(
-                        point.latitude,
-                        point.longitude
-                    )
-
-                    "百度地图" -> act.startBaiDuMapMaker(
-                        point.latitude,
-                        point.longitude
-                    )
-
+                    "高德地图" -> act.startGaoDeMapMaker(point.lat, point.lng)
+                    "百度地图" -> act.startBaiDuMapMaker(point.lat, point.lng)
                     else -> {}
                 }
             }

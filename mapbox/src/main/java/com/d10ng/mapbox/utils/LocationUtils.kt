@@ -1,8 +1,8 @@
 package com.d10ng.mapbox.utils
 
 import android.location.Location
-import com.d10ng.latlnglib.toLatitudeString
-import com.d10ng.latlnglib.toLongitudeString
+import com.d10ng.common.coordinate.toLatitudeString
+import com.d10ng.common.coordinate.toLongitudeString
 import com.d10ng.tianditu.bean.LocationSearch
 import com.mapbox.geojson.Point
 

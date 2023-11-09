@@ -1,6 +1,6 @@
 package com.d10ng.mapbox.constant
 
-import com.d10ng.latlnglib.constant.CoordinateSystemType
+import com.d10ng.common.coordinate.CoordinateSystemType
 import com.d10ng.mapbox.R
 import com.mapbox.maps.Style
 
