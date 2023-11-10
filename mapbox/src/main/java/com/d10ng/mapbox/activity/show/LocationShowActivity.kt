@@ -3,7 +3,7 @@ package com.d10ng.mapbox.activity.show
 import android.app.Activity
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import com.d10ng.app.base.getClearTopIntent
+import com.d10ng.app.utils.getClearTopIntent
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.activity.BaseMapboxActivity
 import com.d10ng.mapbox.stores.MapViewStore

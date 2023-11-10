@@ -1,10 +1,10 @@
 package com.d10ng.mapbox.activity.show
 
 import androidx.lifecycle.ViewModel
-import com.d10ng.app.base.ActivityManager
-import com.d10ng.app.base.startBaiDuMapMaker
-import com.d10ng.app.base.startGaoDeMapMaker
-import com.d10ng.app.resource.makeBitmapFromDrawable
+import com.d10ng.app.managers.ActivityManager
+import com.d10ng.app.resource.toBitmap
+import com.d10ng.app.utils.startBaiDuMapMaker
+import com.d10ng.app.utils.startGaoDeMapMaker
 import com.d10ng.common.coordinate.Coordinate
 import com.d10ng.common.coordinate.CoordinateSystemType
 import com.d10ng.common.coordinate.convert
@@ -57,8 +57,8 @@ class LocationShowScreenViewModel : ViewModel() {
     /** 地图加载完成 */
     fun onMapStyleLoad(style: Style) {
         StartupInitializer.application
-            .makeBitmapFromDrawable(R.drawable.ic_map_point_32)?.apply {
-                style.addImage(POINT, this)
+            .getDrawable(R.drawable.ic_map_point_32)?.apply {
+                style.addImage(POINT, this.toBitmap())
             }
     }
 
@@ -92,12 +92,11 @@ class LocationShowScreenViewModel : ViewModel() {
         UiViewModelManager.showSheet(ActionSheetBuilder(
             items = setOf("高德地图", "百度地图"),
             onItemClick = { value ->
-                val act = ActivityManager.top().value ?: return@ActionSheetBuilder
                 val d = Coordinate(_initPoint.latitude(), _initPoint.longitude())
                 val point = d.convert(CoordinateSystemType.WGS84, CoordinateSystemType.GCJ02)
                 when (value) {
-                    "高德地图" -> act.startGaoDeMapMaker(point.lat, point.lng)
-                    "百度地图" -> act.startBaiDuMapMaker(point.lat, point.lng)
+                    "高德地图" -> startGaoDeMapMaker(point.lat, point.lng)
+                    "百度地图" -> startBaiDuMapMaker(point.lat, point.lng)
                     else -> {}
                 }
             }

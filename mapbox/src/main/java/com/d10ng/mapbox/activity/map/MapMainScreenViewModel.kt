@@ -1,8 +1,8 @@
 package com.d10ng.mapbox.activity.map
 
 import androidx.lifecycle.ViewModel
-import com.d10ng.app.base.ActivityManager
-import com.d10ng.app.base.goTo
+import com.d10ng.app.managers.ActivityManager
+import com.d10ng.app.utils.goTo
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.activity.offline.MapOfflineActivity
 import com.d10ng.mapbox.stores.MapViewStore

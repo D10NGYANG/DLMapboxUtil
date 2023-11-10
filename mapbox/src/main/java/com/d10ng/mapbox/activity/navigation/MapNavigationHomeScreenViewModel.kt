@@ -3,8 +3,8 @@ package com.d10ng.mapbox.activity.navigation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
-import com.d10ng.app.base.ActivityManager
-import com.d10ng.app.base.goTo
+import com.d10ng.app.managers.ActivityManager
+import com.d10ng.app.utils.goTo
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.activity.destinations.MapNavigationOnScreenDestination
 import com.d10ng.mapbox.activity.offline.MapOfflineActivity

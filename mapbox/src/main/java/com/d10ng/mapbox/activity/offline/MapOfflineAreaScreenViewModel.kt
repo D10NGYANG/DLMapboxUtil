@@ -2,7 +2,7 @@ package com.d10ng.mapbox.activity.offline
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.d10ng.app.base.ActivityManager
+import com.d10ng.app.managers.ActivityManager
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.activity.destinations.MapOfflineAddScreenDestination
 import com.d10ng.mapbox.activity.search.LocationSearchManager

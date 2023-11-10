@@ -3,8 +3,8 @@ package com.d10ng.mapbox.activity.navigation
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.d10ng.app.base.ActivityManager
-import com.d10ng.app.resource.makeBitmapFromDrawable
+import com.d10ng.app.managers.ActivityManager
+import com.d10ng.app.resource.toBitmap
 import com.d10ng.common.base.toString
 import com.d10ng.common.coordinate.Coordinate
 import com.d10ng.common.coordinate.getDistanceOn2Points
@@ -136,11 +136,11 @@ class MapNavigationOnScreenViewModel : ViewModel() {
     /** 地图加载完成 */
     fun onMapStyleLoad(style: Style) {
         StartupInitializer.application.apply {
-            makeBitmapFromDrawable(R.drawable.ic_map_location_target_25)?.apply {
-                style.addImage(TARGET, this)
+            getDrawable(R.drawable.ic_map_location_target_25)?.apply {
+                style.addImage(TARGET, this.toBitmap())
             }
-            makeBitmapFromDrawable(R.drawable.ic_map_location_maker_24)?.apply {
-                style.addImage(CURRENT, this)
+            getDrawable(R.drawable.ic_map_location_maker_24)?.apply {
+                style.addImage(CURRENT, this.toBitmap())
             }
         }
     }

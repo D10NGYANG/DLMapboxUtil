@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "1.1.0"
+version = "1.1.1"
 
 android {
     namespace = "com.d10ng.mapbox"
@@ -82,13 +82,13 @@ dependencies {
     // jetpack compose 框架
     implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.5")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.4.6")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.4.8")
     // 通用处理工具
-    implementation("com.github.D10NGYANG:DLCommonUtil:0.0.3")
+    implementation("com.github.D10NGYANG:DLCommonUtil:0.0.4")
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.5.4")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.5.5")
     // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil:0.8.5")
+    implementation("com.github.D10NGYANG:DLHttpUtil:0.9.0")
     // jetpack datastore 封装工具
     implementation("com.github.D10NGYANG:DLDatastoreUtil:0.0.2")
     ksp("com.github.D10NGYANG:DLDatastoreUtil-Processor:0.0.2")

@@ -14,7 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.d10ng.app.base.goTo
+import com.d10ng.app.utils.goTo
 import com.d10ng.app.view.lockScreenOrientation
 import com.d10ng.app.view.setStatusBar
 import com.d10ng.compose.ui.AppColor

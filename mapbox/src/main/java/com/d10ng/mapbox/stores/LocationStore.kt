@@ -2,7 +2,7 @@ package com.d10ng.mapbox.stores
 
 import android.Manifest
 import android.annotation.SuppressLint
-import com.d10ng.app.base.PermissionManager
+import com.d10ng.app.managers.PermissionManager
 import com.d10ng.app.status.LocationStatusManager
 import com.d10ng.app.status.isLocationEnabled
 import com.d10ng.compose.model.UiViewModelManager

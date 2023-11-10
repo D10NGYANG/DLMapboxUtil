@@ -24,7 +24,7 @@ object MapboxUtil {
         debug: Boolean = false
     ) {
         MapboxStore.init(mapboxToken)
-        Http.init("", debug)
+        Http.init(debug)
         TianDiTuApiManager.init(tiandiToken)
         Logger.init(debug)
     }

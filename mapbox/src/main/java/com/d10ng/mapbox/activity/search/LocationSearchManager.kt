@@ -1,8 +1,8 @@
 package com.d10ng.mapbox.activity.search
 
 import android.app.Activity
-import com.d10ng.app.base.ActivityManager
-import com.d10ng.app.base.goTo
+import com.d10ng.app.managers.ActivityManager
+import com.d10ng.app.utils.goTo
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.bean.HistoryInfo
 import com.d10ng.mapbox.bean.toHistoryInfo

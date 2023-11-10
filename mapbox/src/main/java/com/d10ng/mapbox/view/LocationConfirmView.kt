@@ -12,10 +12,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.d10ng.app.resource.makeBitmapFromDrawable
+import com.d10ng.app.resource.getResDrawable
+import com.d10ng.app.resource.toBitmap
 import com.d10ng.compose.ui.AppText
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.stores.MapViewStore
@@ -52,7 +52,6 @@ fun LocationConfirmView(
             .fillMaxWidth()
             .padding(top = 6.dp)
     )
-    val context = LocalContext.current
     val pointOptions = remember(point) {
         mapOf(
             1 to PointAnnotationOptions()
@@ -78,8 +77,8 @@ fun LocationConfirmView(
         onCameraZoomChange = { MapViewStore.updateZoom(it) },
         onCameraCenterChange = { center = it },
         onStyleLoad = { style ->
-            context.makeBitmapFromDrawable(R.drawable.ic_map_location_target_25)?.apply {
-                style.addImage(TARGET, this)
+            getResDrawable(R.drawable.ic_map_location_target_25)?.apply {
+                style.addImage(TARGET, this.toBitmap())
             }
         },
         pointOptions = pointOptions
