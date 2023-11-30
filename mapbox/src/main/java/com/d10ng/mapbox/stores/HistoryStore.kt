@@ -13,7 +13,7 @@ import kotlinx.serialization.encodeToString
 object HistoryStore {
 
     // 历史记录列表
-    val valueFlow = MapboxConfigDataStore.getHistoryFlow().map {
+    val valueFlow = MapboxConfigDataStore.instant.getHistoryFlow().map {
         it?.map { item ->
             Http.json.decodeFromString<HistoryInfo>(item)
         }?.sortedByDescending { item -> item.time } ?: listOf()
@@ -25,7 +25,7 @@ object HistoryStore {
      */
     suspend fun add(info: HistoryInfo) {
         val str = Http.json.encodeToString(info)
-        val value = MapboxConfigDataStore.getHistory()?.toMutableSet() ?: mutableSetOf()
+        val value = MapboxConfigDataStore.instant.getHistory()?.toMutableSet() ?: mutableSetOf()
         if (value.contains(str)) {
             val temp = info.copy(time = System.currentTimeMillis())
             value.remove(str)
@@ -33,7 +33,7 @@ object HistoryStore {
         } else {
             value.add(str)
         }
-        MapboxConfigDataStore.setHistory(value)
+        MapboxConfigDataStore.instant.setHistory(value)
     }
 
     /**
@@ -42,15 +42,15 @@ object HistoryStore {
      */
     suspend fun remove(info: HistoryInfo) {
         val str = Http.json.encodeToString(info)
-        val value = MapboxConfigDataStore.getHistory()?.toMutableSet() ?: mutableSetOf()
+        val value = MapboxConfigDataStore.instant.getHistory()?.toMutableSet() ?: mutableSetOf()
         value.remove(str)
-        MapboxConfigDataStore.setHistory(value)
+        MapboxConfigDataStore.instant.setHistory(value)
     }
 
     /**
      * 清空历史记录
      */
     suspend fun clear() {
-        MapboxConfigDataStore.setHistory(setOf())
+        MapboxConfigDataStore.instant.setHistory(setOf())
     }
 }

@@ -18,7 +18,7 @@ object NavigationStore {
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
-            MapboxConfigDataStore.getNavigationTargetFlow().collect {
+            MapboxConfigDataStore.instant.getNavigationTargetFlow().collect {
                 if (it.isNullOrEmpty() || it.contains(',').not()) {
                     targetFlow.value = null
                 } else {
@@ -36,6 +36,6 @@ object NavigationStore {
     suspend fun setTarget(target: Point?) {
         val str = if (target == null) ""
         else target.longitude().toString() + "," + target.latitude().toString()
-        MapboxConfigDataStore.setNavigationTarget(str)
+        MapboxConfigDataStore.instant.setNavigationTarget(str)
     }
 }

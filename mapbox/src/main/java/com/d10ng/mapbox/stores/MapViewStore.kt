@@ -37,7 +37,7 @@ object MapViewStore {
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
-            MapboxConfigDataStore.getLayerFlow().collect {
+            MapboxConfigDataStore.instant.getLayerFlow().collect {
                 layerTypeFlow.value = it ?: MapLayerType.TD_VECTOR
             }
         }
@@ -47,7 +47,7 @@ object MapViewStore {
      * 获取当前地图样式
      * @return MapLayerType
      */
-    fun getCurrentLayer() = MapboxConfigDataStore.getLayerSync() ?: MapLayerType.TD_VECTOR
+    fun getCurrentLayer() = MapboxConfigDataStore.instant.getLayerSync() ?: MapLayerType.TD_VECTOR
 
     /**
      * 更新地图样式
@@ -55,7 +55,7 @@ object MapViewStore {
      */
     fun updateLayer(layer: MapLayerType) {
         CoroutineScope(Dispatchers.IO).launch {
-            MapboxConfigDataStore.setLayer(layer)
+            MapboxConfigDataStore.instant.setLayer(layer)
         }
     }
 

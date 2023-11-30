@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "1.1.1"
+version = "1.1.2"
 
 android {
     namespace = "com.d10ng.mapbox"
@@ -80,18 +80,18 @@ dependencies {
     ksp("io.github.raamcosta.compose-destinations:ksp:$compose_destinations_ver")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.5")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.11")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.4.8")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.4.12")
     // 通用处理工具
-    implementation("com.github.D10NGYANG:DLCommonUtil:0.0.4")
+    implementation("com.github.D10NGYANG:DLCommonUtil:0.0.6")
     // 天地图API
     implementation("com.github.D10NGYANG:DLTianDiTuApi:0.5.5")
     // 网络请求框架
     implementation("com.github.D10NGYANG:DLHttpUtil:0.9.0")
     // jetpack datastore 封装工具
-    implementation("com.github.D10NGYANG:DLDatastoreUtil:0.0.2")
-    ksp("com.github.D10NGYANG:DLDatastoreUtil-Processor:0.0.2")
+    implementation("com.github.D10NGYANG:DLDatastoreUtil:0.0.4")
+    ksp("com.github.D10NGYANG:DLDatastoreUtil-Processor:0.0.4")
 }
 
 afterEvaluate {

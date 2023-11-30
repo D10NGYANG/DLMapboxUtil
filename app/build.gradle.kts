@@ -70,9 +70,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.5")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.11")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.4.8")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.4.12")
     // 日期工具兼容Android8.0以下设备
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
