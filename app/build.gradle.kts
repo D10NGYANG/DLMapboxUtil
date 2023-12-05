@@ -10,12 +10,12 @@ plugins {
 
 android {
     namespace = "com.d10ng.mapbox.demo"
-    compileSdk = Project.compile_sdk
+    compileSdk = android_compile_sdk
 
     defaultConfig {
         applicationId = "com.d10ng.mapbox.demo"
-        minSdk = Project.min_sdk
-        targetSdk = Project.target_sdk
+        minSdk = android_min_sdk
+        targetSdk = android_target_sdk
         versionCode = 1
         versionName = "0.0.1"
 
@@ -62,7 +62,7 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
 
     // Android
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:$androidx_core_ver")
 
     // 单元测试（可选）
     testImplementation("junit:junit:4.13.2")
@@ -70,17 +70,17 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.11")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:$dl_compose_ver")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.4.12")
+    implementation("com.github.D10NGYANG:DLAppUtil:$dl_app_ver")
     // 日期工具兼容Android8.0以下设备
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
     implementation(project(":mapbox"))
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.5.5")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi:$dl_tdt_ver")
     // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil:0.9.0")
+    implementation("com.github.D10NGYANG:DLHttpUtil:$dl_http_ver")
 
     // 内存泄漏检查
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")

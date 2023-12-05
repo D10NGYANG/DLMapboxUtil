@@ -10,14 +10,14 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "1.1.2"
+version = "1.1.3"
 
 android {
     namespace = "com.d10ng.mapbox"
-    compileSdk = Project.compile_sdk
+    compileSdk = android_compile_sdk
 
     defaultConfig {
-        minSdk = Project.min_sdk
+        minSdk = android_min_sdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,7 +51,7 @@ android {
 
 dependencies {
     // Android
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:$androidx_core_ver")
 
     // 单元测试（可选）
     testImplementation("junit:junit:4.13.2")
@@ -80,18 +80,18 @@ dependencies {
     ksp("io.github.raamcosta.compose-destinations:ksp:$compose_destinations_ver")
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.11")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:$dl_compose_ver")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.4.12")
+    implementation("com.github.D10NGYANG:DLAppUtil:$dl_app_ver")
     // 通用处理工具
-    implementation("com.github.D10NGYANG:DLCommonUtil:0.0.6")
+    implementation("com.github.D10NGYANG:DLCommonUtil:$dl_common_ver")
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.5.5")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi:$dl_tdt_ver")
     // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil:0.9.0")
+    implementation("com.github.D10NGYANG:DLHttpUtil:$dl_http_ver")
     // jetpack datastore 封装工具
-    implementation("com.github.D10NGYANG:DLDatastoreUtil:0.0.4")
-    ksp("com.github.D10NGYANG:DLDatastoreUtil-Processor:0.0.4")
+    implementation("com.github.D10NGYANG:DLDatastoreUtil:$dl_datastore_ver")
+    ksp("com.github.D10NGYANG:DLDatastoreUtil-Processor:$dl_datastore_ver")
 }
 
 afterEvaluate {
