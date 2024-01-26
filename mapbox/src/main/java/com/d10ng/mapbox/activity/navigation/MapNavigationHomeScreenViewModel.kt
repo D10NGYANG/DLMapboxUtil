@@ -64,7 +64,7 @@ class MapNavigationHomeScreenViewModel : ViewModel() {
      * 点击离线地图
      */
     fun onClickOffline() {
-        ActivityManager.top().value?.goTo(MapOfflineActivity::class.java)
+        ActivityManager.top()?.goTo(MapOfflineActivity::class.java)
     }
 
     /**
@@ -72,7 +72,7 @@ class MapNavigationHomeScreenViewModel : ViewModel() {
      * @param nav DestinationsNavigator
      */
     fun onClickSearch(nav: DestinationsNavigator) {
-        ActivityManager.top().value?.apply {
+        ActivityManager.top()?.apply {
             LocationSearchManager.startActivity(this) {
                 it ?: return@startActivity
                 MapViewStore.updateTarget(it)

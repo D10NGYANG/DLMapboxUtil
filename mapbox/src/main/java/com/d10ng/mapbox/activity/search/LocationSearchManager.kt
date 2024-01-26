@@ -42,7 +42,7 @@ object LocationSearchManager {
         job = CoroutineScope(Dispatchers.IO).launch {
             resultFlow.take(1).collect {
                 result(it)
-                ActivityManager.getActivity<LocationSearchActivity>()?.finish()
+                ActivityManager.get<LocationSearchActivity>()?.finish()
             }
         }
     }

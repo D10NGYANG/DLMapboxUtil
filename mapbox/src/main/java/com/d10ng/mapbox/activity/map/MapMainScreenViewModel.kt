@@ -28,7 +28,7 @@ class MapMainScreenViewModel : ViewModel() {
 
     /** 点击离线地图 */
     fun onClickOffline() {
-        ActivityManager.top().value?.goTo(MapOfflineActivity::class.java)
+        ActivityManager.top()?.goTo(MapOfflineActivity::class.java)
     }
 
     /** 点击放大 */

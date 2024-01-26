@@ -73,7 +73,7 @@ dependencies {
     implementation("androidx.startup:startup-runtime:1.1.1")
 
     // MapBox 地图
-    api("com.mapbox.maps:android:10.16.3")
+    api("com.mapbox.maps:android:10.16.4")
 
     // 导航路由
     implementation("io.github.raamcosta.compose-destinations:animations-core:$compose_destinations_ver")

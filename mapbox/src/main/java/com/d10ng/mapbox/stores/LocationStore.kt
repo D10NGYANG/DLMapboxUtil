@@ -49,5 +49,5 @@ object LocationStore {
     /**
      * 获取定位数据
      */
-    fun getValueFlow() = LocationStatusManager.getStatusFlow()
+    fun getValueFlow() = LocationStatusManager.statusFlow
 }
