@@ -28,7 +28,7 @@ class MapOfflineAreaScreenViewModel : ViewModel() {
         viewModelScope.launch {
             layerFlow.collect { type ->
                 if (!type.isCanDown) {
-                    MapViewStore.updateLayer(MapLayerType.MAPBOX_STREETS)
+                    MapViewStore.updateLayer(MapLayerType.MAPBOX_STREETS_ZH)
                 }
             }
         }

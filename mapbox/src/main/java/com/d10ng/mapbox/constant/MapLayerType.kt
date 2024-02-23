@@ -41,7 +41,7 @@ enum class MapLayerType(
     ),
 
     // mapbox 标准地图
-    MAPBOX_STREETS(
+    MAPBOX_LIGHT(
         Style.LIGHT,
         "Mapbox标准",
         R.mipmap.img_map_layer_type_5,
@@ -56,12 +56,32 @@ enum class MapLayerType(
         R.mipmap.img_map_layer_type_6,
         CoordinateSystemType.WGS84,
         true
-    );
+    ),
+
+    // mapbox 街道地图 中文标注
+    MAPBOX_STREETS_ZH(
+        "mapbox://styles/ianjoyce/clsvk6w40004n01o3ani7ft1j",
+        "Mapbox街道中文",
+        R.mipmap.img_map_layer_type_7,
+        CoordinateSystemType.WGS84,
+        true
+    ),
+
+    // mapbox 卫星地图
+    MAPBOX_SATELLITE_STREETS_ZH(
+        "mapbox://styles/ianjoyce/clsy40r6a00bs01qo77oi62ik",
+        "Mapbox卫星中文",
+        R.mipmap.img_map_layer_type_8,
+        CoordinateSystemType.WGS84,
+        true
+    ),
+
+    ;
 
 
     companion object {
 
         @JvmStatic
-        fun parseBySource(value: String) = values().find { it.source == value } ?: TD_VECTOR
+        fun parseBySource(value: String) = entries.find { it.source == value } ?: TD_VECTOR
     }
 }
