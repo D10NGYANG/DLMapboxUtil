@@ -141,20 +141,19 @@ private fun ZoomRangePicker(
             )
             Box(modifier = Modifier.width(55.dp))
             Text(
-                text = "${zoomRange.start.roundToInt()} ~ ${zoomRange.endInclusive.roundToInt()} 级",
+                text = "${tempRange.start.roundToInt()} ~ ${tempRange.endInclusive.roundToInt()} 级",
                 style = AppText.Normal.Body.default
             )
         }
 
 
         RangeSlider(
-            value = zoomRange,
+            value = tempRange,
             onValueChange = {
                 tempRange = it
-                onUpdateZoomRange(it)
             },
-            valueRange = 1f..25f,
-            steps = 25,
+            valueRange = 0f..16f,
+            steps = 17,
             onValueChangeFinished = {
                 onUpdateZoomRange(tempRange)
             },

@@ -14,7 +14,7 @@ class MapOfflineAddScreenViewModel : ViewModel() {
     val inputNameFlow = MutableStateFlow("")
 
     /** 地图层级 */
-    val zoomRangeFlow = MutableStateFlow(1f..3f)
+    val zoomRangeFlow = MutableStateFlow(11f..14f)
 
     /** 更新输入地图名称 */
     fun updateInputName(value: String) {
