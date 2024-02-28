@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
                     goTo(MapOfflineActivity::class.java)
                 })
                 Button(text = "搜索", type = ButtonType.PRIMARY, onClick = {
-                    LocationSearchManager.startActivity(this@MainActivity) {
+                    LocationSearchManager.start {
                         if (it != null) {
                             selectPoint = it
                         }

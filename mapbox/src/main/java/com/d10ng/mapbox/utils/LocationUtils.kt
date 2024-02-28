@@ -4,6 +4,7 @@ import android.location.Location
 import com.d10ng.common.coordinate.toLatitudeString
 import com.d10ng.common.coordinate.toLongitudeString
 import com.d10ng.tianditu.bean.LocationSearch
+import com.d10ng.tianditu.bean.PerimeterSearch
 import com.mapbox.geojson.Point
 
 /**
@@ -58,8 +59,22 @@ fun toShowLocationText(
  * @receiver LocationSearch.Poi
  * @return Point
  */
-fun LocationSearch.Poi.toPoint(): Point {
-    val ls = lonlat.split(",")
+fun LocationSearch.Poi.toPoint() = lonlat.toPoint()
+
+/**
+ * 将 Poi 转换为 Point
+ * @receiverPerimeterSearch.Poi
+ * @return Point
+ */
+fun PerimeterSearch.Poi.toPoint() = lonlat.toPoint()
+
+/**
+ * 将格式为"经度,纬度"的字符串转换为 Point
+ * @receiver String
+ * @return Point
+ */
+private fun String.toPoint(): Point {
+    val ls = split(",")
     val lng = ls[0].toDoubleOrNull() ?: 0.0
     val lat = ls[1].toDoubleOrNull() ?: 0.0
     return Point.fromLngLat(lng, lat)

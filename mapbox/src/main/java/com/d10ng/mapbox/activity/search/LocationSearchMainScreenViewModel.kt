@@ -11,6 +11,8 @@ import com.d10ng.mapbox.stores.HistoryStore
 import com.d10ng.mapbox.utils.toPoint
 import com.d10ng.mapbox.view.LocationConfirmView
 import com.d10ng.tianditu.bean.LocationSearch
+import com.d10ng.tianditu.bean.PerimeterSearch
+import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +32,7 @@ class LocationSearchMainScreenViewModel : ViewModel() {
     val historyFlow = HistoryStore.valueFlow
 
     /** 结果 */
-    val resultFlow = MutableStateFlow<LocationSearch?>(null)
+    val resultFlow = MutableStateFlow<Pair<PerimeterSearch?, LocationSearch?>>(null to null)
 
     init {
         viewModelScope.launch {
@@ -62,8 +64,8 @@ class LocationSearchMainScreenViewModel : ViewModel() {
     private fun search(value: String) {
         viewModelScope.launch {
             isSearchingFlow.value = true
-            val result = LocationSearchManager.search(value)
-            resultFlow.emit(result)
+            val result = LocationSearchManager.searchWithPerimeter(value)
+            if (inputFlow.value == value) resultFlow.emit(result)
             isSearchingFlow.value = false
         }
     }
@@ -73,26 +75,32 @@ class LocationSearchMainScreenViewModel : ViewModel() {
         nav.navigate(LocationByLatLngScreenDestination)
     }
 
+    /**
+     * 点击搜索结果
+     * @param value PerimeterSearch.Poi
+     */
+    fun onClickItem(value: PerimeterSearch.Poi) {
+        showLocationConfirmView(value.name, value.address, value.toPoint())
+    }
+
     /** 点击区域 */
     fun onClickItem(nav: DestinationsNavigator, value: LocationSearch.Area) {
-        nav.navigate(
-            LocationSearchInfoScreenDestination(
-                inputFlow.value,
-                value.name,
-                value.adminCode
-            )
-        )
+        nav.navigateArea(value.name, value.adminCode)
     }
 
     /** 点击区域 */
     fun onClickItem(nav: DestinationsNavigator, value: LocationSearch.Statistics.AllAdmin) {
-        nav.navigate(
-            LocationSearchInfoScreenDestination(
-                inputFlow.value,
-                value.adminName,
-                value.adminCode
-            )
-        )
+        nav.navigateArea(value.adminName, value.adminCode)
+    }
+
+    /**
+     * 跳转区域查询
+     * @receiver DestinationsNavigator
+     * @param name String
+     * @param code Int
+     */
+    private fun DestinationsNavigator.navigateArea(name: String, code: Int) {
+        navigate(LocationSearchInfoScreenDestination(inputFlow.value, name, code))
     }
 
     /**
@@ -100,18 +108,28 @@ class LocationSearchMainScreenViewModel : ViewModel() {
      * @param value Poi
      */
     fun onClickItem(value: LocationSearch.Poi) {
+        showLocationConfirmView(value.name, value.address, value.toPoint())
+    }
+
+    /**
+     * 显示位置确定视图
+     * @param name String
+     * @param address String
+     * @param point Point
+     */
+    private fun showLocationConfirmView(name: String, address: String, point: Point) {
         UiViewModelManager.showDialog(ConfirmDialogBuilder(
             title = "位置确定",
             content = "",
             contentSlot = {
                 LocationConfirmView(
-                    label = value.name,
-                    description = value.address,
-                    point = value.toPoint()
+                    label = name,
+                    description = address,
+                    point = point
                 )
             },
             onConfirmClick = {
-                LocationSearchManager.finish(value)
+                LocationSearchManager.finish(name, address, point)
                 true
             }
         ))

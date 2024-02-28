@@ -57,7 +57,7 @@ private fun LocationSearchInfoScreenView(
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1f),
-            result = result,
+            result = null to result,
             onClickAreaItem = onClickAreaItem,
             onClickAdminItem = onClickAdminItem,
             onClickPoiItem = onClickPoiItem

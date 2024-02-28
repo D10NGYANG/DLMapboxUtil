@@ -2,7 +2,6 @@ package com.d10ng.mapbox.activity.offline
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.d10ng.app.managers.ActivityManager
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.activity.destinations.MapOfflineAddScreenDestination
 import com.d10ng.mapbox.activity.search.LocationSearchManager
@@ -36,11 +35,9 @@ class MapOfflineAreaScreenViewModel : ViewModel() {
 
     /** 点击搜索 */
     fun onClickSearch() {
-        ActivityManager.top()?.apply {
-            LocationSearchManager.startActivity(this) {
-                if (it != null) {
-                    updateTarget(it)
-                }
+        LocationSearchManager.start {
+            if (it != null) {
+                updateTarget(it)
             }
         }
     }

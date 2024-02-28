@@ -72,12 +72,10 @@ class MapNavigationHomeScreenViewModel : ViewModel() {
      * @param nav DestinationsNavigator
      */
     fun onClickSearch(nav: DestinationsNavigator) {
-        ActivityManager.top()?.apply {
-            LocationSearchManager.startActivity(this) {
-                it ?: return@startActivity
-                MapViewStore.updateTarget(it)
-                setTarget(it, nav)
-            }
+        LocationSearchManager.start {
+            it ?: return@start
+            MapViewStore.updateTarget(it)
+            setTarget(it, nav)
         }
     }
 

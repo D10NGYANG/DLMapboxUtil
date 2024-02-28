@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,12 +33,14 @@ import com.d10ng.compose.ui.AppShape
 import com.d10ng.compose.ui.AppText
 import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.CellGroup
+import com.d10ng.compose.ui.base.CellTitle
 import com.d10ng.compose.ui.form.Search
 import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.bean.HistoryInfo
 import com.d10ng.mapbox.view.NavBarIconButton
 import com.d10ng.tianditu.bean.LocationSearch
+import com.d10ng.tianditu.bean.PerimeterSearch
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -65,6 +68,7 @@ fun LocationSearchMainScreen(
         onClickClearHistory = { model.onClickClearHistory() },
         onClickRemoveHistory = { model.onClickRemoveHistory(it) },
         onClickHistory = { model.onClickHistory(it) },
+        onClickPerimeterPoiItem = { model.onClickItem(it) },
         onClickAreaItem = { model.onClickItem(nav, it) },
         onClickAdminItem = { model.onClickItem(nav, it) },
         onClickPoiItem = { model.onClickItem(it) }
@@ -76,7 +80,7 @@ private fun LocationSearchMainScreenView(
     input: String,
     isSearching: Boolean,
     history: List<HistoryInfo>,
-    result: LocationSearch?,
+    result: Pair<PerimeterSearch?, LocationSearch?>,
     onClickBack: () -> Unit = {},
     onUpdateInput: (String) -> Unit = {},
     onClickSearch: () -> Unit = {},
@@ -84,6 +88,7 @@ private fun LocationSearchMainScreenView(
     onClickClearHistory: () -> Unit = {},
     onClickRemoveHistory: (HistoryInfo) -> Unit = {},
     onClickHistory: (HistoryInfo) -> Unit = {},
+    onClickPerimeterPoiItem: (PerimeterSearch.Poi) -> Unit = {},
     onClickAreaItem: (LocationSearch.Area) -> Unit = {},
     onClickAdminItem: (LocationSearch.Statistics.AllAdmin) -> Unit = {},
     onClickPoiItem: (LocationSearch.Poi) -> Unit = {},
@@ -130,6 +135,7 @@ private fun LocationSearchMainScreenView(
                     .fillMaxWidth()
                     .weight(1f),
                 result = result,
+                onClickPerimeterPoiItem = onClickPerimeterPoiItem,
                 onClickAreaItem = onClickAreaItem,
                 onClickAdminItem = onClickAdminItem,
                 onClickPoiItem = onClickPoiItem
@@ -185,13 +191,20 @@ private fun HistoryGroupView(
 @Composable
 internal fun LocationSearchView(
     modifier: Modifier = Modifier,
-    result: LocationSearch?,
+    result: Pair<PerimeterSearch?, LocationSearch?>,
+    onClickPerimeterPoiItem: (PerimeterSearch.Poi) -> Unit = {},
     onClickAreaItem: (LocationSearch.Area) -> Unit = {},
     onClickAdminItem: (LocationSearch.Statistics.AllAdmin) -> Unit = {},
     onClickPoiItem: (LocationSearch.Poi) -> Unit = {},
 ) {
     val focusManager = LocalFocusManager.current
-    if (result == null || (result.count.toIntOrNull() ?: 0) == 0) {
+    val perimeterCount = remember(result) {
+        result.first?.count?.toIntOrNull() ?: 0
+    }
+    val searchCount = remember(result) {
+        result.second?.count?.toIntOrNull() ?: 0
+    }
+    if (perimeterCount == 0 && searchCount == 0) {
         Column(
             modifier = modifier,
             verticalArrangement = Arrangement.Center,
@@ -213,46 +226,67 @@ internal fun LocationSearchView(
             modifier = modifier
                 .verticalScroll(rememberScrollState())
         ) {
-            when (result.resultType) {
-                3 -> {
+            if (perimeterCount > 0) {
+                CellTitle(title = "附近结果")
+                result.first?.pois?.forEachIndexed { _, item ->
                     ItemView(
-                        iconId = R.drawable.ic_baseline_public_24,
-                        label = result.area.name,
-                        border = false,
+                        iconId = R.drawable.ic_search_point_25,
+                        label = item.name,
+                        description = item.address,
+                        content = item.distance,
+                        border = true,
                         onClick = {
                             focusManager.clearFocus()
-                            onClickAreaItem(result.area)
+                            onClickPerimeterPoiItem(item)
                         }
                     )
                 }
-
-                2 -> {
-                    result.statistics.allAdmins.forEachIndexed { index, item ->
+                if (searchCount > 0) {
+                    CellTitle(title = "更多信息")
+                }
+            }
+            result.second?.let { search ->
+                when (search.resultType) {
+                    3 -> {
                         ItemView(
-                            iconId = R.drawable.ic_baseline_map_24,
-                            label = item.adminName,
-                            content = item.count.toString(),
-                            border = index < result.statistics.allAdmins.size - 1,
+                            iconId = R.drawable.ic_baseline_public_24,
+                            label = search.area.name,
+                            border = false,
                             onClick = {
                                 focusManager.clearFocus()
-                                onClickAdminItem(item)
+                                onClickAreaItem(search.area)
                             }
                         )
                     }
-                }
 
-                1 -> {
-                    result.pois.forEachIndexed { index, item ->
-                        ItemView(
-                            iconId = R.drawable.ic_search_point_25,
-                            label = item.name,
-                            description = item.address,
-                            border = index < result.pois.size - 1,
-                            onClick = {
-                                focusManager.clearFocus()
-                                onClickPoiItem(item)
-                            }
-                        )
+                    2 -> {
+                        search.statistics.allAdmins.forEachIndexed { index, item ->
+                            ItemView(
+                                iconId = R.drawable.ic_baseline_map_24,
+                                label = item.adminName,
+                                content = item.count.toString(),
+                                border = index < search.statistics.allAdmins.size - 1,
+                                onClick = {
+                                    focusManager.clearFocus()
+                                    onClickAdminItem(item)
+                                }
+                            )
+                        }
+                    }
+
+                    1 -> {
+                        search.pois.forEachIndexed { index, item ->
+                            ItemView(
+                                iconId = R.drawable.ic_search_point_25,
+                                label = item.name,
+                                description = item.address,
+                                border = index < search.pois.size - 1,
+                                onClick = {
+                                    focusManager.clearFocus()
+                                    onClickPoiItem(item)
+                                }
+                            )
+                        }
                     }
                 }
             }
