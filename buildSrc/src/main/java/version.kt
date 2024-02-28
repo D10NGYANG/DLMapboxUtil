@@ -13,19 +13,19 @@ const val kotlin_ver = "1.9.22"
 const val ksp_ver = "1.9.22-1.0.17"
 
 // kotlin ex
-const val kotlin_coroutines_ver = "1.7.3"
-const val kotlin_serialization_json = "1.6.2"
+const val kotlin_coroutines_ver = "1.8.0"
+const val kotlin_serialization_json = "1.6.3"
 
 // compose
-const val compose_compiler_ver = "1.5.8"
+const val compose_compiler_ver = "1.5.10"
 
 // compose ex
-const val compose_destinations_ver = "1.10.0"
+const val compose_destinations_ver = "1.10.1"
 
 // d10ng
-const val dl_compose_ver = "2.0.15"
+const val dl_compose_ver = "2.0.16"
 const val dl_app_ver = "2.5.1"
 const val dl_common_ver = "0.0.9"
-const val dl_http_ver = "0.9.2"
-const val dl_tdt_ver = "0.5.7"
+const val dl_http_ver = "0.9.3"
+const val dl_tdt_ver = "0.5.8"
 const val dl_datastore_ver = "0.0.7"
