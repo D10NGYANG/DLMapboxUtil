@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d10ng.app.managers.ActivityManager
 import com.d10ng.app.resource.toBitmap
-import com.d10ng.common.base.toString
+import com.d10ng.common.base.toStringWithMaxDecimal
 import com.d10ng.common.coordinate.Coordinate
 import com.d10ng.common.coordinate.getDistanceOn2Points
 import com.d10ng.compose.model.UiViewModelManager
@@ -88,7 +88,7 @@ class MapNavigationOnScreenViewModel : ViewModel() {
                         Coordinate(cur.latitude(), cur.longitude()),
                         Coordinate(tar.latitude(), tar.longitude())
                     ) / 1000.0
-                    distanceTextFlow.emit("${distance.toString(2)} km")
+                    distanceTextFlow.emit("${distance.toStringWithMaxDecimal(2)} km")
                     // 更新地图图标
                     val pointOptions = mapOf(
                         1 to PointAnnotationOptions()

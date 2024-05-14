@@ -83,5 +83,5 @@ dependencies {
     implementation("com.github.D10NGYANG:DLHttpUtil:$dl_http_ver")
 
     // 内存泄漏检查
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.13")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
 }

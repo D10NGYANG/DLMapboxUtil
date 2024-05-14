@@ -4,7 +4,16 @@ import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -123,7 +132,9 @@ private fun OfflineMapItem(
     bitmap: Bitmap?,
     onClick: () -> Unit = {}
 ) {
-    val progress = (value.region.completedResourceCount * 100) / value.region.requiredResourceCount
+    val req = value.region.requiredResourceCount
+    val com = value.region.completedResourceCount
+    val progress = if (req == 0L) 100 else (com * 100 / req)
     Box(
         modifier = Modifier
             .size(160.dp)

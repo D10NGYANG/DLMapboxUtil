@@ -36,19 +36,19 @@ allprojects {
 ```build.gradle
 dependencies {
     // 地图封装
-    implementation("com.github.D10NGYANG:DLMapboxUtil:1.1.6")
+    implementation("com.github.D10NGYANG:DLMapboxUtil:1.1.8")
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.15")
+    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.22")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.5.1")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.5.4")
     // 通用处理工具
-    implementation("com.github.D10NGYANG:DLCommonUtil:0.0.9")
+    implementation("com.github.D10NGYANG:DLCommonUtil:0.1.1")
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.5.7")
+    implementation("com.github.D10NGYANG:DLTianDiTuApi:0.5.9")
     // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil:0.9.2")
+    implementation("com.github.D10NGYANG:DLHttpUtil:0.9.3")
     // jetpack datastore 封装工具
-    implementation("com.github.D10NGYANG:DLDatastoreUtil:0.0.7")
+    implementation("com.github.D10NGYANG:DLDatastoreUtil:0.0.8")
 }
 ```
 
