@@ -1,6 +1,6 @@
 package com.d10ng.mapbox.stores
 
-import com.d10ng.http.Http
+import com.d10ng.common.transform.json
 import com.d10ng.mapbox.bean.HistoryInfo
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
@@ -15,7 +15,7 @@ object HistoryStore {
     // 历史记录列表
     val valueFlow = MapboxConfigDataStore.instant.getHistoryFlow().map {
         it?.map { item ->
-            Http.json.decodeFromString<HistoryInfo>(item)
+            json.decodeFromString<HistoryInfo>(item)
         }?.sortedByDescending { item -> item.time } ?: listOf()
     }
 
@@ -24,12 +24,12 @@ object HistoryStore {
      * @param info HistoryInfo
      */
     suspend fun add(info: HistoryInfo) {
-        val str = Http.json.encodeToString(info)
+        val str = json.encodeToString(info)
         val value = MapboxConfigDataStore.instant.getHistory()?.toMutableSet() ?: mutableSetOf()
         if (value.contains(str)) {
             val temp = info.copy(time = System.currentTimeMillis())
             value.remove(str)
-            value.add(Http.json.encodeToString(temp))
+            value.add(json.encodeToString(temp))
         } else {
             value.add(str)
         }
@@ -41,7 +41,7 @@ object HistoryStore {
      * @param info HistoryInfo
      */
     suspend fun remove(info: HistoryInfo) {
-        val str = Http.json.encodeToString(info)
+        val str = json.encodeToString(info)
         val value = MapboxConfigDataStore.instant.getHistory()?.toMutableSet() ?: mutableSetOf()
         value.remove(str)
         MapboxConfigDataStore.instant.setHistory(value)

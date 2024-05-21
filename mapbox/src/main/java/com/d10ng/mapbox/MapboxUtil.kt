@@ -1,6 +1,5 @@
 package com.d10ng.mapbox
 
-import com.d10ng.http.Http
 import com.d10ng.mapbox.stores.MapboxStore
 import com.d10ng.mapbox.utils.Logger
 import com.d10ng.tianditu.TianDiTuApiManager
@@ -24,8 +23,7 @@ object MapboxUtil {
         debug: Boolean = false
     ) {
         MapboxStore.init(mapboxToken)
-        Http.init(debug)
-        TianDiTuApiManager.init(tiandiToken)
-        Logger.init(debug)
+        TianDiTuApiManager.init(tiandiToken, debug = debug)
+        Logger.debug = debug
     }
 }
