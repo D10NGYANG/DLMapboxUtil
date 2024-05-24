@@ -6,6 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.kapt")
     id("org.jetbrains.kotlin.plugin.parcelize")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -50,17 +51,12 @@ android {
     kotlin {
         jvmToolchain(8)
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = compose_compiler_ver
-    }
     buildFeatures {
-        compose = true
+        buildConfig = true
     }
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
-
     // Android
     implementation("androidx.core:core-ktx:$androidx_core_ver")
 
@@ -73,8 +69,6 @@ dependencies {
     implementation("com.github.D10NGYANG:DLJetpackComposeUtil:$dl_compose_ver")
     // APP通用工具
     implementation("com.github.D10NGYANG:DLAppUtil:$dl_app_ver")
-    // 日期工具兼容Android8.0以下设备
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
     implementation(project(":mapbox"))
     // 天地图API

@@ -6,11 +6,12 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
+    id("org.jetbrains.kotlin.plugin.compose")
     id("maven-publish")
 }
 
 group = "com.github.D10NGYANG"
-version = "1.1.9"
+version = "1.1.10"
 
 android {
     namespace = "com.d10ng.mapbox"
@@ -34,12 +35,6 @@ android {
     }
     kotlin {
         jvmToolchain(8)
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = compose_compiler_ver
-    }
-    buildFeatures {
-        compose = true
     }
 
     publishing {
@@ -73,7 +68,7 @@ dependencies {
     implementation("androidx.startup:startup-runtime:1.1.1")
 
     // MapBox 地图
-    api("com.mapbox.maps:android:10.17.1")
+    api("com.mapbox.maps:android:10.18.0")
 
     // 导航路由
     implementation("io.github.raamcosta.compose-destinations:animations-core:$compose_destinations_ver")
