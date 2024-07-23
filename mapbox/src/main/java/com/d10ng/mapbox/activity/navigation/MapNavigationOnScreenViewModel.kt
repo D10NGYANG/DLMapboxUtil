@@ -25,7 +25,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Timer
@@ -73,7 +72,7 @@ class MapNavigationOnScreenViewModel : ViewModel() {
         viewModelScope.launch {
             LocationStore.getValueFlow()
                 .combine(NavigationStore.targetFlow) { cur, tar -> Pair(cur, tar) }
-                .debounce(1000L)
+                //.debounce(1000L)
                 .collect {
                     val cur =
                         Point.fromLngLat(it.first?.longitude ?: 0.0, it.first?.latitude ?: 0.0)

@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "1.1.10"
+version = "1.1.11"
 
 android {
     namespace = "com.d10ng.mapbox"
@@ -68,7 +68,7 @@ dependencies {
     implementation("androidx.startup:startup-runtime:1.1.1")
 
     // MapBox 地图
-    api("com.mapbox.maps:android:10.18.0")
+    api("com.mapbox.maps:android:10.18.3")
 
     // 导航路由
     implementation("io.github.raamcosta.compose-destinations:animations-core:$compose_destinations_ver")

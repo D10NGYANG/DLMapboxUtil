@@ -36,11 +36,11 @@ allprojects {
 ```build.gradle
 dependencies {
     // 地图封装
-    implementation("com.github.D10NGYANG:DLMapboxUtil:1.1.10")
+    implementation("com.github.D10NGYANG:DLMapboxUtil:1.1.11")
     // jetpack compose 框架
     implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.25")
     // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.5.4")
+    implementation("com.github.D10NGYANG:DLAppUtil:2.5.5")
     // 通用处理工具
     implementation("com.github.D10NGYANG:DLCommonUtil:0.1.2")
     // 天地图API
