@@ -1,10 +1,10 @@
 package com.d10ng.mapbox.activity.show
 
+import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.d10ng.app.managers.ActivityManager
 import com.d10ng.app.resource.toBitmap
-import com.d10ng.app.utils.startBaiDuMapMaker
-import com.d10ng.app.utils.startGaoDeMapMaker
 import com.d10ng.common.coordinate.Coordinate
 import com.d10ng.common.coordinate.CoordinateSystemType
 import com.d10ng.common.coordinate.convert
@@ -92,14 +92,50 @@ class LocationShowScreenViewModel : ViewModel() {
         UiViewModelManager.showSheet(ActionSheetBuilder(
             items = setOf("高德地图", "百度地图"),
             onItemClick = { value ->
-                val d = Coordinate(_initPoint.latitude(), _initPoint.longitude())
-                val point = d.convert(CoordinateSystemType.WGS84, CoordinateSystemType.GCJ02)
                 when (value) {
-                    "高德地图" -> startGaoDeMapMaker(point.lat, point.lng)
-                    "百度地图" -> startBaiDuMapMaker(point.lat, point.lng)
+                    "高德地图" -> goToGaodeMap(_initPoint.longitude(), _initPoint.latitude(), "位置信息")
+                    "百度地图" -> goToBaiduMap(_initPoint.longitude(), _initPoint.latitude(), "位置信息")
                     else -> {}
                 }
             }
         ))
+    }
+
+    /**
+     * 跳转到高德地图
+     * @param longitude 经度
+     * @param latitude 纬度
+     * @param name 名称
+     */
+    private fun goToGaodeMap(longitude: Double, latitude: Double, name: String) {
+        ActivityManager.top()?.apply {
+            val install = runCatching { packageManager.getPackageInfo("com.autonavi.minimap", 0) }.isSuccess
+            if (install.not()) {
+                UiViewModelManager.showToast("请先安装高德地图", 3000)
+                return
+            }
+            val loc = Coordinate(latitude, longitude).convert(CoordinateSystemType.WGS84, CoordinateSystemType.GCJ02)
+            val uri = Uri.parse("androidamap://viewMap?sourceApplication=cim&poiname=${name}&lat=${loc.lat}&lon=${loc.lng}&dev=0")
+            startActivity(Intent(Intent.ACTION_VIEW, uri))
+        }
+    }
+
+    /**
+     * 跳转到百度地图
+     * @param longitude 经度
+     * @param latitude 纬度
+     * @param name 名称
+     */
+    private fun goToBaiduMap(longitude: Double, latitude: Double, name: String) {
+        ActivityManager.top()?.apply {
+            val install = runCatching { packageManager.getPackageInfo("com.baidu.BaiduMap", 0) }.isSuccess
+            if (install.not()) {
+                UiViewModelManager.showToast("请先安装百度地图", 3000)
+                return
+            }
+            val loc = Coordinate(latitude, longitude).convert(CoordinateSystemType.WGS84, CoordinateSystemType.BD09)
+            val uri = Uri.parse("baidumap://map/marker?location=${loc.lat},${loc.lng}&title=${name}&traffic=on&src=andr.hailiao.cim")
+            startActivity(Intent(Intent.ACTION_VIEW, uri))
+        }
     }
 }

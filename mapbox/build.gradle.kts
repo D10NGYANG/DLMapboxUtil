@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "1.1.11"
+version = "1.2.0"
 
 android {
     namespace = "com.d10ng.mapbox"
