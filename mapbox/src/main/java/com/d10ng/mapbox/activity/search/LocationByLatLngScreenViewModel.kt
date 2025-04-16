@@ -8,7 +8,7 @@ import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.dialog.builder.InputDialogBuilder
 import com.d10ng.mapbox.stores.MapViewStore
 import com.d10ng.mapbox.view.MapLayerDialogBuilder
-import com.d10ng.tianditu.api.TianDiTuApi
+import com.d10ng.tianditu.api.TDTApi
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.launch
 
@@ -121,10 +121,10 @@ class LocationByLatLngScreenViewModel : ViewModel() {
         viewModelScope.launch {
             if (isNetworkAvailable()) {
                 // 逆地理编码获取POI信息
-                val geocode = TianDiTuApi.getReGeocode(
+                val geocode = TDTApi.getReGeocode(
                     targetFlow.value.longitude(),
                     targetFlow.value.latitude()
-                )
+                ).getOrNull()
                 if (geocode != null) {
                     LocationSearchManager.finish(geocode)
                     return@launch

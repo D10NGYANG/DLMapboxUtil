@@ -45,7 +45,6 @@ class MapNavigationHomeScreenViewModel : ViewModel() {
                 if (it != null) {
                     nav.navigate(
                         MapNavigationOnScreenDestination,
-                        false,
                         NavOptions.Builder().setLaunchSingleTop(true).build()
                     )
                 }

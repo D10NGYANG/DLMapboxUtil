@@ -9,7 +9,7 @@ import com.d10ng.mapbox.constant.MapLayerType
  * @Author d10ng
  * @Date 2023/9/15 18:05
  */
-@PreferenceDataStore("mapbox_config")
+@PreferenceDataStore("mapbox_config.preferences_pb")
 interface MapboxConfigData {
 
     // 选择地图图层

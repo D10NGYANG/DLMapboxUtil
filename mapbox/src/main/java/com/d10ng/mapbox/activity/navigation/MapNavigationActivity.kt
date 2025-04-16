@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.activity.BaseMapboxActivity
 import com.d10ng.mapbox.activity.NavGraphs
-import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 
@@ -20,7 +19,7 @@ import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
  */
 class MapNavigationActivity : BaseMapboxActivity() {
 
-    @OptIn(ExperimentalMaterialNavigationApi::class, ExperimentalAnimationApi::class)
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

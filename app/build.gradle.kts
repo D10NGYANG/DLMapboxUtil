@@ -2,21 +2,20 @@ val myMapboxToken: String by project
 val myTiandituToken: String by project
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.kapt")
-    id("org.jetbrains.kotlin.plugin.parcelize")
-    id("org.jetbrains.kotlin.plugin.compose")
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
     namespace = "com.d10ng.mapbox.demo"
-    compileSdk = android_compile_sdk
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.d10ng.mapbox.demo"
-        minSdk = android_min_sdk
-        targetSdk = android_target_sdk
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "0.0.1"
 
@@ -57,24 +56,20 @@ android {
 }
 
 dependencies {
-    // Android
-    implementation("androidx.core:core-ktx:$androidx_core_ver")
-
     // 单元测试（可选）
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:$dl_compose_ver")
-    // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:$dl_app_ver")
+    implementation(libs.dljetpackcomposeutil)
+    debugImplementation(libs.compose.ui.tooling)
+    // APP工具
+    implementation(libs.dlapputil)
 
     implementation(project(":mapbox"))
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi:$dl_tdt_ver")
-    // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil:$dl_http_ver")
+    implementation(libs.dltiandituapi)
 
     // 内存泄漏检查
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")

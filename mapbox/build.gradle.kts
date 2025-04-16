@@ -2,23 +2,23 @@ val bds100MavenUsername: String by project
 val bds100MavenPassword: String by project
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.serialization")
-    id("com.google.devtools.ksp")
-    id("org.jetbrains.kotlin.plugin.compose")
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
     id("maven-publish")
 }
 
 group = "com.github.D10NGYANG"
-version = "1.2.0"
+version = "1.3.0"
 
 android {
     namespace = "com.d10ng.mapbox"
-    compileSdk = android_compile_sdk
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = android_min_sdk
+        minSdk = libs.versions.android.minSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -45,48 +45,49 @@ android {
 }
 
 dependencies {
-    // Android
-    implementation("androidx.core:core-ktx:$androidx_core_ver")
-
     // 单元测试（可选）
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 
     // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$jetpack_lifecycle_ver")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$jetpack_lifecycle_ver")
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_ver")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_ver")
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
     // kotlinx.serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlin_serialization_json")
+    implementation(libs.kotlinx.serialization.json)
 
     // startup
-    implementation("androidx.startup:startup-runtime:1.1.1")
+    implementation(libs.androidx.startup.runtime)
 
     // MapBox 地图
-    api("com.mapbox.maps:android:10.18.3")
+    api(libs.mapbox.android)
 
     // 导航路由
-    implementation("io.github.raamcosta.compose-destinations:animations-core:$compose_destinations_ver")
-    ksp("io.github.raamcosta.compose-destinations:ksp:$compose_destinations_ver")
+    implementation(libs.compose.destinations.animations.core)
+    ksp(libs.compose.destinations.ksp)
 
     // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:$dl_compose_ver")
-    // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:$dl_app_ver")
-    // 通用处理工具
-    implementation("com.github.D10NGYANG:DLCommonUtil:$dl_common_ver")
+    implementation(libs.dljetpackcomposeutil)
+    // APP工具
+    implementation(libs.dlapputil)
+    // 通用计算
+    implementation(libs.dlcommonutil)
     // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi:$dl_tdt_ver")
-    // 网络请求框架
-    implementation("com.github.D10NGYANG:DLHttpUtil:$dl_http_ver")
+    implementation(libs.dltiandituapi)
+    // ktor客户端
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
     // jetpack datastore 封装工具
-    implementation("com.github.D10NGYANG:DLDatastoreUtil:$dl_datastore_ver")
-    ksp("com.github.D10NGYANG:DLDatastoreUtil-Processor:$dl_datastore_ver")
+    implementation(libs.dldatastoreutil)
+    ksp(libs.dldatastoreutil.processor)
 }
 
 afterEvaluate {

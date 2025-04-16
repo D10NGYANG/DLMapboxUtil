@@ -8,7 +8,7 @@ import com.d10ng.mapbox.bean.createHistoryInfo
 import com.d10ng.mapbox.bean.toHistoryInfo
 import com.d10ng.mapbox.stores.HistoryStore
 import com.d10ng.mapbox.stores.LocationStore
-import com.d10ng.tianditu.api.TianDiTuApi
+import com.d10ng.tianditu.api.TDTApi
 import com.d10ng.tianditu.bean.LocationSearch
 import com.d10ng.tianditu.bean.PerimeterSearch
 import com.d10ng.tianditu.bean.ReGeocode
@@ -83,7 +83,7 @@ object LocationSearchManager {
         specify: String? = null,
     ): LocationSearch? {
         if (value.isEmpty()) return null
-        val result = TianDiTuApi.getLocationSearchV2(value, specify)
+        val result = TDTApi.getLocationSearchV2(value, specify).getOrNull()
         return if (result != null && result.status.infocode != 1000) {
             UiViewModelManager.showErrorNotify(result.status.cndesc)
             null
@@ -95,7 +95,7 @@ object LocationSearchManager {
     ): Pair<PerimeterSearch?, LocationSearch?> {
         if (value.isEmpty()) return null to null
         val loc = LocationStore.getValueFlow().value ?: return null to search(value, null)
-        val perimeter = TianDiTuApi.getPerimeterSearch(value, loc.longitude, loc.latitude)
+        val perimeter = TDTApi.getPerimeterSearch(value, loc.longitude, loc.latitude).getOrNull()
         return if (perimeter == null || perimeter.status.infocode != 1000) {
             perimeter?.status?.cndesc?.let { UiViewModelManager.showErrorNotify(it) }
             null to search(value, null)
