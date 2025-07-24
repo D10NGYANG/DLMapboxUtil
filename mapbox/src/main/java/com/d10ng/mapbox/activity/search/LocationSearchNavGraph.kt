@@ -1,8 +1,6 @@
 package com.d10ng.mapbox.activity.search
 
-import com.ramcosta.composedestinations.annotation.NavGraph
+import com.ramcosta.composedestinations.annotation.NavHostGraph
 
-@NavGraph(route = "LocationSearch")
-annotation class LocationSearchNavGraph(
-    val start: Boolean = false
-)
+@NavHostGraph(route = "LocationSearch")
+annotation class LocationSearchNavGraph

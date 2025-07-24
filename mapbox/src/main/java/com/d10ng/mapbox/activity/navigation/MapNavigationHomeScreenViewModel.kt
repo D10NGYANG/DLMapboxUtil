@@ -6,9 +6,9 @@ import androidx.navigation.NavOptions
 import com.d10ng.app.managers.ActivityManager
 import com.d10ng.app.utils.goTo
 import com.d10ng.compose.model.UiViewModelManager
-import com.d10ng.mapbox.activity.destinations.MapNavigationOnScreenDestination
 import com.d10ng.mapbox.activity.offline.MapOfflineActivity
 import com.d10ng.mapbox.activity.search.LocationSearchManager
+import com.d10ng.mapbox.destinations.MapNavigationOnScreenDestination
 import com.d10ng.mapbox.stores.MapViewStore
 import com.d10ng.mapbox.stores.NavigationStore
 import com.d10ng.mapbox.view.MapLayerDialogBuilder

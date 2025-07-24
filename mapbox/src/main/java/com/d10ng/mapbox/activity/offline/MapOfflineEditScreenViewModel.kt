@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.dialog.builder.ConfirmDialogBuilder
-import com.d10ng.mapbox.activity.navArgs
+import com.d10ng.mapbox.navArgs
 import com.d10ng.mapbox.stores.MapboxStore
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +19,7 @@ data class MapOfflineEditScreenNavArg(
     val id: String
 )
 
-class MapOfflineEditScreenViewModel constructor(
+class MapOfflineEditScreenViewModel(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 

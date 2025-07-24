@@ -2,7 +2,7 @@ package com.d10ng.mapbox.activity.offline
 
 import androidx.lifecycle.ViewModel
 import com.d10ng.compose.model.UiViewModelManager
-import com.d10ng.mapbox.activity.destinations.MapOfflineListScreenDestination
+import com.d10ng.mapbox.destinations.MapOfflineListScreenDestination
 import com.d10ng.mapbox.stores.MapboxStore
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.MutableStateFlow

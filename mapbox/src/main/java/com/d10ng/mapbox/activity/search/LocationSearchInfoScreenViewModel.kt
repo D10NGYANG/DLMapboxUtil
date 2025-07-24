@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.dialog.builder.ConfirmDialogBuilder
-import com.d10ng.mapbox.activity.destinations.LocationSearchInfoScreenDestination
-import com.d10ng.mapbox.activity.navArgs
+import com.d10ng.mapbox.destinations.LocationSearchInfoScreenDestination
+import com.d10ng.mapbox.navArgs
 import com.d10ng.mapbox.utils.toPoint
 import com.d10ng.mapbox.view.LocationConfirmView
 import com.d10ng.tianditu.bean.LocationSearch

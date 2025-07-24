@@ -26,18 +26,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
 import com.d10ng.compose.ui.AppText
-import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Button
 import com.d10ng.compose.ui.base.ButtonType
 import com.d10ng.compose.ui.base.CellGroup
 import com.d10ng.compose.ui.form.Field
 import com.d10ng.compose.ui.navigation.NavBar
+import com.d10ng.mapbox.view.PageTransitions
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlin.math.roundToInt
 
-@OfflineNavGraph
-@Destination(style = PageTransitions::class)
+@Destination<OfflineNavGraph>(style = PageTransitions::class)
 @Composable
 fun MapOfflineAddScreen(
     nav: DestinationsNavigator,

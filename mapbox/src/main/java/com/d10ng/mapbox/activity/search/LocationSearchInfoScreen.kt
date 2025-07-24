@@ -10,16 +10,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
-import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.navigation.NavBar
+import com.d10ng.mapbox.view.PageTransitions
 import com.d10ng.tianditu.bean.LocationSearch
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@LocationSearchNavGraph
-@Destination(
+@Destination<LocationSearchNavGraph>(
     style = PageTransitions::class,
-    navArgsDelegate = LocationSearchInfoScreenNavArgs::class
+    navArgs = LocationSearchInfoScreenNavArgs::class
 )
 @Composable
 fun LocationSearchInfoScreen(

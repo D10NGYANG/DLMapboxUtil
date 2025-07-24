@@ -44,6 +44,10 @@ android {
     }
 }
 
+ksp {
+    arg("compose-destinations.codeGenPackageName", "com.d10ng.mapbox") // replace package name!
+}
+
 dependencies {
     // 单元测试（可选）
     testImplementation(libs.junit)
@@ -78,6 +82,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.constraintlayout.compose)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)

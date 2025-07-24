@@ -30,16 +30,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
 import com.d10ng.compose.ui.AppText
-import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.bean.OfflineMapInfo
 import com.d10ng.mapbox.view.NavBarIconButton
+import com.d10ng.mapbox.view.PageTransitions
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@OfflineNavGraph(start = true)
-@Destination(style = PageTransitions::class)
+@Destination<OfflineNavGraph>(start = true, style = PageTransitions::class)
 @Composable
 fun MapOfflineListScreen(
     nav: DestinationsNavigator,

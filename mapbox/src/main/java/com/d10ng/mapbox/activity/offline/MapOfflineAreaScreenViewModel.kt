@@ -3,9 +3,9 @@ package com.d10ng.mapbox.activity.offline
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d10ng.compose.model.UiViewModelManager
-import com.d10ng.mapbox.activity.destinations.MapOfflineAddScreenDestination
 import com.d10ng.mapbox.activity.search.LocationSearchManager
 import com.d10ng.mapbox.constant.MapLayerType
+import com.d10ng.mapbox.destinations.MapOfflineAddScreenDestination
 import com.d10ng.mapbox.stores.MapViewStore
 import com.d10ng.mapbox.view.MapLayerDialogBuilder
 import com.mapbox.geojson.Point

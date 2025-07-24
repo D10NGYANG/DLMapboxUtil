@@ -24,7 +24,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
 import com.d10ng.compose.ui.AppText
-import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Button
 import com.d10ng.compose.ui.base.ButtonSize
 import com.d10ng.compose.ui.base.ButtonType
@@ -37,6 +36,7 @@ import com.d10ng.mapbox.view.Compass
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
+import com.d10ng.mapbox.view.PageTransitions
 import com.d10ng.mapbox.view.UserLocationTextBar
 import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.annotation.Destination
@@ -47,8 +47,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
  * @Author d10ng
  * @Date 2023/9/16 17:08
  */
-@NavigationNavGraph(start = true)
-@Destination(style = PageTransitions::class)
+@Destination<NavigationNavGraph>(start = true, style = PageTransitions::class)
 @Composable
 fun MapNavigationHomeScreen(
     nav: DestinationsNavigator,

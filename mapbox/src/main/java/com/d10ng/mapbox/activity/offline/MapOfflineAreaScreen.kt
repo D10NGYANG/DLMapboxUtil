@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
-import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Button
 import com.d10ng.compose.ui.base.ButtonType
 import com.d10ng.compose.ui.navigation.NavBar
@@ -32,12 +31,12 @@ import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
 import com.d10ng.mapbox.view.NavBarIconButton
+import com.d10ng.mapbox.view.PageTransitions
 import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@OfflineNavGraph
-@Destination(style = PageTransitions::class)
+@Destination<OfflineNavGraph>(style = PageTransitions::class)
 @Composable
 fun MapOfflineAreaScreen(
     nav: DestinationsNavigator,

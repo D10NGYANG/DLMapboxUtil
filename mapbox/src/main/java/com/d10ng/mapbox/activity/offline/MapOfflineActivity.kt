@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.ui.Modifier
 import com.d10ng.compose.model.UiViewModelManager
+import com.d10ng.mapbox.NavGraphs
 import com.d10ng.mapbox.activity.BaseMapboxActivity
-import com.d10ng.mapbox.activity.NavGraphs
 import com.ramcosta.composedestinations.DestinationsNavHost
-import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
+import com.ramcosta.composedestinations.rememberNavHostEngine
 
 /**
  * 离线地图
@@ -24,7 +24,7 @@ class MapOfflineActivity : BaseMapboxActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val engine = rememberAnimatedNavHostEngine()
+            val engine = rememberNavHostEngine()
             val navController = engine.rememberNavController()
 
             DestinationsNavHost(
@@ -35,7 +35,7 @@ class MapOfflineActivity : BaseMapboxActivity() {
                     .fillMaxSize()
                     .navigationBarsPadding()
             )
-            UiViewModelManager.Init(act = this)
+            UiViewModelManager.Init()
         }
     }
 }

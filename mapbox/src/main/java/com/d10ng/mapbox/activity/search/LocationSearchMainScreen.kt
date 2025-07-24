@@ -31,7 +31,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
 import com.d10ng.compose.ui.AppText
-import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.CellGroup
 import com.d10ng.compose.ui.base.CellTitle
 import com.d10ng.compose.ui.form.Search
@@ -39,13 +38,13 @@ import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.bean.HistoryInfo
 import com.d10ng.mapbox.view.NavBarIconButton
+import com.d10ng.mapbox.view.PageTransitions
 import com.d10ng.tianditu.bean.LocationSearch
 import com.d10ng.tianditu.bean.PerimeterSearch
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@LocationSearchNavGraph(start = true)
-@Destination(style = PageTransitions::class)
+@Destination<LocationSearchNavGraph>(start = true, style = PageTransitions::class)
 @Composable
 fun LocationSearchMainScreen(
     nav: DestinationsNavigator,

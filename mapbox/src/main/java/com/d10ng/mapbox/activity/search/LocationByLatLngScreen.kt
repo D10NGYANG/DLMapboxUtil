@@ -17,7 +17,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
-import com.d10ng.compose.ui.PageTransitions
 import com.d10ng.compose.ui.base.Button
 import com.d10ng.compose.ui.base.ButtonSize
 import com.d10ng.compose.ui.base.ButtonType
@@ -30,13 +29,13 @@ import com.d10ng.mapbox.view.Compass
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
+import com.d10ng.mapbox.view.PageTransitions
 import com.d10ng.mapbox.view.UserLocationTextBar
 import com.mapbox.geojson.Point
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@LocationSearchNavGraph
-@Destination(style = PageTransitions::class)
+@Destination<LocationSearchNavGraph>(style = PageTransitions::class)
 @Composable
 fun LocationByLatLngScreen(
     nav: DestinationsNavigator,

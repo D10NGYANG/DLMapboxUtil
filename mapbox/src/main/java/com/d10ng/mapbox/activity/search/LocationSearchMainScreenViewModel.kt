@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.dialog.builder.ConfirmDialogBuilder
-import com.d10ng.mapbox.activity.destinations.LocationByLatLngScreenDestination
-import com.d10ng.mapbox.activity.destinations.LocationSearchInfoScreenDestination
 import com.d10ng.mapbox.bean.HistoryInfo
+import com.d10ng.mapbox.destinations.LocationByLatLngScreenDestination
+import com.d10ng.mapbox.destinations.LocationSearchInfoScreenDestination
 import com.d10ng.mapbox.stores.HistoryStore
 import com.d10ng.mapbox.utils.toPoint
 import com.d10ng.mapbox.view.LocationConfirmView
