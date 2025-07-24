@@ -11,7 +11,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.d10ng.app.resource.getResDrawable
@@ -65,7 +66,7 @@ fun LocationConfirmView(
     var center by remember(point) {
         mutableStateOf(point)
     }
-    val height = LocalConfiguration.current.screenHeightDp.dp / 4
+    val height = with(LocalDensity.current) { (LocalWindowInfo.current.containerSize.height / 4).toDp() }
     MapboxView(
         modifier = Modifier
             .padding(vertical = 16.dp)

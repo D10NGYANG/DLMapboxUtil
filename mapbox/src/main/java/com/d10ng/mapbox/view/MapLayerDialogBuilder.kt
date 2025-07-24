@@ -73,7 +73,7 @@ data class MapLayerDialogBuilder(
                 ) {
                     Text(
                         text = type.label,
-                        style = AppText.Normal.White.small,
+                        style = AppText.Normal.Surface.small,
                         modifier = Modifier.align(Alignment.Center),
                     )
                 }
@@ -83,7 +83,7 @@ data class MapLayerDialogBuilder(
 
     @OptIn(ExperimentalLayoutApi::class)
     @Composable
-    override fun Build(id: Int) {
+    override fun Build(id: String) {
         DialogColumn {
             // 标题
             TipsDialogBuilder.TitleText(text = "请选择地图")
@@ -94,7 +94,7 @@ data class MapLayerDialogBuilder(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                MapLayerType.values().filter {
+                MapLayerType.entries.filter {
                     if (isOnlyShowCanDown) {
                         it.isCanDown
                     } else true
