@@ -12,7 +12,7 @@ class MapActivity : BaseMapboxActivity() {
 
         setContent {
             MapMainScreen()
-            UiViewModelManager.Init(act = this)
+            UiViewModelManager.Init()
         }
     }
 }

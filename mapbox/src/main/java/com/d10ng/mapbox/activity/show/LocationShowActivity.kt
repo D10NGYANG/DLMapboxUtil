@@ -26,7 +26,7 @@ class LocationShowActivity : BaseMapboxActivity() {
 
         setContent {
             LocationShowScreen()
-            UiViewModelManager.Init(act = this)
+            UiViewModelManager.Init()
         }
     }
 }
