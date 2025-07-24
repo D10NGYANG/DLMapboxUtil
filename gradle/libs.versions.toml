@@ -1,44 +1,42 @@
 [versions]
-agp = "8.6.1"
+agp = "8.11.1"
 android-compileSdk = "35"
 android-minSdk = "26"
 android-targetSdk = "30"
-androidx-core = "1.16.0"
-androidx-espresso = "3.6.1"
-androidx-room = "2.7.0"
+androidx-compose-bom = "2025.07.00"
+androidx-lifecycle = "2.9.2"
 androidx-startup-runtime = "1.2.0"
-androidx-paging = "3.3.6"
-compose-ui-tooling = "1.7.8"
+androidx-test-espresso = "3.6.1"
+androidx-test-junit = "1.2.1"
 junit = "4.13.2"
-androidx-junit = "1.2.1"
-kotlin = "2.1.20"
+kotlin = "2.2.0"
 kotlinx-coroutines = "1.10.2"
-kotlinx-serialization-json = "1.8.1"
-ksp = "2.1.20-1.0.32"
-ktor = "3.1.2"
-dlapputil = "2.5.9"
-dljetpackcomposeutil = "2.0.31"
-dlcommonutil = "0.6.1"
-dldatastoreutil = "0.2.0"
-dltiandituapi = "1.1.0"
-lifecycleRuntimeKtx = "2.8.7"
-compose-destinations = "1.11.9"
+kotlinx-serialization-json = "1.9.0"
+ksp = "2.2.0-2.0.2"
+ktor = "3.2.2"
+leakcanary = "2.14"
+raamcosta-compose-destinations = "2.2.0"
 mapbox = "10.19.0"
+dlapp = "2.6.0"
+dlcompose = "3.1.3"
+dlcommon = "0.7.0"
+dldatastore = "0.2.1"
+dltianditu = "1.1.0"
 
 [libraries]
-androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
-androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-espresso" }
-androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
-androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
-androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging" }
-androidx-paging-common-ktx = { module = "androidx.paging:paging-common-ktx", version.ref = "androidx-paging" }
-androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "androidx-paging" }
-androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
-androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "androidx-room" }
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
-androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidx-room" }
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "androidx-startup-runtime" }
+androidx-test-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso" }
+androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-junit" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 junit = { module = "junit:junit", version.ref = "junit" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -48,16 +46,16 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
-dlapputil = { module = "com.github.D10NGYANG:DLAppUtil", version.ref = "dlapputil" }
-dljetpackcomposeutil = { module = "com.github.D10NGYANG:DLJetpackComposeUtil", version.ref = "dljetpackcomposeutil" }
-dlcommonutil = { module = "com.github.D10NGYANG:DLCommonUtil", version.ref = "dlcommonutil" }
-dldatastoreutil = { module = "com.github.D10NGYANG:DLDatastoreUtil", version.ref = "dldatastoreutil" }
-dldatastoreutil-processor = { module = "com.github.D10NGYANG:DLDatastoreUtil-Processor", version.ref = "dldatastoreutil" }
-dltiandituapi = { module = "com.github.D10NGYANG:DLTianDiTuApi", version.ref = "dltiandituapi" }
-compose-destinations-animations-core = { module = "io.github.raamcosta.compose-destinations:animations-core", version.ref = "compose-destinations" }
-compose-destinations-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "compose-destinations" }
-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-ui-tooling" }
+leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
+raamcosta-compose-destinations-core = { module = "io.github.raamcosta.compose-destinations:core", version.ref = "raamcosta-compose-destinations" }
+raamcosta-compose-destinations-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "raamcosta-compose-destinations" }
 mapbox-android = { module = "com.mapbox.maps:android", version.ref = "mapbox" }
+dl-app = { module = "com.github.D10NGYANG:DLAppUtil", version.ref = "dlapp" }
+dl-compose = { module = "com.github.D10NGYANG:DLJetpackComposeUtil", version.ref = "dlcompose" }
+dl-common = { module = "com.github.D10NGYANG:DLCommonUtil", version.ref = "dlcommon" }
+dl-datastore = { module = "com.github.D10NGYANG:DLDatastoreUtil", version.ref = "dldatastore" }
+dl-datastore-processor = { module = "com.github.D10NGYANG:DLDatastoreUtil-Processor", version.ref = "dldatastore" }
+dl-tianditu = { module = "com.github.D10NGYANG:DLTianDiTuApi", version.ref = "dltianditu" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -58,19 +58,28 @@ android {
 dependencies {
     // 单元测试（可选）
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(libs.androidx.test.espresso)
 
     // jetpack compose 框架
-    implementation(libs.dljetpackcomposeutil)
-    debugImplementation(libs.compose.ui.tooling)
-    // APP工具
-    implementation(libs.dlapputil)
+    implementation(libs.dl.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
+    // APP工具
+    implementation(libs.dl.app)
+    // 地图库
     implementation(project(":mapbox"))
     // 天地图API
-    implementation(libs.dltiandituapi)
+    implementation(libs.dl.tianditu)
 
     // 内存泄漏检查
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
+    debugImplementation(libs.leakcanary)
 }

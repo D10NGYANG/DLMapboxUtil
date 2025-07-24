@@ -47,8 +47,8 @@ android {
 dependencies {
     // 单元测试（可选）
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(libs.androidx.test.espresso)
 
     // Lifecycle
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -68,17 +68,26 @@ dependencies {
     api(libs.mapbox.android)
 
     // 导航路由
-    implementation(libs.compose.destinations.animations.core)
-    ksp(libs.compose.destinations.ksp)
+    implementation(libs.raamcosta.compose.destinations.core)
+    ksp(libs.raamcosta.compose.destinations.ksp)
 
     // jetpack compose 框架
-    implementation(libs.dljetpackcomposeutil)
+    implementation(libs.dl.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
     // APP工具
-    implementation(libs.dlapputil)
+    implementation(libs.dl.app)
     // 通用计算
-    implementation(libs.dlcommonutil)
+    implementation(libs.dl.common)
     // 天地图API
-    implementation(libs.dltiandituapi)
+    implementation(libs.dl.tianditu)
     // ktor客户端
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.okhttp)
@@ -86,8 +95,8 @@ dependencies {
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
     // jetpack datastore 封装工具
-    implementation(libs.dldatastoreutil)
-    ksp(libs.dldatastoreutil.processor)
+    implementation(libs.dl.datastore)
+    ksp(libs.dl.datastore.processor)
 }
 
 afterEvaluate {
