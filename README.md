@@ -36,28 +36,7 @@ allprojects {
 ```build.gradle
 dependencies {
     // 地图封装
-    implementation("com.github.D10NGYANG:DLMapboxUtil:1.3.0")
-    // jetpack compose 框架
-    implementation("com.github.D10NGYANG:DLJetpackComposeUtil:2.0.31")
-    // APP通用工具
-    implementation("com.github.D10NGYANG:DLAppUtil:2.5.9")
-    // 通用处理工具
-    implementation("com.github.D10NGYANG:DLCommonUtil:0.6.1")
-    // 天地图API
-    implementation("com.github.D10NGYANG:DLTianDiTuApi:1.1.0")
-    // 协程
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
-    // JSON序列化
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
-    // ktor客户端
-    implementation("io.ktor:ktor-client-core:3.1.2")
-    // ktor引擎，可选其他的
-    implementation("io.ktor:ktor-client-cio:3.1.2")
-    // 必须，内容序列化
-    implementation("io.ktor:ktor-client-content-negotiation:3.1.2")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:3.1.2")
-    // jetpack datastore 封装工具
-    implementation("com.github.D10NGYANG:DLDatastoreUtil:0.2.0")
+    implementation("com.github.D10NGYANG:DLMapboxUtil:1.4.0")
 }
 ```
 
