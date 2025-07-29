@@ -2,7 +2,9 @@ package com.d10ng.mapbox.activity.map
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.compose.material3.MaterialTheme
 import com.d10ng.compose.model.UiViewModelManager
+import com.d10ng.compose.ui.AppColor
 import com.d10ng.mapbox.activity.BaseMapboxActivity
 
 class MapActivity : BaseMapboxActivity() {
@@ -11,8 +13,12 @@ class MapActivity : BaseMapboxActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            MapMainScreen()
-            UiViewModelManager.Init()
+            MaterialTheme(
+                colorScheme = AppColor.toColorScheme()
+            ) {
+                MapMainScreen()
+                UiViewModelManager.Init()
+            }
         }
     }
 }

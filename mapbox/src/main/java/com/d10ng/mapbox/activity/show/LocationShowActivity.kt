@@ -3,8 +3,10 @@ package com.d10ng.mapbox.activity.show
 import android.app.Activity
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.compose.material3.MaterialTheme
 import com.d10ng.app.utils.getClearTopIntent
 import com.d10ng.compose.model.UiViewModelManager
+import com.d10ng.compose.ui.AppColor
 import com.d10ng.mapbox.activity.BaseMapboxActivity
 import com.d10ng.mapbox.stores.MapViewStore
 import com.mapbox.geojson.Point
@@ -25,8 +27,12 @@ class LocationShowActivity : BaseMapboxActivity() {
         if (lat != 0.0 && lng != 0.0) initPoint = Point.fromLngLat(lng, lat)
 
         setContent {
-            LocationShowScreen()
-            UiViewModelManager.Init()
+            MaterialTheme(
+                colorScheme = AppColor.toColorScheme()
+            ) {
+                LocationShowScreen()
+                UiViewModelManager.Init()
+            }
         }
     }
 }

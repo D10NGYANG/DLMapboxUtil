@@ -151,7 +151,7 @@ private fun MapNavigationHomeScreenView(
                 )
                 Text(
                     text = "拖动地图选择目的地",
-                    style = AppText.Normal.White.default,
+                    style = AppText.Normal.Surface.default,
                     modifier = Modifier
                         .constrainAs(label) {
                             top.linkTo(icon.bottom, 16.dp)

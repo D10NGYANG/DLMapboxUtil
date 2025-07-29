@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,35 +40,40 @@ class MainActivity : ComponentActivity() {
         MapboxUtil.init(BuildConfig.myMapboxToken, BuildConfig.myTiandituToken, true)
 
         setContent {
-            var selectPoint by remember {
-                mutableStateOf(Point.fromLngLat(116.411794, 39.9068))
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.White),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+
+            MaterialTheme(
+                colorScheme = AppColor.toColorScheme()
             ) {
-                Button(text = "地图", type = ButtonType.PRIMARY, onClick = {
-                    goTo(MapActivity::class.java)
-                })
-                Button(text = "离线", type = ButtonType.PRIMARY, onClick = {
-                    goTo(MapOfflineActivity::class.java)
-                })
-                Button(text = "搜索", type = ButtonType.PRIMARY, onClick = {
-                    LocationSearchManager.start {
-                        if (it != null) {
-                            selectPoint = it
+                var selectPoint by remember {
+                    mutableStateOf(Point.fromLngLat(116.411794, 39.9068))
+                }
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.White),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Button(text = "地图", type = ButtonType.PRIMARY, onClick = {
+                        goTo(MapActivity::class.java)
+                    })
+                    Button(text = "离线", type = ButtonType.PRIMARY, onClick = {
+                        goTo(MapOfflineActivity::class.java)
+                    })
+                    Button(text = "搜索", type = ButtonType.PRIMARY, onClick = {
+                        LocationSearchManager.start {
+                            if (it != null) {
+                                selectPoint = it
+                            }
                         }
-                    }
-                })
-                Button(text = "显示", type = ButtonType.PRIMARY, onClick = {
-                    goToLocationShowActivity(selectPoint.latitude(), selectPoint.longitude())
-                })
-                Button(text = "导航", type = ButtonType.PRIMARY, onClick = {
-                    goTo(MapNavigationActivity::class.java)
-                })
+                    })
+                    Button(text = "显示", type = ButtonType.PRIMARY, onClick = {
+                        goToLocationShowActivity(selectPoint.latitude(), selectPoint.longitude())
+                    })
+                    Button(text = "导航", type = ButtonType.PRIMARY, onClick = {
+                        goTo(MapNavigationActivity::class.java)
+                    })
+                }
             }
         }
     }
