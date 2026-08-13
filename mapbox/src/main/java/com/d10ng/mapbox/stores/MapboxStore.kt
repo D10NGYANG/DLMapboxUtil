@@ -7,7 +7,7 @@ import com.d10ng.mapbox.utils.getAllOfflineInfo
 import com.d10ng.mapbox.utils.getSnapshotBitmap
 import com.mapbox.bindgen.Expected
 import com.mapbox.bindgen.Value
-import com.mapbox.common.TileDataDomain
+import com.mapbox.common.MapboxOptions
 import com.mapbox.common.TileRegion
 import com.mapbox.common.TileRegionError
 import com.mapbox.common.TileRegionLoadOptions
@@ -16,9 +16,7 @@ import com.mapbox.common.TileStore
 import com.mapbox.common.TileStoreObserver
 import com.mapbox.common.TileStoreOptions
 import com.mapbox.geojson.Geometry
-import com.mapbox.maps.MapInitOptions
 import com.mapbox.maps.OfflineManager
-import com.mapbox.maps.ResourceOptionsManager
 import com.mapbox.maps.TilesetDescriptorOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,17 +52,8 @@ object MapboxStore {
 
     fun init(token: String) {
         this.token = token
-        // 初始化TOKEN
-        MapInitOptions(
-            application,
-            ResourceOptionsManager.getDefault(application, MapboxStore.token).resourceOptions
-        )
+        MapboxOptions.accessToken = token
         tileStore = TileStore.create().apply {
-            setOption(
-                TileStoreOptions.MAPBOX_ACCESS_TOKEN,
-                TileDataDomain.MAPS,
-                Value(token)
-            )
             addObserver(tileStoreObserver)
         }
     }
@@ -123,8 +112,7 @@ object MapboxStore {
             put("maxZoom", maxZoom)
             put("title", title)
         }
-        val offlineManager =
-            OfflineManager(MapInitOptions.getDefaultResourceOptions(application))
+        val offlineManager = OfflineManager()
         tileStore?.loadTileRegion(
             System.currentTimeMillis().toString(),
             TileRegionLoadOptions.Builder()
@@ -158,8 +146,7 @@ object MapboxStore {
             put("maxZoom", info.maxZoom)
             put("title", name)
         }
-        val offlineManager =
-            OfflineManager(MapInitOptions.getDefaultResourceOptions(application))
+        val offlineManager = OfflineManager()
         tileStore?.loadTileRegion(
             info.region.id,
             TileRegionLoadOptions.Builder()

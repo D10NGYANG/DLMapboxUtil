@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -38,16 +39,13 @@ import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.bean.HistoryInfo
 import com.d10ng.mapbox.view.NavBarIconButton
-import com.d10ng.mapbox.view.PageTransitions
 import com.d10ng.tianditu.bean.LocationSearch
 import com.d10ng.tianditu.bean.PerimeterSearch
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@Destination<LocationSearchNavGraph>(start = true, style = PageTransitions::class)
 @Composable
 fun LocationSearchMainScreen(
-    nav: DestinationsNavigator,
+    onNavigateByLatLng: () -> Unit,
+    onNavigateInfo: (String, String, Int) -> Unit,
     model: LocationSearchMainScreenViewModel = viewModel()
 ) {
     val input by model.inputFlow.collectAsState()
@@ -63,13 +61,13 @@ fun LocationSearchMainScreen(
         onClickBack = { model.onClickBack() },
         onUpdateInput = { model.updateInput(it) },
         onClickSearch = { model.onClickSearch() },
-        onClickByLatLng = { model.onClickByLatLng(nav) },
+        onClickByLatLng = onNavigateByLatLng,
         onClickClearHistory = { model.onClickClearHistory() },
         onClickRemoveHistory = { model.onClickRemoveHistory(it) },
         onClickHistory = { model.onClickHistory(it) },
         onClickPerimeterPoiItem = { model.onClickItem(it) },
-        onClickAreaItem = { model.onClickItem(nav, it) },
-        onClickAdminItem = { model.onClickItem(nav, it) },
+        onClickAreaItem = { model.onClickItem(it, onNavigateInfo) },
+        onClickAdminItem = { model.onClickItem(it, onNavigateInfo) },
         onClickPoiItem = { model.onClickItem(it) }
     )
 }
@@ -96,6 +94,7 @@ private fun LocationSearchMainScreenView(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColor.Neutral.bg)
+            .navigationBarsPadding()
     ) {
         NavBar(
             title = "地图搜索",

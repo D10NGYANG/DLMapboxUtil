@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -33,24 +34,21 @@ import com.d10ng.mapbox.view.Compass
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
-import com.d10ng.mapbox.view.PageTransitions
 import com.d10ng.mapbox.view.UserLocationTextBar
+import com.d10ng.mapbox.view.navigationBarCameraPadding
 import com.mapbox.geojson.Point
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationOptions
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 /**
  * 地图导航
  * @Author d10ng
  * @Date 2023/9/16 17:44
  */
-@Destination<NavigationNavGraph>(style = PageTransitions::class)
 @Composable
 fun MapNavigationOnScreen(
-    nav: DestinationsNavigator,
+    onNavigateBack: () -> Unit,
     model: MapNavigationOnScreenViewModel = viewModel()
 ) {
     val layer by model.layerFlow.collectAsState()
@@ -60,6 +58,7 @@ fun MapNavigationOnScreen(
     val lineOptions by model.lineOptionsFlow.collectAsState()
     val distanceText by model.distanceTextFlow.collectAsState()
     val isTouchMap by model.isTouchMapFlow.collectAsState()
+    val cameraPadding = navigationBarCameraPadding(NAVIGATION_PANEL_HEIGHT)
 
     MapNavigationOnScreenView(
         layer = layer,
@@ -69,7 +68,8 @@ fun MapNavigationOnScreen(
         lineOptions = lineOptions,
         distanceText = distanceText,
         isTouchMap = isTouchMap,
-        onClickBack = { model.onClickBack(nav) },
+        cameraPadding = cameraPadding,
+        onClickBack = { model.onClickBack(onNavigateBack) },
         onMapStyleLoad = { model.onMapStyleLoad(it) },
         onUpdateUserTouchMap = { model.updateUserTouchMap(it) },
         onClickZoomIn = { model.onClickZoomIn() },
@@ -83,7 +83,7 @@ fun MapNavigationOnScreen(
     )
 
     BackHandler(true) {
-        model.onClickBack(nav)
+        model.onClickBack(onNavigateBack)
     }
 }
 
@@ -96,6 +96,7 @@ private fun MapNavigationOnScreenView(
     lineOptions: Map<Int, PolylineAnnotationOptions>,
     distanceText: String,
     isTouchMap: Boolean,
+    cameraPadding: com.mapbox.maps.EdgeInsets,
     onClickBack: () -> Unit = {},
     onMapStyleLoad: (Style) -> Unit = {},
     onUpdateUserTouchMap: (Boolean) -> Unit = {},
@@ -128,6 +129,7 @@ private fun MapNavigationOnScreenView(
                 layer = layer,
                 cameraZoom = zoom,
                 cameraTarget = target,
+                cameraPadding = cameraPadding,
                 isShowUserLocation = false,
                 pointOptions = pointOptions,
                 lineOptions = lineOptions,
@@ -139,67 +141,77 @@ private fun MapNavigationOnScreenView(
                 onStyleLoad = onMapStyleLoad
             )
 
-            UserLocationTextBar()
-            Compass()
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .navigationBarsPadding()
+                    .padding(bottom = NAVIGATION_PANEL_HEIGHT)
+            ) {
+                UserLocationTextBar()
+                Compass()
 
-            MapZoomControllerBar(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(start = 16.dp, bottom = 16.dp),
-                onClickZoomIn = onClickZoomIn,
-                onClickZoomOut = onClickZoomOut
-            )
-
-            MapLayerLocationControllerBar(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 16.dp, bottom = 16.dp),
-                onClickLayer = onClickLayer,
-                onClickLocation = onClickLocation
-            )
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(70.dp)
-                .background(Color.White)
-                .padding(horizontal = 16.dp, vertical = 4.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            if (isTouchMap) {
-                TextButton(
-                    onClick = onClickResume,
-                ) {
-                    Text(
-                        text = "继续导航",
-                        style = AppText.Normal.Title.default
-                    )
-                }
-            } else {
-                Row(
+                MapZoomControllerBar(
                     modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "直线距离：",
-                        style = AppText.Normal.Title.default
-                    )
-                    Text(
-                        text = distanceText,
-                        style = AppText.Normal.Primary.default
+                        .align(Alignment.BottomStart)
+                        .padding(start = 16.dp, bottom = 16.dp),
+                    onClickZoomIn = onClickZoomIn,
+                    onClickZoomOut = onClickZoomOut
+                )
+
+                MapLayerLocationControllerBar(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 16.dp, bottom = 16.dp),
+                    onClickLayer = onClickLayer,
+                    onClickLocation = onClickLocation
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .navigationBarsPadding()
+                    .height(NAVIGATION_PANEL_HEIGHT)
+                    .padding(horizontal = 16.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                if (isTouchMap) {
+                    TextButton(onClick = onClickResume) {
+                        Text(
+                            text = "继续导航",
+                            style = AppText.Normal.Title.default
+                        )
+                    }
+                } else {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "直线距离：",
+                            style = AppText.Normal.Title.default
+                        )
+                        Text(
+                            text = distanceText,
+                            style = AppText.Normal.Primary.default
+                        )
+                    }
+                    Button(
+                        text = "结束",
+                        onClick = onClickCancel,
+                        type = ButtonType.PRIMARY,
+                        size = ButtonSize.SMALL,
+                        shape = AppShape.RC.v6
                     )
                 }
-                Button(
-                    text = "结束",
-                    onClick = onClickCancel,
-                    type = ButtonType.PRIMARY,
-                    size = ButtonSize.SMALL,
-                    shape = AppShape.RC.v6
-                )
             }
         }
     }
 }
+
+private val NAVIGATION_PANEL_HEIGHT = 70.dp

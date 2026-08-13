@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -31,15 +32,12 @@ import com.d10ng.compose.ui.base.ButtonType
 import com.d10ng.compose.ui.base.CellGroup
 import com.d10ng.compose.ui.form.Field
 import com.d10ng.compose.ui.navigation.NavBar
-import com.d10ng.mapbox.view.PageTransitions
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlin.math.roundToInt
 
-@Destination<OfflineNavGraph>(style = PageTransitions::class)
 @Composable
 fun MapOfflineAddScreen(
-    nav: DestinationsNavigator,
+    onBack: () -> Unit,
+    onComplete: () -> Unit,
     model: MapOfflineAddScreenViewModel = viewModel()
 ) {
     val inputName by model.inputNameFlow.collectAsState()
@@ -48,10 +46,10 @@ fun MapOfflineAddScreen(
     MapOfflineAddScreenView(
         inputName = inputName,
         zoomRange = zoomRange,
-        onClickBack = nav::navigateUp,
+        onClickBack = onBack,
         onUpdateInputName = { model.updateInputName(it) },
         onUpdateZoomRange = { model.updateZoomRange(it) },
-        onClickSure = { model.onClickSure(nav) }
+        onClickSure = { model.onClickSure(onComplete) }
     )
 }
 
@@ -68,6 +66,7 @@ private fun MapOfflineAddScreenView(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColor.Neutral.bg)
+            .navigationBarsPadding()
     ) {
         NavBar(
             title = "配置离线地图",

@@ -2,20 +2,16 @@ package com.d10ng.mapbox.activity.navigation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavOptions
 import com.d10ng.app.managers.ActivityManager
 import com.d10ng.app.utils.goTo
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.activity.offline.MapOfflineActivity
 import com.d10ng.mapbox.activity.search.LocationSearchManager
-import com.d10ng.mapbox.destinations.MapNavigationOnScreenDestination
 import com.d10ng.mapbox.stores.MapViewStore
 import com.d10ng.mapbox.stores.NavigationStore
 import com.d10ng.mapbox.view.MapLayerDialogBuilder
 import com.mapbox.geojson.Point
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -35,23 +31,6 @@ class MapNavigationHomeScreenViewModel : ViewModel() {
     /** 地图中心 */
     val targetFlow = MapViewStore.targetFlow
 
-    private var collectTargetJob: Job? = null
-
-    fun onLaunch(nav: DestinationsNavigator) {
-        collectTargetJob?.cancel()
-        collectTargetJob = viewModelScope.launch {
-            NavigationStore.targetFlow.collect {
-                // 如果已经开始导航，直接跳转导航页面
-                if (it != null) {
-                    nav.navigate(
-                        MapNavigationOnScreenDestination,
-                        NavOptions.Builder().setLaunchSingleTop(true).build()
-                    )
-                }
-            }
-        }
-    }
-
     /**
      * 点击返回
      */
@@ -68,13 +47,12 @@ class MapNavigationHomeScreenViewModel : ViewModel() {
 
     /**
      * 点击搜索
-     * @param nav DestinationsNavigator
      */
-    fun onClickSearch(nav: DestinationsNavigator) {
+    fun onClickSearch(onNavigateOn: () -> Unit) {
         LocationSearchManager.start {
             it ?: return@start
             MapViewStore.updateTarget(it)
-            setTarget(it, nav)
+            setTarget(it, onNavigateOn)
         }
     }
 
@@ -115,22 +93,20 @@ class MapNavigationHomeScreenViewModel : ViewModel() {
 
     /**
      * 点击设置目的地
-     * @param nav DestinationsNavigator
      */
-    fun onClickSet(nav: DestinationsNavigator) {
-        setTarget(targetFlow.value, nav)
+    fun onClickSet(onNavigateOn: () -> Unit) {
+        setTarget(targetFlow.value, onNavigateOn)
     }
 
     /**
      * 设置目的地
      * @param point Point
-     * @param nav DestinationsNavigator
      */
-    private fun setTarget(point: Point, nav: DestinationsNavigator) {
+    private fun setTarget(point: Point, onNavigateOn: () -> Unit) {
         viewModelScope.launch {
             NavigationStore.setTarget(point)
             withContext(Dispatchers.Main) {
-                nav.navigate(MapNavigationOnScreenDestination)
+                onNavigateOn()
             }
         }
     }

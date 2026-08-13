@@ -3,11 +3,7 @@ package com.d10ng.mapbox.activity.offline
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d10ng.app.managers.ActivityManager
-import com.d10ng.mapbox.bean.OfflineMapInfo
-import com.d10ng.mapbox.destinations.MapOfflineAreaScreenDestination
-import com.d10ng.mapbox.destinations.MapOfflineEditScreenDestination
 import com.d10ng.mapbox.stores.MapboxStore
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
 class MapOfflineListScreenViewModel : ViewModel() {
@@ -34,13 +30,4 @@ class MapOfflineListScreenViewModel : ViewModel() {
         ActivityManager.finishTop()
     }
 
-    /** 点击添加 */
-    fun onClickAdd(nav: DestinationsNavigator) {
-        nav.navigate(MapOfflineAreaScreenDestination)
-    }
-
-    /** 点击其中一项 */
-    fun onClickItem(nav: DestinationsNavigator, value: OfflineMapInfo) {
-        nav.navigate(MapOfflineEditScreenDestination(value.region.id))
-    }
 }

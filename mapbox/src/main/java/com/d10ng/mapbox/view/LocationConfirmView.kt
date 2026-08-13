@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,6 +20,7 @@ import com.d10ng.compose.ui.AppText
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.stores.MapViewStore
 import com.mapbox.geojson.Point
+import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 
 /**
@@ -59,13 +59,10 @@ fun LocationConfirmView(
                 .withGeometry(point)
                 .withIconImage(TARGET)
                 .withIconSize(1.2)
-                .withIconOffset(listOf(0.0, -20.0))
+                .withIconAnchor(IconAnchor.BOTTOM)
         )
     }
-    val zoom by MapViewStore.zoomFlow.collectAsState()
-    var center by remember(point) {
-        mutableStateOf(point)
-    }
+    var zoom by remember(point) { mutableStateOf(MapViewStore.zoomFlow.value) }
     val height = with(LocalDensity.current) { (LocalWindowInfo.current.containerSize.height / 4).toDp() }
     MapboxView(
         modifier = Modifier
@@ -74,9 +71,9 @@ fun LocationConfirmView(
             .height(height),
         layer = MapViewStore.getCurrentLayer(),
         cameraZoom = zoom,
-        cameraTarget = center,
-        onCameraZoomChange = { MapViewStore.updateZoom(it) },
-        onCameraCenterChange = { center = it },
+        cameraTarget = point,
+        onCameraZoomChange = { zoom = it },
+        onCameraCenterChange = {},
         onStyleLoad = { style ->
             getResDrawable(R.drawable.ic_map_location_target_25)?.apply {
                 style.addImage(TARGET, this.toBitmap())

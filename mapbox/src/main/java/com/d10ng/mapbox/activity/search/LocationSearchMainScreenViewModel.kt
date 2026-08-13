@@ -5,15 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.dialog.builder.ConfirmDialogBuilder
 import com.d10ng.mapbox.bean.HistoryInfo
-import com.d10ng.mapbox.destinations.LocationByLatLngScreenDestination
-import com.d10ng.mapbox.destinations.LocationSearchInfoScreenDestination
 import com.d10ng.mapbox.stores.HistoryStore
 import com.d10ng.mapbox.utils.toPoint
 import com.d10ng.mapbox.view.LocationConfirmView
 import com.d10ng.tianditu.bean.LocationSearch
 import com.d10ng.tianditu.bean.PerimeterSearch
 import com.mapbox.geojson.Point
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
@@ -70,11 +67,6 @@ class LocationSearchMainScreenViewModel : ViewModel() {
         }
     }
 
-    /** 点击通过经纬度查询 */
-    fun onClickByLatLng(nav: DestinationsNavigator) {
-        nav.navigate(LocationByLatLngScreenDestination)
-    }
-
     /**
      * 点击搜索结果
      * @param value PerimeterSearch.Poi
@@ -84,23 +76,32 @@ class LocationSearchMainScreenViewModel : ViewModel() {
     }
 
     /** 点击区域 */
-    fun onClickItem(nav: DestinationsNavigator, value: LocationSearch.Area) {
-        nav.navigateArea(value.name, value.adminCode)
+    fun onClickItem(
+        value: LocationSearch.Area,
+        onNavigateInfo: (String, String, Int) -> Unit
+    ) {
+        navigateArea(value.name, value.adminCode, onNavigateInfo)
     }
 
     /** 点击区域 */
-    fun onClickItem(nav: DestinationsNavigator, value: LocationSearch.Statistics.AllAdmin) {
-        nav.navigateArea(value.adminName, value.adminCode)
+    fun onClickItem(
+        value: LocationSearch.Statistics.AllAdmin,
+        onNavigateInfo: (String, String, Int) -> Unit
+    ) {
+        navigateArea(value.adminName, value.adminCode, onNavigateInfo)
     }
 
     /**
      * 跳转区域查询
-     * @receiver DestinationsNavigator
      * @param name String
      * @param code Int
      */
-    private fun DestinationsNavigator.navigateArea(name: String, code: Int) {
-        navigate(LocationSearchInfoScreenDestination(inputFlow.value, name, code))
+    private fun navigateArea(
+        name: String,
+        code: Int,
+        onNavigateInfo: (String, String, Int) -> Unit
+    ) {
+        onNavigateInfo(inputFlow.value, name, code)
     }
 
     /**

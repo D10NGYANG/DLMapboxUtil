@@ -2,9 +2,7 @@ package com.d10ng.mapbox.activity.offline
 
 import androidx.lifecycle.ViewModel
 import com.d10ng.compose.model.UiViewModelManager
-import com.d10ng.mapbox.destinations.MapOfflineListScreenDestination
 import com.d10ng.mapbox.stores.MapboxStore
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.math.roundToInt
 
@@ -27,7 +25,7 @@ class MapOfflineAddScreenViewModel : ViewModel() {
     }
 
     /** 点击确定 */
-    fun onClickSure(nav: DestinationsNavigator) {
+    fun onClickSure(onComplete: () -> Unit) {
         if (inputNameFlow.value.isEmpty()) {
             UiViewModelManager.showErrorNotify("地图名称不能为空！")
             return
@@ -41,6 +39,6 @@ class MapOfflineAddScreenViewModel : ViewModel() {
             maxZoom = zoomRangeFlow.value.endInclusive.roundToInt(),
             title = inputNameFlow.value
         )
-        nav.popBackStack(MapOfflineListScreenDestination, false)
+        onComplete()
     }
 }

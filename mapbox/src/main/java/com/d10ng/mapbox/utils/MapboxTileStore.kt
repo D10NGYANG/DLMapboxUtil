@@ -12,6 +12,7 @@ import com.mapbox.geojson.Point
 import com.mapbox.maps.*
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.json.JSONObject
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -105,7 +106,6 @@ suspend fun OfflineMapInfo.getSnapshotBitmap(
 ): Bitmap? {
     val snapshotMapOptions = MapSnapshotOptions.Builder()
         .size(Size(width, height))
-        .resourceOptions(MapInitOptions.getDefaultResourceOptions(context))
         .build()
     val shotter = Snapshotter(context, snapshotMapOptions).apply {
         setCamera(
@@ -117,12 +117,20 @@ suspend fun OfflineMapInfo.getSnapshotBitmap(
         setStyleUri(this@getSnapshotBitmap.style.source)
     }
     return suspendCancellableCoroutine { cont ->
-        shotter.start {
-            if (it == null) cont.resume(null)
-            else {
-                cont.resume(it.bitmap())
+        val released = AtomicBoolean(false)
+        fun releaseSnapshotter() {
+            if (released.compareAndSet(false, true)) shotter.destroy()
+        }
+        cont.invokeOnCancellation {
+            shotter.cancel()
+            releaseSnapshotter()
+        }
+        shotter.start { bitmap, _ ->
+            try {
+                if (cont.isActive) cont.resume(bitmap)
+            } finally {
+                releaseSnapshotter()
             }
-            shotter.destroy()
         }
     }
 }

@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
@@ -19,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.d10ng.compose.ui.AppColor
 import com.d10ng.compose.ui.AppShape
@@ -32,47 +33,50 @@ import com.d10ng.compose.ui.form.Search
 import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.constant.MapLayerType
+import com.d10ng.mapbox.stores.NavigationStore
 import com.d10ng.mapbox.view.Compass
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
-import com.d10ng.mapbox.view.PageTransitions
 import com.d10ng.mapbox.view.UserLocationTextBar
+import com.d10ng.mapbox.view.navigationBarCameraPadding
 import com.mapbox.geojson.Point
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 /**
  * 地图导航
  * @Author d10ng
  * @Date 2023/9/16 17:08
  */
-@Destination<NavigationNavGraph>(start = true, style = PageTransitions::class)
 @Composable
 fun MapNavigationHomeScreen(
-    nav: DestinationsNavigator,
+    onNavigateOn: () -> Unit,
     model: MapNavigationHomeScreenViewModel = viewModel()
 ) {
-    LaunchedEffect(nav, model) { model.onLaunch(nav) }
+    val navigationTarget by NavigationStore.targetFlow.collectAsState()
+    LaunchedEffect(navigationTarget) {
+        if (navigationTarget != null) onNavigateOn()
+    }
 
     val layer by model.layerFlow.collectAsState()
     val zoom by model.zoomFlow.collectAsState()
     val target by model.targetFlow.collectAsState()
+    val cameraPadding = navigationBarCameraPadding()
 
     MapNavigationHomeScreenView(
         layer = layer,
         zoom = zoom,
         target = target,
+        cameraPadding = cameraPadding,
         onClickBack = model::onClickBack,
         onClickOffline = model::onClickOffline,
-        onClickSearch = { model.onClickSearch(nav) },
+        onClickSearch = { model.onClickSearch(onNavigateOn) },
         onClickZoomIn = { model.onClickZoomIn() },
         onClickZoomOut = { model.onClickZoomOut() },
         onClickLayer = { model.onClickLayer() },
         onClickLocation = { model.onClickLocation() },
         onUpdateZoom = { model.updateZoom(it) },
         onUpdateTarget = { model.updateTarget(it) },
-        onClickSet = { model.onClickSet(nav) }
+        onClickSet = { model.onClickSet(onNavigateOn) }
     )
 }
 
@@ -81,6 +85,7 @@ private fun MapNavigationHomeScreenView(
     layer: MapLayerType,
     zoom: Double,
     target: Point,
+    cameraPadding: com.mapbox.maps.EdgeInsets,
     onClickBack: () -> Unit = {},
     onClickOffline: () -> Unit = {},
     onClickSearch: () -> Unit = {},
@@ -127,68 +132,57 @@ private fun MapNavigationHomeScreenView(
                 layer = layer,
                 cameraZoom = zoom,
                 cameraTarget = target,
+                cameraPadding = cameraPadding,
                 onCameraZoomChange = onUpdateZoom,
                 onCameraCenterChange = onUpdateTarget
             )
 
-            UserLocationTextBar()
-            Compass()
+            Box(Modifier.fillMaxSize().navigationBarsPadding()) {
+                UserLocationTextBar()
+                Compass()
 
-            ConstraintLayout(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                val (icon, label) = createRefs()
                 Image(
                     painter = painterResource(id = R.drawable.ic_map_location_target_25),
                     contentDescription = "选择位置",
-                    modifier = Modifier
-                        .constrainAs(icon) {
-                            top.linkTo(parent.top)
-                            start.linkTo(parent.start)
-                            bottom.linkTo(parent.bottom)
-                            end.linkTo(parent.end)
-                        }
+                    modifier = Modifier.align(Alignment.Center)
                 )
                 Text(
                     text = "拖动地图选择目的地",
                     style = AppText.Normal.Surface.default,
                     modifier = Modifier
-                        .constrainAs(label) {
-                            top.linkTo(icon.bottom, 16.dp)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        }
+                        .align(Alignment.Center)
+                        .offset(y = 45.dp)
                         .background(Color.Black.copy(alpha = 0.4f), AppShape.RC.Cycle)
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 )
+
+                MapZoomControllerBar(
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(start = 16.dp, bottom = 50.dp),
+                    onClickZoomIn = onClickZoomIn,
+                    onClickZoomOut = onClickZoomOut
+                )
+
+                MapLayerLocationControllerBar(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 16.dp, bottom = 50.dp),
+                    onClickLayer = onClickLayer,
+                    onClickLocation = onClickLocation
+                )
+
+                Button(
+                    modifier = Modifier
+                        .width(160.dp)
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 50.dp),
+                    text = "设置为目的地",
+                    onClick = onClickSet,
+                    type = ButtonType.PRIMARY,
+                    shape = AppShape.RC.Cycle
+                )
             }
-
-            MapZoomControllerBar(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(start = 16.dp, bottom = 50.dp),
-                onClickZoomIn = onClickZoomIn,
-                onClickZoomOut = onClickZoomOut
-            )
-
-            MapLayerLocationControllerBar(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 16.dp, bottom = 50.dp),
-                onClickLayer = onClickLayer,
-                onClickLocation = onClickLocation
-            )
-
-            Button(
-                modifier = Modifier
-                    .width(160.dp)
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 50.dp),
-                text = "设置为目的地",
-                onClick = onClickSet,
-                type = ButtonType.PRIMARY,
-                shape = AppShape.RC.Cycle
-            )
         }
     }
 }

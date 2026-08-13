@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -31,26 +32,26 @@ import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
 import com.d10ng.mapbox.view.NavBarIconButton
-import com.d10ng.mapbox.view.PageTransitions
+import com.d10ng.mapbox.view.navigationBarCameraPadding
 import com.mapbox.geojson.Point
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@Destination<OfflineNavGraph>(style = PageTransitions::class)
 @Composable
 fun MapOfflineAreaScreen(
-    nav: DestinationsNavigator,
+    onBack: () -> Unit,
+    onNavigateAdd: () -> Unit,
     model: MapOfflineAreaScreenViewModel = viewModel()
 ) {
     val layer by model.layerFlow.collectAsState()
     val zoom by model.zoomFlow.collectAsState()
     val target by model.targetFlow.collectAsState()
+    val cameraPadding = navigationBarCameraPadding()
 
     MapOfflineAreaScreenView(
         layer = layer,
         zoom = zoom,
         target = target,
-        onClickBack = nav::navigateUp,
+        cameraPadding = cameraPadding,
+        onClickBack = onBack,
         onClickSearch = { model.onClickSearch() },
         onClickZoomIn = { model.onClickZoomIn() },
         onClickZoomOut = { model.onClickZoomOut() },
@@ -58,7 +59,7 @@ fun MapOfflineAreaScreen(
         onClickLocation = { model.onClickLocation() },
         onUpdateZoom = { model.updateZoom(it) },
         onUpdateTarget = { model.updateTarget(it) },
-        onClickDownload = { model.onClickDownload(nav) }
+        onClickDownload = onNavigateAdd
     )
 }
 
@@ -67,6 +68,7 @@ private fun MapOfflineAreaScreenView(
     layer: MapLayerType,
     zoom: Double,
     target: Point,
+    cameraPadding: com.mapbox.maps.EdgeInsets,
     onClickBack: () -> Unit = {},
     onClickSearch: () -> Unit = {},
     onClickZoomIn: () -> Unit = {},
@@ -98,78 +100,81 @@ private fun MapOfflineAreaScreenView(
                 layer = layer,
                 cameraZoom = zoom,
                 cameraTarget = target,
+                cameraPadding = cameraPadding,
                 onCameraZoomChange = onUpdateZoom,
                 onCameraCenterChange = onUpdateTarget
             )
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(30.dp)
-                    .align(Alignment.TopCenter)
-                    .background(Color.Black.copy(alpha = 0.5f))
-            )
+            Box(Modifier.fillMaxSize().navigationBarsPadding()) {
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(30.dp)
+                        .align(Alignment.TopCenter)
+                        .background(Color.Black.copy(alpha = 0.5f))
+                )
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .align(Alignment.BottomCenter)
-                    .background(Color.Black.copy(alpha = 0.5f))
-            )
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .align(Alignment.BottomCenter)
+                        .background(Color.Black.copy(alpha = 0.5f))
+                )
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(30.dp)
-                    .padding(top = 30.dp, bottom = 200.dp)
-                    .align(Alignment.CenterStart)
-                    .background(Color.Black.copy(alpha = 0.5f))
-            )
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(30.dp)
+                        .padding(top = 30.dp, bottom = 200.dp)
+                        .align(Alignment.CenterStart)
+                        .background(Color.Black.copy(alpha = 0.5f))
+                )
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(30.dp)
-                    .padding(top = 30.dp, bottom = 200.dp)
-                    .align(Alignment.CenterEnd)
-                    .background(Color.Black.copy(alpha = 0.5f))
-            )
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(30.dp)
+                        .padding(top = 30.dp, bottom = 200.dp)
+                        .align(Alignment.CenterEnd)
+                        .background(Color.Black.copy(alpha = 0.5f))
+                )
 
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 30.dp, bottom = 200.dp, start = 30.dp, end = 30.dp)
-                    .align(Alignment.Center)
-                    .border(1.dp, AppColor.Main.primary)
-            )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 30.dp, bottom = 200.dp, start = 30.dp, end = 30.dp)
+                        .align(Alignment.Center)
+                        .border(1.dp, AppColor.Main.primary)
+                )
 
-            MapZoomControllerBar(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(start = 16.dp, bottom = 50.dp),
-                onClickZoomIn = onClickZoomIn,
-                onClickZoomOut = onClickZoomOut
-            )
+                MapZoomControllerBar(
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(start = 16.dp, bottom = 50.dp),
+                    onClickZoomIn = onClickZoomIn,
+                    onClickZoomOut = onClickZoomOut
+                )
 
-            MapLayerLocationControllerBar(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 16.dp, bottom = 50.dp),
-                onClickLayer = onClickLayer,
-                onClickLocation = onClickLocation
-            )
+                MapLayerLocationControllerBar(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 16.dp, bottom = 50.dp),
+                    onClickLayer = onClickLayer,
+                    onClickLocation = onClickLocation
+                )
 
-            Button(
-                modifier = Modifier
-                    .width(160.dp)
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 50.dp),
-                text = "立即下载",
-                onClick = onClickDownload,
-                type = ButtonType.PRIMARY,
-                shape = AppShape.RC.Cycle
-            )
+                Button(
+                    modifier = Modifier
+                        .width(160.dp)
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 50.dp),
+                    text = "立即下载",
+                    onClick = onClickDownload,
+                    type = ButtonType.PRIMARY,
+                    shape = AppShape.RC.Cycle
+                )
+            }
         }
     }
 }
@@ -180,6 +185,7 @@ private fun MapOfflineAreaScreenViewPreview() {
     MapOfflineAreaScreenView(
         layer = MapLayerType.TD_VECTOR,
         zoom = 10.0,
-        target = Point.fromLngLat(0.0, 0.0)
+        target = Point.fromLngLat(0.0, 0.0),
+        cameraPadding = com.mapbox.maps.EdgeInsets(0.0, 0.0, 0.0, 0.0)
     )
 }

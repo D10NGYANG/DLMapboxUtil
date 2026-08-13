@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -29,27 +30,26 @@ import com.d10ng.mapbox.view.Compass
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
-import com.d10ng.mapbox.view.PageTransitions
 import com.d10ng.mapbox.view.UserLocationTextBar
+import com.d10ng.mapbox.view.navigationBarCameraPadding
 import com.mapbox.geojson.Point
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@Destination<LocationSearchNavGraph>(style = PageTransitions::class)
 @Composable
 fun LocationByLatLngScreen(
-    nav: DestinationsNavigator,
+    onBack: () -> Unit,
     model: LocationByLatLngScreenViewModel = viewModel()
 ) {
     val layer by model.layerFlow.collectAsState()
     val zoom by model.zoomFlow.collectAsState()
     val target by model.targetFlow.collectAsState()
+    val cameraPadding = navigationBarCameraPadding()
 
     LocationByLatLngScreenView(
         layer = layer,
         zoom = zoom,
         target = target,
-        onClickBack = nav::navigateUp,
+        cameraPadding = cameraPadding,
+        onClickBack = onBack,
         onClickLat = { model.onClickLat() },
         onClickLng = { model.onClickLng() },
         onClickZoomIn = { model.onClickZoomIn() },
@@ -67,6 +67,7 @@ private fun LocationByLatLngScreenView(
     layer: MapLayerType,
     zoom: Double,
     target: Point,
+    cameraPadding: com.mapbox.maps.EdgeInsets,
     onClickBack: () -> Unit = {},
     onClickLat: () -> Unit = {},
     onClickLng: () -> Unit = {},
@@ -112,40 +113,43 @@ private fun LocationByLatLngScreenView(
                 layer = layer,
                 cameraZoom = zoom,
                 cameraTarget = target,
+                cameraPadding = cameraPadding,
                 onCameraZoomChange = onUpdateZoom,
                 onCameraCenterChange = onUpdateTarget
             )
 
-            UserLocationTextBar()
-            Compass()
+            Box(Modifier.fillMaxSize().navigationBarsPadding()) {
+                UserLocationTextBar()
+                Compass()
 
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_map_location_target_25),
-                    contentDescription = "目标位置",
-                    modifier = Modifier.size(25.dp),
-                    contentScale = ContentScale.FillBounds
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_map_location_target_25),
+                        contentDescription = "目标位置",
+                        modifier = Modifier.size(25.dp),
+                        contentScale = ContentScale.FillBounds
+                    )
+                }
+
+                MapZoomControllerBar(
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(start = 16.dp, bottom = 50.dp),
+                    onClickZoomIn = onClickZoomIn,
+                    onClickZoomOut = onClickZoomOut
+                )
+
+                MapLayerLocationControllerBar(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 16.dp, bottom = 50.dp),
+                    onClickLayer = onClickLayer,
+                    onClickLocation = onClickLocation
                 )
             }
-
-            MapZoomControllerBar(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(start = 16.dp, bottom = 50.dp),
-                onClickZoomIn = onClickZoomIn,
-                onClickZoomOut = onClickZoomOut
-            )
-
-            MapLayerLocationControllerBar(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 16.dp, bottom = 50.dp),
-                onClickLayer = onClickLayer,
-                onClickLocation = onClickLocation
-            )
         }
     }
 }

@@ -4,6 +4,9 @@ import com.d10ng.mapbox.constant.MapLayerType
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -25,6 +28,9 @@ object MapViewStore {
 
     /** 默认经纬度位置 */
     private val defaultPoint: Point = Point.fromLngLat(116.40769, 39.89945)
+
+    private val locationScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    private var moveToLocationJob: kotlinx.coroutines.Job? = null
 
     /** 图层样式 */
     val layerTypeFlow = MutableStateFlow(MapLayerType.TD_VECTOR)
@@ -91,8 +97,25 @@ object MapViewStore {
 
     /** 移动地图中心到当前位置 */
     fun moveToCurrentLocation() {
-        LocationStore.getValueFlow().value?.apply {
-            targetFlow.value = Point.fromLngLat(this.longitude, this.latitude)
+        LocationStore.getValueFlow().value?.let { location ->
+            moveToLocationJob?.cancel()
+            targetFlow.value = Point.fromLngLat(location.longitude, location.latitude)
+            return
+        }
+        // The first location can arrive asynchronously after the button is tapped.
+        if (moveToLocationJob?.isActive == true) return
+        moveToLocationJob = locationScope.launch {
+            val location = LocationStore.getValueFlow().filterNotNull().first()
+            targetFlow.value = Point.fromLngLat(location.longitude, location.latitude)
+        }
+    }
+
+    /** Center the first map on the first valid location without overriding user movement later. */
+    suspend fun initializeTargetFromLocation() {
+        if (targetFlow.value != defaultPoint) return
+        val location = LocationStore.getValueFlow().filterNotNull().first()
+        if (targetFlow.value == defaultPoint) {
+            targetFlow.value = Point.fromLngLat(location.longitude, location.latitude)
         }
     }
 }

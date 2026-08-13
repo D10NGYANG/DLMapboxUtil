@@ -1,15 +1,22 @@
 package com.d10ng.mapbox.view
 
 import android.view.Gravity
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.constant.MapLayerType
 import com.d10ng.mapbox.utils.Logger
@@ -17,10 +24,12 @@ import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.CoordinateBounds
+import com.mapbox.maps.EdgeInsets
+import com.mapbox.maps.ImageHolder
 import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.animation.camera
-import com.mapbox.maps.plugin.animation.easeTo
+import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotation
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
@@ -37,6 +46,7 @@ import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.plugin.logo.logo
 import com.mapbox.maps.plugin.scalebar.scalebar
 import com.mapbox.maps.toCameraOptions
+import java.util.concurrent.atomic.AtomicLong
 
 @Composable
 fun MapboxView(
@@ -44,6 +54,7 @@ fun MapboxView(
     layer: MapLayerType = MapLayerType.TD_VECTOR,
     cameraZoom: Double = 10.0,
     cameraTarget: Point = Point.fromLngLat(113.3946198, 23.0374143),
+    cameraPadding: EdgeInsets = EdgeInsets(0.0, 0.0, 0.0, 0.0),
     pointOptions: Map<Int, PointAnnotationOptions> = mapOf(),
     lineOptions: Map<Int, PolylineAnnotationOptions> = mapOf(),
     isShowUserLocation: Boolean = true,
@@ -58,6 +69,9 @@ fun MapboxView(
     var mapView by remember {
         mutableStateOf<MapView?>(null)
     }
+    // Camera callbacks are emitted for every animation frame. Do not feed those
+    // intermediate values back into Compose while applying an external target.
+    val cameraAnimationGeneration = remember { AtomicLong(0L) }
     // 图标管理器
     val pointManager = remember(mapView) {
         mapView?.annotations?.createPointAnnotationManager()
@@ -106,19 +120,26 @@ fun MapboxView(
                     // 取消正北方向时不显示指南针的效果
                     fadeWhenFacingNorth = false
                     // 指南针图标
-                    image = ContextCompat.getDrawable(context, R.mipmap.ic_map_compass)
+                    image = ImageHolder.from(R.mipmap.ic_map_compass)
                 }
                 // 将比例尺移动到左下角
-                scalebar.updateSettings { position = Gravity.BOTTOM or Gravity.START }
+                scalebar.updateSettings {
+                    position = Gravity.BOTTOM or Gravity.START
+                    marginBottom = cameraPadding.bottom.toFloat() + DEFAULT_SCALE_BAR_MARGIN_PX
+                }
                 // 开启用户当前位置显示
                 location.updateSettings { enabled = isShowUserLocation }
                 // 监听缩放
                 camera.addCameraZoomChangeListener {
-                    onCameraZoomChange.invoke(it)
+                    if (cameraAnimationGeneration.get() == 0L) {
+                        onCameraZoomChange.invoke(it)
+                    }
                 }
                 // 监听移动
                 camera.addCameraCenterChangeListener {
-                    onCameraCenterChange.invoke(it)
+                    if (cameraAnimationGeneration.get() == 0L) {
+                        onCameraCenterChange.invoke(it)
+                    }
                 }
                 // 监听是否被手指触摸
                 gestures.addOnMoveListener(object : OnMoveListener {
@@ -144,34 +165,21 @@ fun MapboxView(
                 getMapboxMap().addOnMapClickListener { point ->
                     onMapClickListener.invoke(this, point)
                 }
-                // 初始化镜头位置
-                val position = CameraOptions.Builder()
-                    .zoom(cameraZoom)
-                    .center(cameraTarget)
-                    .build()
-                getMapboxMap().setCamera(position)
             }
         },
         modifier = modifier,
         update = { map ->
             mapView = map
             val mapbox = map.getMapboxMap()
+            map.scalebar.updateSettings {
+                marginBottom = cameraPadding.bottom.toFloat() + DEFAULT_SCALE_BAR_MARGIN_PX
+            }
             // 设置地图样式
             if (mapbox.getStyle()?.styleURI != layer.source) {
                 Logger.i("MapboxView 设置地图样式 ${layer.source}")
                 mapbox.loadStyleUri(layer.source) { style ->
                     onStyleLoad.invoke(style)
                 }
-            }
-            // 设置显示位置和缩放比例
-            val camera = mapbox.cameraState
-            if (camera.zoom != cameraZoom || camera.center != cameraTarget) {
-                Logger.i("MapboxView 设置显示位置和缩放比例 $cameraZoom, $cameraTarget")
-                val position = CameraOptions.Builder()
-                    .zoom(cameraZoom)
-                    .center(cameraTarget)
-                    .build()
-                mapbox.easeTo(position)
             }
             // 设置图标
             if (oldPointOptions != pointOptions) {
@@ -227,8 +235,59 @@ fun MapboxView(
             }
             // 自定义更新
             update.invoke(map)
+        },
+        onRelease = { map ->
+            if (mapView === map) mapView = null
         }
     )
+
+    // Keep camera synchronization independent from AndroidView's update timing.
+    // This is important when the first location arrives while the native view is
+    // still being attached: the target change will be replayed once mapView exists.
+    LaunchedEffect(mapView, cameraZoom, cameraTarget, cameraPadding) {
+        val map = mapView ?: return@LaunchedEffect
+        val mapbox = map.getMapboxMap()
+        val camera = mapbox.cameraState
+        if (!shouldUpdateCamera(camera.zoom, cameraZoom, camera.center, cameraTarget, camera.padding, cameraPadding)) {
+            return@LaunchedEffect
+        }
+        Logger.i("MapboxView 设置显示位置和缩放比例 $cameraZoom, $cameraTarget")
+        val position = CameraOptions.Builder()
+            .zoom(cameraZoom)
+            .center(cameraTarget)
+            .padding(cameraPadding)
+            .build()
+        val animationOptions = MapAnimationOptions.Builder()
+            .duration(CAMERA_ANIMATION_DURATION_MS)
+            .build()
+        val animationGeneration = cameraAnimationGeneration.incrementAndGet()
+        map.camera.easeTo(
+            position,
+            animationOptions,
+            object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    cameraAnimationGeneration.compareAndSet(animationGeneration, 0L)
+                }
+
+                override fun onAnimationCancel(animation: Animator) {
+                    cameraAnimationGeneration.compareAndSet(animationGeneration, 0L)
+                }
+            }
+        )
+    }
+}
+
+private const val DEFAULT_SCALE_BAR_MARGIN_PX = 4f
+private const val CAMERA_ANIMATION_DURATION_MS = 450L
+
+/** Keeps the camera target centered inside the area above the system navigation bar. */
+@Composable
+fun navigationBarCameraPadding(additionalBottom: Dp = 0.dp): EdgeInsets {
+    val density = LocalDensity.current
+    val bottom = with(density) {
+        WindowInsets.navigationBars.getBottom(this).toDouble() + additionalBottom.toPx()
+    }
+    return remember(bottom) { EdgeInsets(0.0, 0.0, bottom, 0.0) }
 }
 
 /**

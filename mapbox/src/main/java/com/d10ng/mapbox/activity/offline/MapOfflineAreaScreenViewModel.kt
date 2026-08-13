@@ -5,11 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.mapbox.activity.search.LocationSearchManager
 import com.d10ng.mapbox.constant.MapLayerType
-import com.d10ng.mapbox.destinations.MapOfflineAddScreenDestination
 import com.d10ng.mapbox.stores.MapViewStore
 import com.d10ng.mapbox.view.MapLayerDialogBuilder
 import com.mapbox.geojson.Point
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
 class MapOfflineAreaScreenViewModel : ViewModel() {
@@ -78,8 +76,4 @@ class MapOfflineAreaScreenViewModel : ViewModel() {
         MapViewStore.moveToCurrentLocation()
     }
 
-    /** 点击下载 */
-    fun onClickDownload(nav: DestinationsNavigator) {
-        nav.navigate(MapOfflineAddScreenDestination())
-    }
 }

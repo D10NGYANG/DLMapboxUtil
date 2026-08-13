@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,25 +21,32 @@ import com.d10ng.compose.ui.base.ButtonSize
 import com.d10ng.compose.ui.base.ButtonType
 import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.constant.MapLayerType
+import com.d10ng.mapbox.stores.MapViewStore
 import com.d10ng.mapbox.view.Compass
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
 import com.d10ng.mapbox.view.UserLocationTextBar
+import com.d10ng.mapbox.view.navigationBarCameraPadding
 import com.mapbox.geojson.Point
 
 @Composable
 fun MapMainScreen(
     model: MapMainScreenViewModel = viewModel()
 ) {
+    LaunchedEffect(Unit) {
+        MapViewStore.initializeTargetFromLocation()
+    }
     val layer by model.layerFlow.collectAsState()
     val zoom by model.zoomFlow.collectAsState()
     val target by model.targetFlow.collectAsState()
+    val cameraPadding = navigationBarCameraPadding()
 
     MapMainScreenView(
         layer = layer,
         zoom = zoom,
         target = target,
+        cameraPadding = cameraPadding,
         onClickBack = { model.onClickBack() },
         onClickOffline = { model.onClickOffline() },
         onClickZoomIn = { model.onClickZoomIn() },
@@ -55,6 +63,7 @@ private fun MapMainScreenView(
     layer: MapLayerType,
     zoom: Double,
     target: Point,
+    cameraPadding: com.mapbox.maps.EdgeInsets,
     onClickBack: () -> Unit = {},
     onClickOffline: () -> Unit = {},
     onClickZoomIn: () -> Unit = {},
@@ -68,7 +77,6 @@ private fun MapMainScreenView(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColor.Neutral.bg)
-            .navigationBarsPadding()
     ) {
         NavBar(title = "地图", onClickBack = onClickBack, titleAlignment = Alignment.CenterStart) {
             Button(
@@ -91,28 +99,31 @@ private fun MapMainScreenView(
                 layer = layer,
                 cameraZoom = zoom,
                 cameraTarget = target,
+                cameraPadding = cameraPadding,
                 onCameraZoomChange = onUpdateZoom,
                 onCameraCenterChange = onUpdateTarget
             )
 
-            UserLocationTextBar()
-            Compass()
+            Box(Modifier.fillMaxSize().navigationBarsPadding()) {
+                UserLocationTextBar()
+                Compass()
 
-            MapZoomControllerBar(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(start = 16.dp, bottom = 50.dp),
-                onClickZoomIn = onClickZoomIn,
-                onClickZoomOut = onClickZoomOut
-            )
+                MapZoomControllerBar(
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(start = 16.dp, bottom = 50.dp),
+                    onClickZoomIn = onClickZoomIn,
+                    onClickZoomOut = onClickZoomOut
+                )
 
-            MapLayerLocationControllerBar(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 16.dp, bottom = 50.dp),
-                onClickLayer = onClickLayer,
-                onClickLocation = onClickLocation
-            )
+                MapLayerLocationControllerBar(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 16.dp, bottom = 50.dp),
+                    onClickLayer = onClickLayer,
+                    onClickLocation = onClickLocation
+                )
+            }
         }
     }
 }

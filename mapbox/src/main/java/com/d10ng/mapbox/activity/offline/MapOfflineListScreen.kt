@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
@@ -34,14 +35,11 @@ import com.d10ng.compose.ui.navigation.NavBar
 import com.d10ng.mapbox.R
 import com.d10ng.mapbox.bean.OfflineMapInfo
 import com.d10ng.mapbox.view.NavBarIconButton
-import com.d10ng.mapbox.view.PageTransitions
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@Destination<OfflineNavGraph>(start = true, style = PageTransitions::class)
 @Composable
 fun MapOfflineListScreen(
-    nav: DestinationsNavigator,
+    onNavigateArea: () -> Unit,
+    onNavigateEdit: (String) -> Unit,
     model: MapOfflineListScreenViewModel = viewModel()
 ) {
     val infoList by model.offlineMapInfoListFlow.collectAsState()
@@ -51,8 +49,8 @@ fun MapOfflineListScreen(
         infoList = infoList,
         snapshotMap = snapshotMap,
         onClickBack = { model.onClickBack() },
-        onClickAdd = { model.onClickAdd(nav) },
-        onClickItem = { model.onClickItem(nav, it) }
+        onClickAdd = onNavigateArea,
+        onClickItem = { onNavigateEdit(it.region.id) }
     )
 }
 
@@ -69,6 +67,7 @@ private fun MapOfflineListScreenView(
         modifier = Modifier
             .fillMaxSize()
             .background(AppColor.Neutral.bg)
+            .navigationBarsPadding()
     ) {
         NavBar(
             title = "离线地图",

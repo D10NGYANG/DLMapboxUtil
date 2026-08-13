@@ -20,7 +20,6 @@ import com.mapbox.geojson.Point
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationOptions
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -124,11 +123,11 @@ class MapNavigationOnScreenViewModel : ViewModel() {
     }
 
     /** 点击返回 */
-    fun onClickBack(nav: DestinationsNavigator) {
+    fun onClickBack(onNavigateBack: () -> Unit) {
         if (NavigationStore.targetFlow.value != null) {
             ActivityManager.finishTop()
         } else {
-            nav.navigateUp()
+            onNavigateBack()
         }
     }
 

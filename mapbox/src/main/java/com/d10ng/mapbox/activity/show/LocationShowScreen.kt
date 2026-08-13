@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ import com.d10ng.mapbox.view.LocationTextBar
 import com.d10ng.mapbox.view.MapLayerLocationControllerBar
 import com.d10ng.mapbox.view.MapZoomControllerBar
 import com.d10ng.mapbox.view.MapboxView
+import com.d10ng.mapbox.view.navigationBarCameraPadding
 import com.mapbox.geojson.Point
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
@@ -39,6 +41,7 @@ fun LocationShowScreen(
     val target by model.targetFlow.collectAsState()
     val pointOption by model.pointOptionFlow.collectAsState()
     val locationText by model.locationTextFlow.collectAsState()
+    val cameraPadding = navigationBarCameraPadding()
 
     LocationShowScreenView(
         layer = layer,
@@ -46,6 +49,7 @@ fun LocationShowScreen(
         target = target,
         pointOption = pointOption,
         locationText = locationText,
+        cameraPadding = cameraPadding,
         onClickBack = model::onClickBack,
         onMapStyleLoad = { model.onMapStyleLoad(it) },
         onClickZoomIn = MapViewStore::zoomIn,
@@ -65,6 +69,7 @@ fun LocationShowScreenView(
     target: Point,
     pointOption: PointAnnotationOptions?,
     locationText: String,
+    cameraPadding: com.mapbox.maps.EdgeInsets,
     onClickBack: () -> Unit = {},
     onMapStyleLoad: (Style) -> Unit = {},
     onClickZoomIn: () -> Unit = {},
@@ -94,42 +99,44 @@ fun LocationShowScreenView(
                 layer = layer,
                 cameraZoom = zoom,
                 cameraTarget = target,
+                cameraPadding = cameraPadding,
                 onCameraZoomChange = onUpdateZoom,
                 onCameraCenterChange = onUpdateTarget,
                 onStyleLoad = onMapStyleLoad,
                 pointOptions = points
             )
 
-            LocationTextBar(locationText)
+            Box(Modifier.fillMaxSize().navigationBarsPadding()) {
+                LocationTextBar(locationText)
+                Compass()
 
-            Compass()
+                MapZoomControllerBar(
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(start = 16.dp, bottom = 50.dp),
+                    onClickZoomIn = onClickZoomIn,
+                    onClickZoomOut = onClickZoomOut
+                )
 
-            MapZoomControllerBar(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(start = 16.dp, bottom = 50.dp),
-                onClickZoomIn = onClickZoomIn,
-                onClickZoomOut = onClickZoomOut
-            )
+                MapLayerLocationControllerBar(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 16.dp, bottom = 50.dp),
+                    onClickLayer = onClickLayer,
+                    onClickLocation = onClickLocation
+                )
 
-            MapLayerLocationControllerBar(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 16.dp, bottom = 50.dp),
-                onClickLayer = onClickLayer,
-                onClickLocation = onClickLocation
-            )
-
-            Button(
-                modifier = Modifier
-                    .width(160.dp)
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 50.dp),
-                text = "到这去",
-                onClick = onClickGo,
-                type = ButtonType.PRIMARY,
-                shape = AppShape.RC.Cycle
-            )
+                Button(
+                    modifier = Modifier
+                        .width(160.dp)
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 50.dp),
+                    text = "到这去",
+                    onClick = onClickGo,
+                    type = ButtonType.PRIMARY,
+                    shape = AppShape.RC.Cycle
+                )
+            }
         }
     }
 }

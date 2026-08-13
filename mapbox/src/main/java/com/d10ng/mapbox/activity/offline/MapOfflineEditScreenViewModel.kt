@@ -1,13 +1,10 @@
 package com.d10ng.mapbox.activity.offline
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d10ng.compose.model.UiViewModelManager
 import com.d10ng.compose.ui.dialog.builder.ConfirmDialogBuilder
-import com.d10ng.mapbox.navArgs
 import com.d10ng.mapbox.stores.MapboxStore
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -15,20 +12,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-data class MapOfflineEditScreenNavArg(
-    val id: String
-)
-
 class MapOfflineEditScreenViewModel(
-    savedStateHandle: SavedStateHandle
+    private val id: String
 ) : ViewModel() {
-
-    private val navArgs = savedStateHandle.navArgs<MapOfflineEditScreenNavArg>()
-    private val _id = navArgs.id
 
     /** 离线地图信息 */
     private val infoFlow =
-        MapboxStore.offlineMapInfoListFlow.map { it.find { item -> item.region.id == _id } }
+        MapboxStore.offlineMapInfoListFlow.map { it.find { item -> item.region.id == id } }
 
     /** 输入名字 */
     val inputNameFlow = MutableStateFlow("")
@@ -45,21 +35,21 @@ class MapOfflineEditScreenViewModel(
     }
 
     /** 点击删除 */
-    fun onClickDelete(nav: DestinationsNavigator) {
+    fun onClickDelete(onComplete: () -> Unit) {
         UiViewModelManager.showDialog(ConfirmDialogBuilder(
             title = "注意",
             content = "确定删除当前离线地图吗？",
             type = ConfirmDialogBuilder.Type.Danger,
             onConfirmClick = {
-                MapboxStore.deleteOffline(_id)
-                withContext(Dispatchers.Main) { nav.navigateUp() }
+                MapboxStore.deleteOffline(id)
+                withContext(Dispatchers.Main) { onComplete() }
                 true
             }
         ))
     }
 
     /** 点击确定 */
-    fun onClickSure(nav: DestinationsNavigator) {
+    fun onClickSure(onComplete: () -> Unit) {
         val name = inputNameFlow.value
         if (name.isEmpty()) {
             UiViewModelManager.showErrorNotify("地图名称不能为空！")
@@ -69,7 +59,7 @@ class MapOfflineEditScreenViewModel(
             UiViewModelManager.showErrorNotify("地图名称不能超过20个字符！")
             return
         }
-        MapboxStore.renameOffline(_id, name)
-        nav.navigateUp()
+        MapboxStore.renameOffline(id, name)
+        onComplete()
     }
 }

@@ -27,7 +27,7 @@ class LocationByLatLngScreenViewModel : ViewModel() {
     fun onClickLat() {
         UiViewModelManager.showDialog(InputDialogBuilder(
             title = "纬度",
-            inputs = listOf(InputDialogBuilder.Input(
+            inputs = listOf(InputDialogBuilder.InputField(
                 initValue = targetFlow.value.latitude().toString(),
                 placeholder = "请输入",
                 label = "请输入目标纬度，-90至90，eg:22.3",
@@ -36,8 +36,8 @@ class LocationByLatLngScreenViewModel : ViewModel() {
                 verify = {
                     val lat = it.toDoubleOrNull()
                     if (lat == null || lat !in -90.0..90.0)
-                        InputDialogBuilder.Verify(false, "纬度数值不正确！")
-                    else InputDialogBuilder.Verify(true)
+                        InputDialogBuilder.VerifyResult(false, "纬度数值不正确！")
+                    else InputDialogBuilder.VerifyResult()
                 }
             )),
             onConfirmClick = {
@@ -56,7 +56,7 @@ class LocationByLatLngScreenViewModel : ViewModel() {
     fun onClickLng() {
         UiViewModelManager.showDialog(InputDialogBuilder(
             title = "经度",
-            inputs = listOf(InputDialogBuilder.Input(
+            inputs = listOf(InputDialogBuilder.InputField(
                 initValue = targetFlow.value.longitude().toString(),
                 placeholder = "请输入",
                 label = "请输入目标经度，-180至180，eg:113.2",
@@ -65,8 +65,8 @@ class LocationByLatLngScreenViewModel : ViewModel() {
                 verify = {
                     val lng = it.toDoubleOrNull()
                     if (lng == null || lng !in -180.0..180.0)
-                        InputDialogBuilder.Verify(false, "经度数值不正确！")
-                    else InputDialogBuilder.Verify(true)
+                        InputDialogBuilder.VerifyResult(false, "经度数值不正确！")
+                    else InputDialogBuilder.VerifyResult()
                 }
             )),
             onConfirmClick = {

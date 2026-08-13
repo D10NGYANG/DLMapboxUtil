@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "1.4.0"
+version = "1.5.0"
 
 android {
     namespace = "com.d10ng.mapbox"
@@ -29,12 +29,19 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+    packaging {
+        jniLibs {
+            // Keep native libraries uncompressed so modern APK/AAB tooling can
+            // preserve 16 KB zip alignment for Android 15+ devices.
+            useLegacyPackaging = false
+        }
+    }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlin {
-        jvmToolchain(8)
+        jvmToolchain(17)
     }
 
     publishing {
@@ -42,10 +49,6 @@ android {
             withSourcesJar()
         }
     }
-}
-
-ksp {
-    arg("compose-destinations.codeGenPackageName", "com.d10ng.mapbox") // replace package name!
 }
 
 dependencies {
@@ -57,6 +60,7 @@ dependencies {
     // Lifecycle
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)
@@ -71,9 +75,9 @@ dependencies {
     // MapBox 地图
     api(libs.mapbox.android)
 
-    // 导航路由
-    implementation(libs.raamcosta.compose.destinations.core)
-    ksp(libs.raamcosta.compose.destinations.ksp)
+    // Navigation 3
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
 
     // jetpack compose 框架
     implementation(libs.dl.compose)
@@ -83,7 +87,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.constraintlayout.compose)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
